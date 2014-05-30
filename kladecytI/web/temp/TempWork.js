@@ -179,3 +179,23 @@ localStorage.removeItem("jStorage_update")
 
 localStorage.jStorage = localStorage.jStorageBackup
 localStorage.jStorage_update = localStorage.jStorage_updateBackup
+
+
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
+.pti-ptilist .pti-header { background-color : #efefef; }
+.pti-ptilist .pti-header .pti-header-button { transition: 0.3s ease; }
+.pti-ptilist .pti-header .pti-header-button.selected { border-radius: 20%; }
+.pti-ptilist .pti-header .pti-header-button:hover { background-color: cornflowerblue; color: aliceblue; border-radius: 30%; }
+
+Player - facetime_video
+Parse - inbox_out, log_out, new_window_alt
+Text - file_export
+Playlist - Albums, Playlist
+Synchronized - cloud-upload
+Options -
+Help -
