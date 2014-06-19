@@ -95,11 +95,9 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
 
         var mouseMoveOut = function(evt, ui) {
             if(evt.relatedTarget && $(evt.relatedTarget).attr('class').match(/progressBar/)) return;
-            self.jProgressBarCursorTime.hide('slow')
         }
 
         var throttleMouseMove = _.throttle(function (jElement, evt) {
-                self.jProgressBarCursorTime.show('fast')
                 var progress = evt.pageX / jElement.width() * 100
                 var seconds = self.trackLength * ( progress / 100)
                 self.jProgressBarCursorTime.text(_.formatDuration(seconds))

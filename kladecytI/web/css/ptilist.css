@@ -3,41 +3,27 @@
 
 /* playlist header */
 .pti-ptilist .pti-header { height: 31px; }
-.pti-ptilist .pti-header .pti-header-button { background-color: #efeff5; color: #007FFF; margin-left: 1px; float: left; width: 30px; height: 100%; line-height: 30px; text-align: center; cursor: default; }
-.pti-ptilist .pti-header .pti-header-button:hover { background-color: royalblue; color: white; cursor: pointer; }
-.pti-ptilist .pti-header .pti-header-button.selected { background-color: #007FFF; color: white; }
-
-/* playlist menu */
-.pti-ptilist .pti-menu { text-align: center; }
-.pti-ptilist .pti-menu .squaredTwo { float: left; line-height: 12px; }
-.pti-ptilist .pti-menu>.create-playlist-name { box-sizing: border-box; width: 97%; height: 30px; float: left; margin: 1px 1% 0px 2%; color: #007FFF; }
-.pti-ptilist .pti-menu>label.squaredTwo { margin: 10px auto; }
-.pti-ptilist .pti-menu>label.squaredTwo:nth-child(2) { clear: both; margin-left: -4%; width: 23%;  }
-.pti-ptilist .pti-menu>label.squaredTwo:nth-child(3) { width: 34%; }
-.pti-ptilist .pti-menu>input[type=button] { clear: both; float: left; margin-left: 1%; }
-
+.pti-ptilist .pti-header .pti-header-button { transition: all 0.3s ease; margin-left: 1px; float: left; width: 30px; height: 100%; line-height: 30px; text-align: center; cursor: default; }
+.pti-ptilist .pti-header .pti-header-button:hover { cursor: pointer; border-radius: 35%; }
+.pti-ptilist .pti-header .pti-header-button.selected { border-radius: 20%; }
 
 /* pti-ptilist content */
 .pti-content { cursor: crosshair; }
 .pti-ptilist .slimScrollDiv { top: 0px; }
-.pti-ptilist .pti-header+.pti-menu.temp-display-none+.slimScrollDiv { top: 32px; }
+.pti-ptilist .pti-header+.slimScrollDiv, .pti-ptilist .pti-header+.pti-menu.temp-display-none+.slimScrollDiv { top: 32px; }
 .pti-ptilist .pti-header+.pti-menu+.slimScrollDiv { top: 125px; }
-.pti-ptilist .slimScrollDiv { position: absolute!important; bottom: 0px; width: 100%; height: auto!important;}
+.pti-ptilist .slimScrollDiv { background-color: #f7f7f7; position: absolute!important; bottom: 0px; width: 100%; height: auto!important; }
 .pti-ptilist .pti-content { height: 100%; }
 
 
 /* pti-ptilist content container */
 .pti-ptilist .pti-content.pti-split-one>.pti-element, .pti-ptilist .pti-content.pti-split-one>.pti-sortable-placeholder { width: 100%; }
 .pti-ptilist .pti-content.pti-split-two>.pti-element, .pti-ptilist .pti-content.pti-split-two>.pti-sortable-placeholder { width: 50%; }
-.pti-ptilist .pti-content>.pti-element { float: left; cursor: default; overflow: hidden; position: relative; font-size: 11px; cursor: crosshair; }
+.pti-ptilist .pti-content.pti-split-two>.pti-element:nth-child(2n)>* { margin-right: 1px; }
+.pti-ptilist .pti-content>.pti-element { transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, color 0.3s ease; float: left; cursor: default; overflow: hidden; position: relative; font-size: 11px; cursor: crosshair; }
 /*.pti-ptilist .pti-content>:nth-child(1):not(.display-none), .pti-ptilist .pti-content>:nth-child(2):not(.display-none) { height: 90px!important; }*/
 /*.pti-ptilist .pti-content>:nth-child(1):not(.display-none)>:first-child , .pti-ptilist .pti-content>:nth-child(2):not(.display-none)>:first-child { margin: 0px!important; }*/
-.pti-ptilist .pti-content>.pti-element>* { margin: 0px 0.5px 0.5px 0.5px; background-color: #efeff5; color: #007FFF; }
-.pti-ptilist .pti-content>.pti-element:hover>* { background-color: aliceblue; color: #007FFF }
-.pti-ptilist .pti-content>.pti-element.selected>div, .pti-ptilist .pti-content>.pti-element.selected:hover>div { background-color: #007FFF; }
-.pti-ptilist .pti-content>.pti-element.ui-selected>div { background-color: orange!important; color: aliceblue; }
-.pti-ptilist .pti-content>.pti-element.ui-selected:hover>div { background-color: darkorange!important; color: aliceblue; }
-.pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: orangered!important; }
+.pti-ptilist .pti-content>.pti-element>* { transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, color 0.3s ease; margin: 0px 0.5px 0.5px 0px; }
 
 .pti-ptilist .pti-content.pti-view-big>.pti-element { height: 91px; }
 .pti-ptilist .pti-content.pti-view-big>.pti-element>* { height: 90px; }
@@ -47,6 +33,24 @@
 
 .pti-ptilist .pti-content.pti-view-list>.pti-element { height: 21px; line-height: 20px; }
 .pti-ptilist .pti-content.pti-view-list>.pti-element>* { height: 20px; }
+
+
+/* pti-ptilist content notice message */
+.pti-ptilist .pti-content>div.pti-make-last-droppable-work { position: absolute; height: 0px; width: 0px; visibility: hidden; }
+.pti-ptilist .pti-content>div:only-child { position: absolute; top: 45%; height: 100%; width: 100%; text-align: center; visibility: visible; }
+
+/* COLORS */
+.pti-ptilist .pti-header { background-color: #efeff5; }
+.pti-ptilist .pti-header .pti-header-button { color: #676470; }
+.pti-ptilist .pti-header .pti-header-button:hover { background-color: silver; color: white; }
+.pti-ptilist .pti-header .pti-header-button.selected { background-color: #7EA6BF; color: white; }
+
+.pti-ptilist .pti-content>.pti-element>* { background-color: #efeff5; color: #56545e; }
+.pti-ptilist .pti-content>.pti-element:hover>* { background-color: aliceblue; }
+.pti-ptilist .pti-content>.pti-element.selected>div, .pti-ptilist .pti-content>.pti-element.selected:hover>div { background-color: #6796b4; color: white; }
+.pti-ptilist .pti-content>.pti-element.ui-selected>div { background-color: #ffbd44; color: white; } /* orange before */
+.pti-ptilist .pti-content>.pti-element.ui-selected:hover>div { background-color: #ffb122; }
+.pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: orange; }
 
 
 /* sortable, droppable, selectable, content type */

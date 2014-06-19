@@ -2,12 +2,14 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals"], functio
     $(document).ready(function () {
         window.observer = observer
         window.pti = observer.pti
-        window.windowId = 'backgroundPageId'
         window.playlist = new Playlist("#ulSecond",
             {
-                id:windowId,
+                id:$.jStorage.get('playingId'),
                 fillVideoElement:false,
-                playerType: true
+                playerType: true,
+                execute: [
+                    Playlist.prototype._listenPlayingIdExecute
+                ]
             });
         require(["app/background/synchronization", "app/background/commands", "app/background/contextMenus"], function(synchronization) {
             synchronization.init()

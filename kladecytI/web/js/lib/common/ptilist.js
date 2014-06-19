@@ -32,13 +32,15 @@ define(["underscore", "slimscroll"], function () {
         me.options.slimScroll = _.default(me.options.slimScroll, true)
         me.options.blockSort = _.default(me.options.blockSort, false)
         me.options.listenId = _.default(me.options.listenId, me.options.id)
+        me.options.notice = _.default(me.options.notice, "")
         me.options.uid = _.guid()
 
         //draw
         me.$ = {}
         me.$.container = $(me.options.containerElementExpression)
         me.$.header = me._createHeader ? me._createHeader().appendTo(me.$.container) : null
-        me.$.content = $('<div class="pti-content"><div class="pti-make-last-droppable-work"/></div>').appendTo(me.$.container)
+        me.$.noticeContainer = $('<div class="pti-make-last-droppable-work"/>').text(me.options.notice)
+        me.$.content = $('<div class="pti-content"></div>').append(me.$.noticeContainer).appendTo(me.$.container)
 
         //classes
         me.$.container.addClass("pti-ptilist")
@@ -222,7 +224,7 @@ define(["underscore", "slimscroll"], function () {
     }
 
     Ptilist.prototype._emptyContent = function () {
-        this.$.content.html('<div class="pti-make-last-droppable-work"/>')
+        this.$.content.html(this.$.noticeContainer)
     }
 
     Ptilist.prototype._ptiElement = PTITemplates.prototype.PtilistElement
@@ -293,7 +295,7 @@ define(["underscore", "slimscroll"], function () {
     Ptilist.prototype._setSlimScroll = function (element, height) {
         $(element).slimScroll({
             height: height,
-            color: 'rgb(0, 50, 255)',
+            color: '#56545e',
             railVisible: true,
             railColor: '#000000',
             disableFadeOut: true

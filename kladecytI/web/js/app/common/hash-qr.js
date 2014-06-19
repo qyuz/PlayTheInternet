@@ -34,7 +34,7 @@ define(["underscore", "app/common/tabs"], function (a) {
             $('#buildHashInput').val('http://playtheinter.net/play.html' + playlist.buildHash())
             $('#longLinkA').attr('href', 'http://playtheinter.net/play.html' + playlist.buildHash())
         }
-        if ($("#tabs").tabs("option", "active") == 6) {
+        if ($("#tabs").tabs("option", "active") == 5) {
             require(["qrcode"], function () {
                 buildQR()
             })

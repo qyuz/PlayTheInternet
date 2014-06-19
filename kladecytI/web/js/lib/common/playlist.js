@@ -96,6 +96,15 @@ define(["common/ptilist"], function (Ptilist) {
         return SiteHandlerManager.prototype.drawPtiElement(typeIdText, $ptiElement, this.options.fillVideoElement)
     }
 
+    Playlist.prototype._listenPlayingId = function(key, action) {
+        var playingId = $.jStorage.get('playingId')
+        this.setId(playingId)
+    }
+
+    Playlist.prototype._listenPlayingIdExecute = function() {
+        $.jStorage.listenKeyChange('playingId', this._listenPlayingId.bind(this))
+    }
+
     Playlist.prototype._listenPlaySelectedVideo = function (key, action) {
         var storageData = this._redrawContentGetCacheObject(key, action, 'listen play selected video', true)
         storageData && storageData.play && storageData.index >= 0 && this.playVideo({ index: storageData.index }, storageData.playerState, false)
