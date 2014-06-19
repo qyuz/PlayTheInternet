@@ -7,7 +7,7 @@ define(["pti-playlist"], function(Playlist) {
             if (request.greeting == "hello")
                 sendResponse({farewell:"goodbye"});
             if (request.operation == "parsedPlaylist") {
-                request.data != '' ? parsedPlaylist.addElementsToList(_.stringToArray(request.data)) : $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseNothingFound(request))
+                request.data != '' ? parsedPlaylist.addElements(_.stringToArray(request.data)) : $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseNothingFound(request))
             } else if(request.operation == "parsePlayTheInternetParseFunctionMissing") {
                 $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseFunctionMissing(request))
             }
@@ -24,7 +24,7 @@ define(["pti-playlist"], function(Playlist) {
             ]
         }
     );
-    parsedPlaylist.emptyContent();
+    parsedPlaylist._emptyContent();
     chrome.tabs.executeScript(null, {file: "/js/app/popup/parsePage.js"}, function (parse) {
         _.isUndefined(parse) && $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseNothingFound({href: window.location.href}))
     });

@@ -3,7 +3,7 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
     Playlists.prototype.constructor = Playlists
     Playlists.prototype.parent = Ptilist.prototype
     function Playlists(appendToElementExpression, options) {
-        _.isUndefined(appendToElementExpression) || this.init(appendToElementExpression, options)
+        _.isUndefined(appendToElementExpression) || this._init(appendToElementExpression, options)
     }
 
     Playlists.prototype.jStorageTypeMapping = {
@@ -21,19 +21,19 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         }
     }
 
-    Playlists.prototype.init = function (appendToElementExpression, options) {
+    Playlists.prototype._init = function (appendToElementExpression, options) {
         var me = this
         me.options = _.extend({}, options)
         me.options.elementSplit = "one"
         me.options.jStorageType = _.default(me.options.jStorageType, "playlists")
         me.options.jStorageTypeValues = Playlists.prototype.jStorageTypeMapping[me.options.jStorageType]
-        me.parent.init.call(this, appendToElementExpression, me.options)
+        me.parent._init.call(this, appendToElementExpression, me.options)
 
-        //jContainer
-        me.jContainer.addClass("pti-action-background")
+        //$.container
+        me.$.container.addClass("pti-action-background")
 
         //playlist
-        me.jPlaylist = $('<div></div>').appendTo(me.jContainer.parent())
+        me.jPlaylist = $('<div></div>').appendTo(me.$.container.parent())
         me.initPlaylist = _.once(function() {
             me.playlist = new Playlist(me.jPlaylist,
                 {
@@ -50,49 +50,54 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         //playlist
 
         //click handlers
-        me.jContent.on('click', '.pti-sortable-handler.image-div', function(event, ui) {
+        me.$.content.on('click', '.pti-sortable-handler.image-div', function(event, ui) {
             var playlistId = me.getPtiElement(this).attr('id')
             me.playlistOpen(playlistId)
         })
 
-        me.jContent.on('click', '.pti-play-all, .pti-add-all', function(event, ui) {
+        me.$.content.on('click', '.pti-play-this', function(event, ui) {
             var $button = $(this), playlistId = me.getPtiElement(this).attr('id')
-            var dao = playlist.DAO(playlistId)
-            $button.hasClass('pti-play-all') && playlist.emptyContent()
-            playlist.addElementsToList(dao.storageObj.data)
-            var videoData = _.stringToTypeId(dao.storageObj.data[0])
-            $button.hasClass('pti-play-all') && (playerWidget.loadVideo(videoData.type, videoData.id) | playlist.selectVideo( { index: 0}, false  ))
+            $.jStorage.set('playingId', playlistId)
         })
 
-        me.jContent.on('click', '.pti-remove-playlist-dialog', function(event, ui) {
+        me.$.content.on('click', '.pti-add-all', function(event, ui) {
+            var $button = $(this), playlistId = me.getPtiElement(this).attr('id')
+            var dao = playlist.DAO(playlistId)
+//            $button.hasClass('pti-play-all') && playlist._emptyContent()
+            playlist.addElements(dao.storageObj.data)
+            var videoData = _.stringToTypeId(dao.storageObj.data[0])
+//            $button.hasClass('pti-play-all') && (playerWidget.loadVideo(videoData.type, videoData.id) | playlist.selectVideo( { index: 0}, false  ))
+        })
+
+        me.$.content.on('click', '.pti-remove-playlist-dialog', function(event, ui) {
             var $button = $(this);
             $button.addClass('temp-display-none-important')
             $button.siblings().removeClass('temp-display-none-important')
         })
-        me.jContent.on('click', '.pti-remove-playlist-yes', function(event, ui) {
+        me.$.content.on('click', '.pti-remove-playlist-yes', function(event, ui) {
             var playlistId = me.getPtiElement(this).attr('id')
             playlist.DAO(playlistId).delete()
         })
-        me.jContent.on('click', '.pti-remove-playlist-no', function(event, ui) {
+        me.$.content.on('click', '.pti-remove-playlist-no', function(event, ui) {
             var $button = $(this), $parent = $button.parent();
             $parent.children().not('.pti-remove-playlist-dialog').addClass('temp-display-none-important')
             $parent.children('.pti-remove-playlist-dialog').removeClass('temp-display-none-important')
         })
 
         var oldName
-        me.jContent.on('focusin', '.pti-name', function() {
+        me.$.content.on('focusin', '.pti-name', function() {
             oldName = $(this).val()
         })
-        me.jContent.on('focusout', '.pti-name', function() {
+        me.$.content.on('focusout', '.pti-name', function() {
             var newName = $(this).val()
             if (oldName !== newName) {
                 var playlistId = me.getPtiElement(this).attr('id')
-                var dao = playlist.DAO(playlistId).update({ name: newName, source: me.uid }).set()
+                var dao = playlist.DAO(playlistId).update({ name: newName, source: me.options.uid }).set()
             }
 
         })
 
-        me.jContent.on('keypress', '.pti-name', function (event) {
+        me.$.content.on('keypress', '.pti-name', function (event) {
             if (event.keyCode == 13) {
                 $(this).blur()
             }
@@ -102,16 +107,16 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
 //        me.redrawJContentFromCacheListen = _.debounce(function (key, action) {
 //            me.redrawJContentGeneric(key, action, 'listener redraw playlists from cache', true)
 //        }, 50)
-        me.setIdListen(me.options.jStorageTypeValues.sorted, "*")
+        me.setId(me.options.jStorageTypeValues.sorted, "*")
     }
 
-    Playlists.prototype.drawPtiElement = function (playlistData, $ptiElement) {
+    Playlists.prototype._drawPtiElement = function (playlistData, $ptiElement) {
         $ptiElement.append(PTITemplates.prototype.PlaylistsVideoElement(playlistData))
         return $ptiElement
     }
 
-    Playlists.prototype.redrawJContent = function(storageObject) {
-        this.parent.redrawJContent.call(this, storageObject)
+    Playlists.prototype._redrawContent = function(storageObject) {
+        this.parent._redrawContent.call(this, storageObject)
         var me = this
         console.log(me.getPtiElements())
         me.getPtiElements().droppable({
@@ -142,10 +147,10 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         })
     }
 
-    Playlists.prototype.redrawJContentGetCacheObject = function (key, action, functionName, filterOwn) {
+    Playlists.prototype._redrawContentGetCacheObject = function (key, action, functionName, filterOwn) {
         var pattern = "^(" + this.options.jStorageTypeValues.sorted + ")|(" + this.options.jStorageTypeValues.prefix + ".+)$"
         if (key.match(pattern)) {  // /^(playlists)|(lPlaylist.+)$/
-            var storageObj = this.parent.redrawJContentGetCacheObject.call(this, key, action, functionName, filterOwn)
+            var storageObj = this.parent._redrawContentGetCacheObject.call(this, key, action, functionName, filterOwn)
             if (!_.isUndefined(storageObj)) { //undefined means filtered by source === uid
                 var playlists = { data: this.filterJStorageBy(this.typeLocalPlaylist, this.sortLocalPlaylist) }
                 return playlists
@@ -154,13 +159,13 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
     }
 
     Playlists.prototype.playlistClose = function() {
-        this.jContainer.removeClass('temp-display-none')
+        this.$.container.removeClass('temp-display-none')
     }
 
     Playlists.prototype.playlistOpen = function(id) {
         this.initPlaylist()
-        this.playlist.setIdListen(id)
-        this.jContainer.addClass('temp-display-none')
+        this.playlist.setId(id)
+        this.$.container.addClass('temp-display-none')
     }
 
     Playlists.prototype.filterJStorageBy = function(filter, sort) {

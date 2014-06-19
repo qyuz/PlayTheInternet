@@ -57,8 +57,9 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
                 _state.selectedVideoIndex = _state.selectedVideoIndex >= 0 ? _state.selectedVideoIndex : 0
                 window.playlist.playVideo({ index: _state.selectedVideoIndex }, _state.playerState)
                 this.scope.volume(_state.volume)
+            } else {
+                arguments[3] !== 'iframe-wrapper' && iw && iw.postMessage(this.type, this.operation, boolean)
             }
-            arguments[3] !== 'iframe-wrapper' && iw && iw.postMessage(this.type, this.operation, boolean)
         },
         onPlayVideo: function () {
             iw.postMessage(this.type, this.operation)

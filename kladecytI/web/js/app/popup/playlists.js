@@ -15,9 +15,9 @@ define(["pti-playlist"], function (Playlist) {
     $('#tAreaParseButton').click(function () {
         var tAreaText = $('#tArea').val()
         createPlaylist()
-        textParsePlaylist.emptyContent();
+        textParsePlaylist._emptyContent();
         require(["cparse"], function () {
-                textParsePlaylist.addElementsToList(_.stringToArray(playTheInternetParse(tAreaText)), true)
+                textParsePlaylist.addElements(_.stringToArray(playTheInternetParse(tAreaText)), true)
         })
     })
 })

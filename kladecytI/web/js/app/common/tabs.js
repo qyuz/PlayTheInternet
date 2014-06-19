@@ -137,7 +137,7 @@ define(["jquery", "jquery-jobbing"], function () {
         window.tabs.second.playing = new Playlist("#ulSecond", {
                 id: chrome.extension.getBackgroundPage().windowId,
                 scrollTo: index,
-                recalculateJContentImmediateCallback: redrawHashAndQRCode,
+                recalculateContentImmediateCallback: redrawHashAndQRCode,
                 connectWith: "connected-playlist",
                 headerConfigKey: "lConfigPlaylistHeader",
                 execute: [

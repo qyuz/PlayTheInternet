@@ -1,4 +1,4 @@
-define(["slimscroll"], function () {
+define(["underscore", "slimscroll"], function () {
     $('#dummyInput').length || $('body').append('<input id="dummyInput" class="temp-absolute-off-scren"/>')
     var focusout = function () {
         $('#dummyInput').focus()
@@ -19,45 +19,43 @@ define(["slimscroll"], function () {
     })
 
     function Ptilist(appendToElementExpression, options) {
-        _.isUndefined(appendToElementExpression) || this.init(appendToElementExpression, options)
+        _.isUndefined(appendToElementExpression) || this._init(appendToElementExpression, options)
     }
 
-    Ptilist.prototype.init = function (appendToElementExpression, options) {
+    Ptilist.prototype._init = function (appendToElementExpression, options) {
         var me = this
         me.options = _.extend({}, options)
+        me.options.containerElementExpression = appendToElementExpression
         me.options.ptiElementClass = "pti-element " + _.default(me.options.ptiElementClass, "")
         me.options.elementSize = _.default(me.options.elementSize, "big")
         me.options.elementSplit = _.default(me.options.elementSplit, "two")
         me.options.slimScroll = _.default(me.options.slimScroll, true)
         me.options.blockSort = _.default(me.options.blockSort, false)
         me.options.listenId = _.default(me.options.listenId, me.options.id)
+        me.options.uid = _.guid()
 
         //draw
-        me.containerElementExpression = appendToElementExpression
-        me.jContainer = $(me.containerElementExpression)
-        me.jContainer.addClass("pti-ptilist")
-        me.jHeader = me.createHeader ? me.createHeader().appendTo(me.jContainer) : me.jContainer.addClass("pti-no-header")
-        me.jContent = $('<div class="pti-content"><div class="pti-make-last-droppable-work"/></div>').appendTo(me.jContainer)
+        me.$ = {}
+        me.$.container = $(me.options.containerElementExpression)
+        me.$.header = me._createHeader ? me._createHeader().appendTo(me.$.container) : null
+        me.$.content = $('<div class="pti-content"><div class="pti-make-last-droppable-work"/></div>').appendTo(me.$.container)
 
         //classes
-        me.jContent.addClass('pti-view-' + me.options.elementSize)
-        me.jContent.addClass('pti-split-' + me.options.elementSplit)
-        me.options.connectWith && me.jContent.addClass(me.options.connectWith)
-
-        //properties
-        me.uid = _.guid()
+        me.$.container.addClass("pti-ptilist")
+        me.$.content.addClass("pti-view-" + me.options.elementSize)
+        me.$.content.addClass("pti-split-" + me.options.elementSplit)
+        me.options.connectWith && me.$.content.addClass(me.options.connectWith)
 
         //sortable, selectable, slimScroll
-        me.first_rows = {}
-        var blockSort = false;
-        me.jContent.data('ptilist', this)
         if (me.options.slimScroll) {
             var sortableSlimScroll = { scroll: false }
-            me.jContent.data('sortableSlimScroll', sortableSlimScroll)
-            me.setSlimScroll(me.jContent, "100%")
+            me.$.content.data('sortableSlimScroll', sortableSlimScroll)
+            me._setSlimScroll(me.$.content, "100%")
         }
 
-        me.jContent.selectable({
+        var first_rows = {}, blockSort = false
+        me.$.content.data('ptilist', this)
+        me.$.content.selectable({
             filter: 'div.pti-element',
 //            cancel: 'div.image-div, label.pti-droppable-target, div.pti-make-last-droppable-work, a'
             cancel: '.pti-sortable-handler, .pti-make-last-droppable-work, a, .pti-clickable'
@@ -70,7 +68,7 @@ define(["slimscroll"], function () {
                 handle: '.pti-sortable-handler',
                 placeholder: 'pti-sortable-placeholder',
 //            update:function (event, ui) {
-//                this.recalculateJContent()
+//                this._recalculateContent()
 //            }.bind(this),
 //                cancel: '.pti-droppable-target, .pti-make-last-droppable-work',
                 cancel: '.pti-make-last-droppable-work',
@@ -90,15 +88,15 @@ define(["slimscroll"], function () {
                     me.options.blockSort && (blockSort = true)
 //                console.log('start')
 //                console.log(this)
-                    if (ui.item.hasClass('ui-selected') && me.jContent.find('.ui-selected').length > 1) {
-                        me.first_rows = me.jContent.find('.ui-selected').map(function (i, e) {
+                    if (ui.item.hasClass('ui-selected') && me.$.content.find('.ui-selected').length > 1) {
+                        first_rows = me.$.content.find('.ui-selected').map(function (i, e) {
                             var $tr = $(e);
                             return {
                                 tr: $tr.clone(true),
                                 id: $tr.attr('id')
                             };
                         }).get();
-                        me.jContent.find('.ui-selected').addClass('cloned');
+                        me.$.content.find('.ui-selected').addClass('cloned');
                     }
 //                ui.placeholder.html('<td class="pti-view-big">&nbsp;</td>');
                 }.bind(this),
@@ -113,9 +111,9 @@ define(["slimscroll"], function () {
                         var targetParent = ui.item.parent().data('ptilist')
 //                    console.log(targetParent)
 //                    console.log(this.first_rows)
-                        if (me.first_rows.length > 1) {
+                        if (first_rows.length > 1) {
                             var self = this
-                            $.each(me.first_rows, function (i, item) {
+                            $.each(first_rows, function (i, item) {
                                 var trs = $(item.tr)
                                 var logItem = trs.removeAttr('style').insertBefore(ui.item);
 //                            console.log(logItem)
@@ -125,10 +123,10 @@ define(["slimscroll"], function () {
                         }
                         $("#uber tr:even").removeClass("odd even").addClass("even");
                         $("#uber tr:odd").removeClass("odd even").addClass("odd");
-                        (!targetParent || targetParent.options.id != me.options.id) && me.recalculateJContent()
-                        targetParent && targetParent.recalculateJContent && targetParent.recalculateJContent()
+                        (!targetParent || targetParent.options.id != me.options.id) && me._recalculateContent()
+                        targetParent && targetParent._recalculateContent && targetParent._recalculateContent()
                     }
-                    me.first_rows = {};
+                    first_rows = {};
                     blockSort = false
                 }.bind(this),
                 remove: function (event, ui) {
@@ -141,7 +139,7 @@ define(["slimscroll"], function () {
                 }
 //        ,receive: function(event, ui) {
 //            _.defer(function () {
-//                this.recalculateJContent()
+//                this._recalculateContent()
 //            }.bind(this))
 //        }.bind(this)
             }).hover(function () {
@@ -150,20 +148,181 @@ define(["slimscroll"], function () {
                 me.options.slimScroll && (sortableSlimScroll.scroll = false)
             })
 
-        this.recalculateJContentDebounce = _.debounce(function (cache) {
-            this.recalculateJContent(cache)
+        this._recalculateContentDebounce = _.debounce(function () {
+            this._recalculateContent()
         }, 50)
 
-        this.setIdListen(this.options.id, this.options.listenId, this.options.scrollTo)
+        this.setId(this.options.id, this.options.listenId, this.options.scrollTo)
     }
 
-    Ptilist.prototype.addElementsToList = function (elementsData, unique, recalculcate, scrollTo) {
-        var me = this, dataPtiElements = new Array(), slices = new Array(), sliceCap = 33, deferred = new $.Deferred()
+    Ptilist.prototype._createHeader = function () {
+        var me = this
+        var $header = $('<div class="pti-header"/>')
+        if(me.options.headerConfigKey) {
+            var conf = $.jStorage.get(me.options.headerConfigKey)
+            conf && conf.size && ( me.options.elementSize = conf.size )
+            conf && conf.split && ( me.options.elementSplit = conf.split )
+        }
 
-        unique && ( elementsData = this.unique(this.getIds(), elementsData) )
+        function _moveScrollBar(before, after) {
+            var beforeScrollTop = before.scrollTop / (before.scrollHeight - before.height)
+            var afterScrollTop = (after.scrollHeight - after.height) * beforeScrollTop
+            me.$.content.slimscroll({scrollTo:  afterScrollTop + 'px' })
+        }
+
+        function _setSize(which, persist) {
+            if (me.$.content) {
+                var before = { scrollTop:me.$.content.scrollTop(), scrollHeight:me.$.content.prop('scrollHeight'), height:me.$.content.height() }
+                me.$.content.toggleClass("pti-view-big", which == "big")
+                me.$.content.toggleClass("pti-view-medium", which == "medium")
+                me.$.content.toggleClass("pti-view-list", which == "list")
+                var after = { scrollTop:me.$.content.scrollTop(), scrollHeight:me.$.content.prop('scrollHeight'), height:me.$.content.height() }
+                _moveScrollBar(before, after)
+            }
+            bigView.toggleClass("selected", which == "big")
+            mediumView.toggleClass("selected", which == "medium")
+            listView.toggleClass("selected", which == "list")
+            me.options.elementSize = which
+            _persistHeaderConfig(persist)
+        }
+
+        function _setSplit(which, persist) {
+            if (me.$.content) {
+                var before = { scrollTop:me.$.content.scrollTop(), scrollHeight:me.$.content.prop('scrollHeight'), height:me.$.content.height() }
+                me.$.content.toggleClass("pti-split-one", which == "one")
+                me.$.content.toggleClass("pti-split-two", which == "two")
+                var after = { scrollTop:me.$.content.scrollTop(), scrollHeight:me.$.content.prop('scrollHeight'), height:me.$.content.height() }
+                _moveScrollBar(before, after)
+            }
+            splitOne.toggleClass("selected", which == "one")
+            splitTwo.toggleClass("selected", which == "two")
+            me.options.elementSplit = which
+            _persistHeaderConfig(persist)
+        }
+
+        function _persistHeaderConfig(persist) {
+            var options = { size: me.options.elementSize, split: me.options.elementSplit }
+            _.default(persist, true) && me.options.headerConfigKey && $.jStorage.set(me.options.headerConfigKey, options)
+        }
+
+        var bigView = $('<div class="pti-header-button size-button">L</div>').appendTo($header).click(_.bind(_setSize, undefined, 'big'))
+        var mediumView = $('<div class="pti-header-button size-button">M</div>').appendTo($header).click(_.bind(_setSize, undefined, 'medium'))
+        var listView = $('<div class="pti-header-button size-button">S</div>').appendTo($header).click(_.bind(_setSize, undefined, 'list'))
+        var splitOne = $('<div data="one" class="pti-header-button temp-playlist-header-margin-left">1</div>').appendTo($header).click(_.bind(_setSplit, undefined, 'one'))
+        var splitTwo = $('<div data="two" class="pti-header-button">2</div>').appendTo($header).click(_.bind(_setSplit, undefined, 'two'))
+
+        _setSize(me.options.elementSize, false)
+        _setSplit(me.options.elementSplit, false)
+
+        return $header
+    }
+
+    Ptilist.prototype._drawPtiElement = function(data, $ptiElement) {
+        return $ptiElement.html(data)
+    }
+
+    Ptilist.prototype._emptyContent = function () {
+        this.$.content.html('<div class="pti-make-last-droppable-work"/>')
+    }
+
+    Ptilist.prototype._ptiElement = PTITemplates.prototype.PtilistElement
+
+    Ptilist.prototype._recalculateContent = function () {
+        var me = this
+        _.defer(function () {
+            me._recalculateContentImmediate()
+        })
+    }
+
+    Ptilist.prototype._recalculateContentBuildStorageObject = function () {
+        var storageObj = { id: this.options.id, source: this.options.uid, data: _.arrayToString(this.getIds()), updated: Date.now() }
+        return storageObj
+    }
+
+    Ptilist.prototype._recalculateContentImmediate = function () {
+        if (this.options.id) {
+            console.log('setting to storage')
+            var storageObj = this._recalculateContentBuildStorageObject()
+            storageObj && $.jStorage.set(storageObj.id, storageObj)
+        }
+    }
+
+    Ptilist.prototype._redrawContent = function (storageObject, scrollTo) {
+        if (storageObject.data) {
+            this._emptyContent()
+            return this.addElements(storageObject.data, undefined, false, scrollTo)
+        }
+    }
+
+    Ptilist.prototype._redrawContentGeneric = function (key, action, functionName, filterOwn, scrollTo) {
+        var storageObject = this._redrawContentGetCacheObject(key, action, functionName, filterOwn)
+        storageObject && this._redrawContent(storageObject, scrollTo)
+    }
+
+    Ptilist.prototype._redrawContentFromCacheListen = function (key, action) {
+        this._redrawContentGeneric(key, action, 'listener redraw ptilist from cache', true)
+    }
+
+    Ptilist.prototype._redrawContentFromCacheListenJStorage = function () {
+        this._redrawContentFromCacheListenLast = this._redrawContentFromCacheListen.bind(this);
+        $.jStorage.listenKeyChange(this.options.listenId, this._redrawContentFromCacheListenLast)
+    }
+
+    Ptilist.prototype._redrawContentFromCacheManual = function (scrollTo) {
+        this._redrawContentGeneric(this.options.id, 'manual redraw from cache', 'manual redraw ptilist from cache', false, scrollTo)
+    }
+
+    Ptilist.prototype._redrawContentGetCacheObject = function (key, action, functionName, filterOwn) {
+        console.log(key + ' has been ' + action)
+        var jStorageData = $.jStorage.get(key);
+        if (filterOwn && jStorageData && jStorageData.source == this.options.uid) {
+            console.log('not talking to self')
+            return undefined
+        } else {
+            var resultStorageData = null
+            jStorageData && ((resultStorageData = _.extend({}, jStorageData)) | (resultStorageData.data = _.stringToArray(jStorageData.data)))
+            return resultStorageData
+        }
+    }
+
+    Ptilist.prototype._setId = function(id, listenId) {
+        this.options.listenId = _.default(listenId, id)
+        this.options.id = id
+    }
+
+    Ptilist.prototype._setSlimScroll = function (element, height) {
+        $(element).slimScroll({
+            height: height,
+            color: 'rgb(0, 50, 255)',
+            railVisible: true,
+            railColor: '#000000',
+            disableFadeOut: true
+        });
+    }
+
+    Ptilist.prototype._unique = function(current, input) {
+        var currIds = current
+        var newIds = input.map(function(item) {
+            return item && typeof item.id !== "undefined" ? item.id : item
+        }).filter(Boolean)
+        return _.difference(newIds, currIds)
+    }
+
+    Ptilist.prototype.addElements = function (elementsData, unique, recalculcate, scrollTo) {
+        var me = this, dataPtiElements = new Array(), slices = new Array(), sliceCap = 33, deferred = new $.Deferred()
+        var _defer = function (func) {
+            var _defer = new $.Deferred()
+            var _then = function () {
+                func(_defer)
+                return _defer
+            }
+            return { defer:_defer, then:_then }
+        }
+
+        unique && ( elementsData = this._unique(this.getIds(), elementsData) )
 
         elementsData.forEach(function(elementData) {
-            elementData && dataPtiElements.push({ data: elementData, $ptiElement: $(PTITemplates.prototype.ptiElement({id: _.default(elementData.id, elementData), elementClass: me.options.ptiElementClass})).appendTo(me.jContent) })
+            elementData && dataPtiElements.push({ data: elementData, $ptiElement: $(Ptilist.prototype._ptiElement({id: _.default(elementData.id, elementData), elementClass: me.options.ptiElementClass})).appendTo(me.$.content) })
         })
         while(dataPtiElements.length) {
             slices.push(dataPtiElements.splice(0, sliceCap))
@@ -184,162 +343,73 @@ define(["slimscroll"], function () {
         deferred.resolve()
 		var firstSlice = slices.shift()
 		if(firstSlice) {
-			var drawSlice = function(slice) {
+			var _drawSlice = function(slice) {
 				slice.forEach(function(dataPtiElement) {
-					me.drawPtiElement(dataPtiElement.data, dataPtiElement.$ptiElement)
+					me._drawPtiElement(dataPtiElement.data, dataPtiElement.$ptiElement)
 				})
 			}
-			drawSlice(firstSlice)
+            _drawSlice(firstSlice)
 			slices.forEach(function(slice) {
-				var thenDeferred = new $.Deferred()
-				deferred.then(function() {
-					_.defer(function() {
-						drawSlice(slice)
-						thenDeferred.resolve()
-					})
-					return thenDeferred
-				})
-				deferred = thenDeferred
+                var defObj = _defer(function(deferred) {
+                    _.defer(function() {
+                        _drawSlice(slice)
+                        deferred.resolve()
+                    })
+                })
+                deferred.then(defObj.then)
+                deferred = defObj.defer
 			})
 		}
-			
+
         if(_.default(recalculcate, true)) {
-            var recalcDeferred = new $.Deferred()
-            deferred.then(function() {
-                me.recalculateJContentDebounce()
-                recalcDeferred.resolve()
-                return recalcDeferred
+            defObj = _defer(function(deferred) {
+                me._recalculateContentDebounce()
+                deferred.resolve()
             })
-            deferred = recalcDeferred
+            deferred.then(defObj.then)
+            deferred = defObj.defer
         }
 
         return deferred
     }
+
 
     Ptilist.prototype.getPtiElement = function(item) {
         return $(item).parents('.pti-element')
     }
 
     Ptilist.prototype.getPtiElements = function () {
-        return this.jContent.find('.pti-element')
+        return this.$.content.find('.pti-element')
     }
 
     Ptilist.prototype.getPtiElementsUiSelected = function () {
-        return this.jContent.find('.pti-element.ui-selected')
+        return this.$.content.find('.pti-element.ui-selected')
     }
 
     Ptilist.prototype.getIds = function () {
-        return this.jContent.sortable('toArray').filter(Boolean)
+        return this.$.content.sortable('toArray').filter(Boolean)
     }
 
     Ptilist.prototype.getIdsCount = function () {
-        return this.jContent.children().length - 1
+        return this.$.content.children().length - 1
     }
 
     Ptilist.prototype.getIdsUiSelected = function () {
-        return (this.jContent.find('.pti-element.ui-selected').map(function(index, item) {
+        return (this.$.content.find('.pti-element.ui-selected').map(function(index, item) {
             return $(item).attr('id')
         })).get()
     }
-
-    Ptilist.prototype.emptyContent = function () {
-        this.jContent.html('<div class="pti-make-last-droppable-work"/>')
-    }
-
-    Ptilist.prototype.recalculateJContent = function (cache) {
-        var me = this
-        _.defer(function () {
-            me.recalculateJContentImmediate(cache)
-        })
-    }
-
-    Ptilist.prototype.recalculateJContentBuildStorageObject = function () {
-        var storageObj = { id: this.options.id, source: this.uid, data: _.arrayToString(this.getIds()), updated: Date.now() }
-        return storageObj
-    }
-
-    Ptilist.prototype.recalculateJContentImmediate = function (cache) {
-        cache = _.default(cache, true)
-
-        if (this.options.id) {
-            console.log('setting to storage')
-            var storageObj = this.recalculateJContentBuildStorageObject()
-            storageObj && $.jStorage.set(storageObj.id, storageObj)
-        }
-    }
-
-    Ptilist.prototype.redrawJContent = function (storageObject, scrollTo) {
-        if (storageObject.data) {
-            this.emptyContent()
-            return this.addElementsToList(storageObject.data, undefined, false, scrollTo)
-        }
-    }
-
-    Ptilist.prototype.redrawJContentGeneric = function (key, action, functionName, filterOwn, scrollTo) {
-        var storageObject = this.redrawJContentGetCacheObject(key, action, functionName, filterOwn)
-        storageObject && this.redrawJContent(storageObject, scrollTo)
-    }
-
-    Ptilist.prototype.redrawJContentFromCacheListen = function (key, action) {
-        this.redrawJContentGeneric(key, action, 'listener redraw ptilist from cache', true)
-    }
-
-    Ptilist.prototype.redrawJContentFromCacheListenJStorage = function () {
-        this.redrawJContentFromCacheListenLast = this.redrawJContentFromCacheListen.bind(this);
-        $.jStorage.listenKeyChange(this.options.listenId, this.redrawJContentFromCacheListenLast)
-    }
-
-    Ptilist.prototype.redrawJContentFromCacheManual = function (scrollTo) {
-        this.redrawJContentGeneric(this.options.id, 'manual redraw from cache', 'manual redraw ptilist from cache', false, scrollTo)
-    }
-
-    Ptilist.prototype.redrawJContentGetCacheObject = function (key, action, functionName, filterOwn) {
-        console.log(key + ' has been ' + action)
-        var jStorageData = $.jStorage.get(key);
-        if (filterOwn && jStorageData && jStorageData.source == this.uid) {
-            console.log('not talking to self')
-            return undefined
-        } else {
-            var resultStorageData = null
-            jStorageData && ((resultStorageData = _.extend({}, jStorageData)) | (resultStorageData.data = _.stringToArray(jStorageData.data)))
-            return resultStorageData
-        }
-    }
-
     Ptilist.prototype.scrollTo = function(index) {
-        var rowHeight = this.jContent.prop('scrollHeight') / this.getIdsCount()
+        var rowHeight = this.$.content.prop('scrollHeight') / this.getIdsCount()
 		var elementHeight = this.getPtiElements().height()
-        var scrollTo = rowHeight * (index - (this.jContent.hasClass('pti-split-two') ? index % 2 == 1 ? 1 : 0 : 0)) - this.jContent.height() / 2 + elementHeight / 2
-        this.jContent.slimscroll({ scrollTo: scrollTo + 'px' })
+        var scrollTo = rowHeight * (index - (this.$.content.hasClass('pti-split-two') ? index % 2 == 1 ? 1 : 0 : 0)) - this.$.content.height() / 2 + elementHeight / 2
+        this.$.content.slimscroll({ scrollTo: scrollTo + 'px' })
     }
 
-    Ptilist.prototype.setId = function(id, listenId) {
-        this.options.listenId = _.default(listenId, id)
-        this.options.id = id
-    }
-
-    Ptilist.prototype.setIdListen = function(id, listenId, scrollTo) {
-        this.redrawJContentFromCacheListenLast && $.jStorage.stopListening(this.options.listenId, this.redrawJContentFromCacheListenLast)
-        this.setId(id, listenId)
-        this.options.listenId && (this.redrawJContentFromCacheListenJStorage() | this.redrawJContentFromCacheManual(scrollTo))
-    }
-
-    Ptilist.prototype.setSlimScroll = function (element, height) {
-        $(element).slimScroll({
-            height: height,
-            color: 'rgb(0, 50, 255)',
-            railVisible: true,
-            railColor: '#000000',
-            disableFadeOut: true
-        });
-    }
-
-    Ptilist.prototype.unique = function(current, input) {
-        var currIds = current
-        var newIds = input.map(function(item) {
-            return item && typeof item.id !== "undefined" ? item.id : item
-        }).filter(Boolean)
-        return _.difference(newIds, currIds)
+    Ptilist.prototype.setId = function(id, listenId, scrollTo) {
+        this._redrawContentFromCacheListenLast && $.jStorage.stopListening(this.options.listenId, this._redrawContentFromCacheListenLast)
+        this._setId(id, listenId)
+        this.options.listenId && (this._redrawContentFromCacheListenJStorage() | this._redrawContentFromCacheManual(scrollTo))
     }
 
     return Ptilist
