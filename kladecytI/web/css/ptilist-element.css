@@ -1,4 +1,6 @@
 /* playlist menu */
+.pti-ptilist .pti-header>.playing-name { position: relative; top: 1px; margin: 0px 0px 0px 5px; border: transparent solid 1px; padding: 0px 5px 0px 5px; width: 177px; height: 27px; line-height: normal; font-size: inherit; color: inherit; background-color: inherit; }
+
 .pti-ptilist .pti-menu { text-align: center; }
 .pti-ptilist .pti-menu .squaredTwo { float: left; line-height: 12px; }
 .pti-ptilist .pti-menu>.create-playlist-name { box-sizing: border-box; width: 100%; height: 30px; float: left; margin: 1px 0px 0px 0px; }
@@ -83,6 +85,6 @@
 .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>* { background-color: #6796b4; color: #efeff5; }
 .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #7EA6BF; color: white; }
 .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #7EA6BF; color: white; }
-.pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>* { background-color: orange; }
-.pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #ffbd44; }
-.pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #ffbd44; }
+.pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>* { background-color: #F97413; }
+.pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #F9961B; }
+.pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #F9961B; }

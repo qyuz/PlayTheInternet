@@ -58,15 +58,24 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         me.$.content.on('click', '.pti-play-this', function(event, ui) {
             var $button = $(this), playlistId = me.getPtiElement(this).attr('id')
             $.jStorage.set('playingId', playlistId)
+            _.delay(function() { //get rid of delay
+                var videoFeed = playlist.getSelectedVideoDiv().data('data')
+                if(videoFeed) {
+                    playerWidget.loadVideo(videoFeed.type, videoFeed.id)
+                    playerWidget.data.listenObject.playVideo()
+                } else {
+                    playlist.playNextVideo()
+                }
+                require(["app/common/hash-qr"], function (redraw) {
+                    redraw()
+                })
+            }, 100)
         })
 
         me.$.content.on('click', '.pti-add-all', function(event, ui) {
             var $button = $(this), playlistId = me.getPtiElement(this).attr('id')
             var dao = playlist.DAO(playlistId)
-//            $button.hasClass('pti-play-all') && playlist._emptyContent()
             playlist.addElements(dao.storageObj.data)
-            var videoData = _.stringToTypeId(dao.storageObj.data[0])
-//            $button.hasClass('pti-play-all') && (playerWidget.loadVideo(videoData.type, videoData.id) | playlist.selectVideo( { index: 0}, false  ))
         })
 
         me.$.content.on('click', '.pti-remove-playlist-dialog', function(event, ui) {
@@ -110,6 +119,8 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         me.setId(me.options.jStorageTypeValues.sorted, "*")
     }
 
+    Playlists.prototype._createHeader = undefined
+
     Playlists.prototype._drawPtiElement = function (playlistData, $ptiElement) {
         $ptiElement.append(PTITemplates.prototype.PlaylistsVideoElement(playlistData))
         return $ptiElement
@@ -148,8 +159,8 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
     }
 
     Playlists.prototype._redrawContentGetCacheObject = function (key, action, functionName, filterOwn) {
-        var pattern = "^(" + this.options.jStorageTypeValues.sorted + ")|(" + this.options.jStorageTypeValues.prefix + ".+)$"
-        if (key.match(pattern)) {  // /^(playlists)|(lPlaylist.+)$/
+        var pattern = "^(" + this.options.jStorageTypeValues.sorted + "|" + this.options.jStorageTypeValues.prefix + ".+)$"
+        if (key.match(pattern)) {  // /^(playlists|lPlaylist.+)$/
             var storageObj = this.parent._redrawContentGetCacheObject.call(this, key, action, functionName, filterOwn)
             if (!_.isUndefined(storageObj)) { //undefined means filtered by source === uid
                 var playlists = { data: this.filterJStorageBy(this.typeLocalPlaylist, this.sortLocalPlaylist) }

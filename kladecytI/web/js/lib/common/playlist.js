@@ -103,6 +103,26 @@ define(["common/ptilist"], function (Ptilist) {
 
     Playlist.prototype._listenPlayingIdExecute = function() {
         $.jStorage.listenKeyChange('playingId', this._listenPlayingId.bind(this))
+        var $playingName = $('<input type="text" class="playing-name"/>').val(Playlist.prototype.DAO(this.options.id).storageObj.name), _redrawContent = this._redrawContent.bind(this), me = this
+        this.$.playingName = $playingName.appendTo(this.$.header.eq(0))
+        $playingName.keypress(function (event) {
+            if (event.keyCode == 13) {
+                $(this).blur()
+            }
+        })
+        var oldName
+        $playingName.focusin(function () {
+            oldName = $(this).val()
+        }).focusout(function () {
+            var newName = $(this).val()
+            if (oldName !== newName) {
+                var dao = playlist.DAO(me.options.id).update({ name: newName, source: me.options.uid }).set()
+            }
+        })
+        this._redrawContent = function(storageObject) {
+            _redrawContent(storageObject)
+            $playingName.val(Playlist.prototype.DAO(this.options.id).storageObj.name)
+        }
     }
 
     Playlist.prototype._listenPlaySelectedVideo = function (key, action) {
@@ -113,7 +133,7 @@ define(["common/ptilist"], function (Ptilist) {
     Playlist.prototype._recalculateContentBuildStorageObject = function() {
         var superObject = this.parent._recalculateContentBuildStorageObject.call(this)
         var storageObject = $.jStorage.get(this.options.id)
-        var recalculatedObject = _.extend(storageObject ? storageObject : { name: new Date() }, superObject)
+        var recalculatedObject = _.extend(storageObject ? storageObject : { name: "Rename me!" }, superObject)
         return recalculatedObject
     }
 
@@ -157,7 +177,7 @@ define(["common/ptilist"], function (Ptilist) {
                 var remove = function() {
                     $(this).remove();
                     me._recalculateContentImmediate()
-                }
+                }.bind(this)
                 $this.height(0)
                 _.delay(remove, 150);
             }

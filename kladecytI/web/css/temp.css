@@ -11,14 +11,14 @@
 .temp-border-none { border: none; }
 .temp-margin-none { margin: 0px; }
 .temp-player-widget { position: relative; width: 100%; height: 35px; margin: auto;}
-.temp-popup-nav-content { position: absolute; top: 41px; bottom: 0px; width: 100%; background-color: #f7f7f7; }
+.temp-popup-nav-content { position: absolute; top: 41px; bottom: 0px; width: 100%; background-color: #f7f7f7; transition: all 0.33s ease; }
 .temp-absolute-off-scren { position: absolute; left: -9999px; }
 .temp-parsed-error { position: absolute; width: 100%; top: 0px; bottom: 0px; z-index: 999; word-break: break-all; pointer-events: none; }
 .temp-parsed-error>div { display: table; height: 100%; width: 100%; }
 .temp-parsed-error>div>div { display: table-cell; vertical-align: middle; text-align: center; height: 23px; line-height: 23px; }
 .temp-parsed-error>div>div>div { max-height: 200px; }
 #parsedError>div>div>.alert-danger { background: tomato; }
-#parsedError>div>div>.alert-warning { background: orange; }
+#parsedError>div>div>.alert-warning { background: #F9961B; }
 .temp-parse-page-playlist { position: absolute; width:100%; top: 70px; bottom: 0px; }
 .temp-playlist-header-margin-left { margin-left: 10px!important; }
 .temp-parse-button { position: absolute; top: 61px; background-color: #6796b4; color: white; }
@@ -67,17 +67,17 @@
 .pti-action-add .pti-content.pti-view-list>*:hover.ui-selected:not(.selected) .image-div:after { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 13px solid #ffb122; }
 .pti-action-add .pti-content.pti-view-list>*.selected:hover .image-div:before { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 20px solid aliceblue; }
 .pti-action-add .pti-content.pti-view-list>*.selected:hover .image-div:after { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 20px solid #6796b4; }
-.pti-action-add .pti-content.pti-view-list>*.selected:hover.ui-selected .image-div:after { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 13px solid orange; }
+.pti-action-add .pti-content.pti-view-list>*.selected:hover.ui-selected .image-div:after { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 13px solid #F97413; }
 .pti-action-add .pti-content.pti-view-list>*:hover .image-div .duration-caption { display: none; }
 
 .pti-action-play .pti-content.pti-view-big>*:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid aliceblue; }
 .pti-action-play .pti-content.pti-view-big>*.selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid #6796b4; }
 .pti-action-play .pti-content.pti-view-big>*:hover.ui-selected:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid #ffb122; }
-.pti-action-play .pti-content.pti-view-big>*.selected.ui-selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid orange; }
+.pti-action-play .pti-content.pti-view-big>*.selected.ui-selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid #F97413; }
 .pti-action-play .pti-content.pti-view-medium>*:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid aliceblue; }
 .pti-action-play .pti-content.pti-view-medium>*.selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid #6796b4; }
 .pti-action-play .pti-content.pti-view-medium>*:hover.ui-selected:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid #ffb122; }
-.pti-action-play .pti-content.pti-view-medium>*.selected.ui-selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid orange; }
+.pti-action-play .pti-content.pti-view-medium>*.selected.ui-selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid #F97413; }
 .pti-action-play .pti-content.pti-view-list>*:hover:not(.selected) .image-div:before { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 20px solid #6796b4; }
 .pti-action-play .pti-content.pti-view-list>*.selected:hover .image-div:before, .pti-action-play .pti-content.pti-view-list>*.ui-selected:hover .image-div:before { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 20px solid aliceblue; }
 .pti-action-play .pti-content.pti-view-list>*:hover .image-div .duration-caption { display: none; }

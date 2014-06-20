@@ -62,7 +62,7 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
 
         this.jPlayerWidget.on('change', '.volume', function () {
             var volume = Number($(this).val())
-            volume >= 0 && volume <= 100 && debounceVolume(volume)
+            debounceVolume(volume)
         })
         this.jPlayerWidget.on('mousewheel', '.volume', function(event) {
             var $range = $(this), range = Number($range.val())
@@ -89,6 +89,7 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
         })
 
         var debounceVolume = _.debounce(function(volume) {
+            volume = volume < 0 ? 0 : volume > 100 ? 100 : volume //sanity check, also mousewheel tends to go above 100
             $.jStorage.set('volume', volume)
             _.getPti().volume(volume)
         }, 200)

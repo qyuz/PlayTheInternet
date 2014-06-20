@@ -1,4 +1,6 @@
-define(["pti-playlist", "player/iframe-observer", "app/common/globals"], function(Playlist, observer, c) {
+define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorage", "underscore"], function(Playlist, observer, c, d, e) {
+    $.jStorage.get('playingId') || $.jStorage.set('playingId', 'lPlaylist' + _.guid())
+
     $(document).ready(function () {
         window.observer = observer
         window.pti = observer.pti

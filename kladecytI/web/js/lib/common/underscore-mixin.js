@@ -31,7 +31,7 @@ define(["underscore-core"], function() {
                     Math.random() * 0x10000 /* 65536 */
                 ).toString(16);
             };
-            var now = Date.now().toString(), preNow = now.substring(0, now.length - 7)
+            var now = Date.now().toString(), preNow = now.substring(0, now.length - 6)
             return (
                 preNow + S4() + S4() + _.uniqueId()
                 );

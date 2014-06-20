@@ -55,7 +55,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
                     volume: $.jStorage.get('volume')
                 }
                 _state.selectedVideoIndex = _state.selectedVideoIndex >= 0 ? _state.selectedVideoIndex : 0
-                window.playlist.playVideo({ index: _state.selectedVideoIndex }, _state.playerState)
+                window.playlist.playVideo({ index: _state.selectedVideoIndex }, _state.playerState, false)
                 this.scope.volume(_state.volume)
             } else {
                 arguments[3] !== 'iframe-wrapper' && iw && iw.postMessage(this.type, this.operation, boolean)

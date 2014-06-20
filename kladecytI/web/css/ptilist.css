@@ -48,9 +48,9 @@
 .pti-ptilist .pti-content>.pti-element>* { background-color: #efeff5; color: #56545e; }
 .pti-ptilist .pti-content>.pti-element:hover>* { background-color: aliceblue; }
 .pti-ptilist .pti-content>.pti-element.selected>div, .pti-ptilist .pti-content>.pti-element.selected:hover>div { background-color: #6796b4; color: white; }
-.pti-ptilist .pti-content>.pti-element.ui-selected>div { background-color: #ffbd44; color: white; } /* orange before */
+.pti-ptilist .pti-content>.pti-element.ui-selected>div { background-color: #F9961B; color: white; } /* orange before */
 .pti-ptilist .pti-content>.pti-element.ui-selected:hover>div { background-color: #ffb122; }
-.pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: orange; }
+.pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: #F97413; }
 
 
 /* sortable, droppable, selectable, content type */

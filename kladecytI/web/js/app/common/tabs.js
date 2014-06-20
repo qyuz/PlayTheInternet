@@ -1,15 +1,18 @@
 define(["jquery", "jquery-jobbing"], function () {
 //GENERIC START
     window.tabs = { first: {}, second: {} }
+    var lPlaylistsNotice = 'Here are all your playlists that are bound to this PC. You can create playlist by hitting the "+" button in any playlist you see.';
+    var sPlaylistsNotice = 'Here are all your playlists that will be shared between PCs, just don\'t forget to sign in chrome. You can create synchronized playlist by hitting the "+" button in any playlist you see.';
 
-    function playlistsFactory($nav, $playlistsEl, jStorageType, headerConfigKey, tabs, getPlaylist) {
+    function playlistsFactory($nav, $playlistsEl, jStorageType, headerConfigKey, tabs, getPlaylist, noticeMessage) {
         var initPlaylists = _.once(function (Playlists) {
             tabs[jStorageType] = new Playlists($playlistsEl, {
                 jStorageType: jStorageType,
                 playlistHeaderConfigKey: headerConfigKey,
                 playlistTabsGetPlaylist: function () {
                     this.tabsGetPlaylist = getPlaylist
-                }
+                },
+                notice: noticeMessage
             })
             return tabs[jStorageType]
         })
@@ -60,6 +63,12 @@ define(["jquery", "jquery-jobbing"], function () {
             if (newTabText == "Devices(Read Only)") {
                 fetchSynch()
             }
+        },
+        beforeActivate: function (event, ui) {
+            ui.oldPanel.addClass('shlop')
+            _.defer(function () {
+                ui.newPanel.removeClass('shlop')
+            })
         }
     })
 
@@ -97,8 +106,8 @@ define(["jquery", "jquery-jobbing"], function () {
     }
     window.tabs.first.getPlaylist = firstGetPlaylist
 
-    var selectFirstPlaylists = playlistsFactory($('a[href="#firstPlaylistsDiv"]'), $("#ulFirstPlaylists"), "playlists", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist)
-    var selectFirstSynchronized = playlistsFactory($('a[href="#firstSynchronizedDiv"]'), $("#ulFirstSynchronized"), "synchronized", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist)
+    var selectFirstPlaylists = playlistsFactory($('a[href="#firstPlaylistsDiv"]'), $("#ulFirstPlaylists"), "playlists", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist, lPlaylistsNotice)
+    var selectFirstSynchronized = playlistsFactory($('a[href="#firstSynchronizedDiv"]'), $("#ulFirstSynchronized"), "synchronized", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist, sPlaylistsNotice)
     var selectFirstDevices = playlistsFactory($('a[href="#firstDevicesDiv"]'), $("#ulFirstDevices"), "devices", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist)
 //first playlists end
 
@@ -130,14 +139,20 @@ define(["jquery", "jquery-jobbing"], function () {
             if (newTabText == "Devices(Read Only)") {
                 fetchSynch()
             }
+        },
+        beforeActivate: function (event, ui) {
+            ui.oldPanel.addClass('shlop')
+            _.defer(function () {
+                ui.newPanel.removeClass('shlop')
+            })
         }
     })
 
 //second playing start
     var initPlaying = _.once(function (redrawHashAndQRCode, Playlist) {
-        var selected = $.jStorage.get("selected_backgroundPageId"), index = selected && selected.index >= 0 && selected.index
+        var playingId = $.jStorage.get("playingId"), selected = $.jStorage.get("selected_" + playingId), index = selected && selected.index >= 0 && selected.index
         window.tabs.second.playing = new Playlist("#ulSecond", {
-                id: $.jStorage.get('playingId'),
+                id: playingId,
                 notice: "This is your playlist. Drop songs in here and listen.",
                 scrollTo: index,
                 recalculateContentImmediateCallback: redrawHashAndQRCode,
@@ -172,8 +187,8 @@ define(["jquery", "jquery-jobbing"], function () {
     }
     window.tabs.second.getPlaylist = secondGetPlaylist
 
-    var selectSecondPlaylists = playlistsFactory($('a[href="#sPlaylists"]'), $("#ulSecondPlaylists"), "playlists", "lConfigSecondPlaylistsPlaylistHeader", window.tabs.second, firstGetPlaylist)
-    var selectSecondSynchronizedPlaylists = playlistsFactory($('a[href="#sSynchronized"]'), $("#ulSecondSynchronized"), "synchronized", "lConfigSecondPlaylistsPlaylistHeader", window.tabs.second, firstGetPlaylist)
+    var selectSecondPlaylists = playlistsFactory($('a[href="#sPlaylists"]'), $("#ulSecondPlaylists"), "playlists", "lConfigSecondPlaylistsPlaylistHeader", window.tabs.second, firstGetPlaylist, lPlaylistsNotice)
+    var selectSecondSynchronizedPlaylists = playlistsFactory($('a[href="#sSynchronized"]'), $("#ulSecondSynchronized"), "synchronized", "lConfigSecondPlaylistsPlaylistHeader", window.tabs.second, firstGetPlaylist, sPlaylistsNotice)
     var selectSecondDevicesPlaylists = playlistsFactory($('a[href="#sDevices"]'), $("#ulSecondDevices"), "devices", "lConfigSecondPlaylistsPlaylistHeader", window.tabs.second, firstGetPlaylist)
 
 //second playlists end

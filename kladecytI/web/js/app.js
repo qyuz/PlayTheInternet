@@ -59,18 +59,28 @@ function upgradeRun(module) {
             })
             deferred = newDeferred
         }
-		deferred.then(function() {
-			setTimeout(function () {
-				try {
-					var manifestVersion = chrome.runtime.getManifest().version.replace(/^(\d+\.\d+)(\..*)?/, '$1')
-					$.jStorage.set('manifest_version', manifestVersion)
-				} catch (e) {
-					alert("Failed to set manifest version\r\n" + e)
-				}
-				console.log('ran')
-				requirejs([module])
-			}, 0)
-		})
+        if(currVersion < 0.67) {
+            var newDeferred = $.Deferred()
+            deferred.then(function() {
+                console.log('initializing upgrade to 0.67')
+                require(["app/migrate/067"], function() {
+                    console.log('done upgrading to 0.67')
+                    newDeferred.resolve()
+                })
+                return newDeferred
+            })
+            deferred = newDeferred
+        }
+        deferred.then(function() {
+            try {
+                var manifestVersion = chrome.runtime.getManifest().version.replace(/^(\d+\.\d+)(\..*)?/, '$1')
+                $.jStorage.set('manifest_version', manifestVersion)
+            } catch (e) {
+                alert("Failed to set manifest version\r\n" + e)
+            }
+            console.log('ran')
+            requirejs([module])
+        })
     })
 }
 
