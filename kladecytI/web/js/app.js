@@ -103,5 +103,9 @@ if (typeof chrome == "undefined" || !chrome.extension) {
 } else if (chrome.extension.getBackgroundPage() == window) {
     upgradeRun("app/background")
 } else {
-    requirejs(["app/popup"])
+    if (window.location.href.match('panel')) {
+        requirejs(["app/panel"])
+    } else {
+        requirejs(["app/popup"])
+    }
 }

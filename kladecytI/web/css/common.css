@@ -1,11 +1,11 @@
 body { height: 100%; }
 .taArea { position: absolute; height: 60px; width: 100%; left: 0px; resize: none; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; } /* used in parse text area */
-#firstView, #secondView { position: absolute; width: 50%; height: 100%; -webkit-perspective: 3000; } /* using id(#) because using class(.) is collapsing when one song in playlist is redropped */
+#firstView, #secondView { position: absolute; width: 50%; height: 100%; } /* using id(#) because using class(.) is collapsing when one song in playlist is redropped */
 #secondView { left: 50%; }
 #secondViewTabs { margin-left: 1px; }
 /*#iframeView { float: left; width: 100%; height: 100%; }*/ /* for iframe-player.html */
 .leftFull { float: left; width: 100%; height: 100% }
-.shlop { -webkit-transform: translate3d(0px, -45px, 0px) rotateX(35deg) scale(0.925); opacity: 0.9; }
+.shlop { -webkit-transform: translate3d(0px, -45px, 0px) rotateX(35deg) scale(0.925); opacity: 0.9; -webkit-perspective: 3000; }
 
 /* TABS */
 #splitViews { position: absolute; top: 35px; bottom: 0px; width:100%; overflow: hidden; }
@@ -14,7 +14,7 @@ body { height: 100%; }
 #splitViews>div>.tabs>ul * { outline: none; }
 #splitViews>div>.tabs>ul>li>a { margin: 0px 1px 0px 0px; height: 39px; width: 40px; padding: 0px; position: relative; overflow: hidden; }
 #splitViews>div>.tabs>ul>li>a>svg { -webkit-transform-origin: top right; -webkit-transform: scale(0.7); transition: all 0.3s ease;  }
-#splitViews>div>.tabs>ul>li>a>svg>path { transition: all 0.3s ease;  }
+#splitViews>div>.tabs>ul>li>a>svg>* { transition: all 0.3s ease;  } /* * - path, rect */
 #splitViews>div>.tabs>ul>li.ui-state-active>a>svg { -webkit-transform: scale(1); }
 #splitViews>div>.tabs>ul>li>a>div { position: absolute; left: 1px; bottom: 1px; font-size: 10px; font-family: sans-serif; transition: all 0.3s ease; }
 #splitViews>div>.tabs>ul>li.ui-state-active>a>div { left: -51px; }
@@ -30,6 +30,6 @@ body { height: 100%; }
 #splitViews>div>.tabs>ul { background-color: #efeff5; }
 #splitViews>div>.tabs>ul>li>a:hover { background-color: #efeff5; }
 #splitViews>div>.tabs>ul>li>a:hover>div { color: #676470; }
-#splitViews>div>.tabs>ul>li>a>svg>path { fill: #676470; }
-#splitViews>div>.tabs>ul>li>a:hover>svg>path { fill: silver; }
-#splitViews>div>.tabs>ul>li.ui-state-active>a>svg>path, #splitViews>div>.tabs>ul>li:hover.ui-state-active>a>svg>path { fill: #4F7E9C; }
+#splitViews>div>.tabs>ul>li>a>svg>* { fill: #676470; }
+#splitViews>div>.tabs>ul>li>a:hover>svg>* { fill: silver; }
+#splitViews>div>.tabs>ul>li.ui-state-active>a>svg>*, #splitViews>div>.tabs>ul>li:hover.ui-state-active>a>svg>* { fill: #4F7E9C; }

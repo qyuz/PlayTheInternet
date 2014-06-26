@@ -37,8 +37,18 @@ define(["underscore-core"], function() {
                 );
         },
         getPti: function() {
-            var _pti = typeof window.pti === "undefined" ? chrome.extension.getBackgroundPage().pti : window.pti
+            var backgroundWindow = chrome.extension.getBackgroundPage()
+            var popupWindow = _.reject(_.where(chrome.extension.getViews(), 'pti'), backgroundWindow)
+            var _pti = popupWindow.length ? popupWindow[0].pti : backgroundWindow.pti
             return _pti
+        },
+        openPanel: function() {
+            chrome.windows.create({
+                url: 'panel.html',
+                height: 93,
+                width: 200,
+                type: 'panel'
+            })
         },
         stringToArray: function (string) {
             var resultArray = string ? string.replace(/\\,/g, "&thisiscomma;").split(/,/).map(function (item) {

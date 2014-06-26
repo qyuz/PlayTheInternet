@@ -19,6 +19,7 @@
 .temp-parsed-error>div>div>div { max-height: 200px; }
 #parsedError>div>div>.alert-danger { background: tomato; }
 #parsedError>div>div>.alert-warning { background: #F9961B; }
+#parsedError a { pointer-events: all; color: white; }
 .temp-parse-page-playlist { position: absolute; width:100%; top: 70px; bottom: 0px; }
 .temp-playlist-header-margin-left { margin-left: 10px!important; }
 .temp-parse-button { position: absolute; top: 61px; background-color: #6796b4; color: white; }

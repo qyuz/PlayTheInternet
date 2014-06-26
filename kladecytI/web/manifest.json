@@ -53,6 +53,9 @@
         },
         "play/pause": {
             "description": "Play/Pause Toggle"
+        },
+        "panel": {
+            "description": "Player panel"
         }
     },
 

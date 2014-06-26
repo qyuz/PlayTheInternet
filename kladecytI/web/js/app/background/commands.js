@@ -1,15 +1,11 @@
-define(function() {
-    function _getPti() {
-        var popupWindow = _.without(chrome.extension.getViews(), window)[0]
-        return (popupWindow && popupWindow.observer && popupWindow.observer.pti) || observer.pti
-    }
+define(["underscore"], function() {
     var actions = {
         "play": function() {
-            var pti = _getPti()
+            var pti = _.getPti()
             pti.playVideo()
         },
         "pause": function() {
-            var pti = _getPti()
+            var pti = _.getPti()
             pti.pauseVideo()
         },
         "next": function() {
@@ -19,8 +15,11 @@ define(function() {
             playlist.playVideo({videoDiv: playlist.lookupPrevSong()})
         },
         "play/pause": function() {
-            var pti = _getPti()
+            var pti = _.getPti()
             pti.playing() ? pti.pauseVideo() : pti.playVideo()
+        },
+        "panel": function() {
+            _.openPanel()
         }
     }
     chrome.commands.onCommand.addListener(function(command) {

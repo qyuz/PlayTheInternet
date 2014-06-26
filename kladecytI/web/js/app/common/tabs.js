@@ -63,6 +63,16 @@ define(["jquery", "jquery-jobbing"], function () {
             if (newTabText == "Devices(Read Only)") {
                 fetchSynch()
             }
+            if (newTabText == "Panel") {
+                _.openPanel()
+                chrome.windows.getAll(function (windows) {
+                    if(_.findWhere(windows, { type: 'panel' })) {
+                        $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-success">You\'ve successfully opened a panel.<br>Make good use of it!</div> </div> </div> </div>')
+                    } else {
+                        $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-error"><b>Panel is an experimental feature which should be<br>enabled first.</b><br><a href="chrome://flags/#enable-panels" target="_blank">Follow this link to enable panels and then click<br>"Relaunch Now" to restart Chrome.</a></div> </div> </div> </div>')
+                    }
+                })
+            }
         },
         beforeActivate: function (event, ui) {
             ui.oldPanel.addClass('shlop')
@@ -116,6 +126,14 @@ define(["jquery", "jquery-jobbing"], function () {
 //    $.dropdown($('#parseDropdown'), $('#tabs').find('.parseDropdown>a'))
 //    $.dropdown($('#optionsDropdown'), $('#tabs').find('.optionsDropdown>a'))
 //first dropdown end
+
+//first panel start
+    $('#panelDiv').on('click', 'a', function() {
+        chrome.windows.create({
+            url: 'chrome://flags/#enable-panels'
+        })
+    })
+//first panel end
 
     $firstTabs.tabs("option", "active", 1)
 //FIRST CREATE TABS END

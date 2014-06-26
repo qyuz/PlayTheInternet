@@ -23,7 +23,7 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
         this.jBackgroundCurrentTime = $('<div class="progressBarBackgroundCurrentTime"></div>').appendTo(this.jProgressBar)
         this.jTrackLength = $('<div class="progressBarTrackLength"></div>').appendTo(this.jProgressBar)
         this.jBackgroundTrackLength = $('<div class="progressBarBackgroundTrackLength"></div>').appendTo(this.jProgressBarContainer)
-        this.jProgressBarCursorTime = $('<div class="progressBarCursorTime"></div>').appendTo(this.jPlayerWidget)
+        this.jProgressBarCursorTime = $('<div class="progressBarCursorTime"></div>').insertAfter(this.jProgressBarContainer)
 
         this.jVolume.val(this.volume == null ? 100 : this.volume)
         this.jVolume.attr('step', 5)

@@ -1,0 +1,34 @@
+body {
+    overflow: hidden;
+}
+
+.playerWidget {
+    height: 57px;
+}
+
+.playerWidget>.progressBarContainer {
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+.playerWidget>.progressBarContainer:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.playerWidget>.control {
+    float: left;
+    position: relative;
+    top: 1px;
+}
+
+.playerWidget>.volume.control {
+    top: 8px;
+    left: 1px;
+}
+
+.playerWidget>.control:before, .playerWidget>.control:after {
+    top: auto;
+}
