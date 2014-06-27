@@ -1,6 +1,6 @@
 define(["underscore", "jquery"], function (a, b) {
     function PTI(options) {
-        this.options = _.default(options, {})
+        this.options = _.extend({}, options)
         this.data = { playing: null, videoId:null, currentPlayer:null, seekTo:null }
         this.players = {}
         var self = this
@@ -69,7 +69,7 @@ define(["underscore", "jquery"], function (a, b) {
                 name == "y" && self && (self.yt = this) && (self.y = this) && (self.players['y'] = this)
                 name == "v" && self && (self.vm = this) && (self.v = this) && (self.players['v'] = this)
                 name == "s" && self && (self.sc = this) && (self.s = this) && (self.players['s'] = this)
-                this.options = _.default(options, {})
+                this.options = _.extend({}, options)
                 this.name = name
                 this.playerContainer = playerContainer
                 this.data = {currentTime:null,

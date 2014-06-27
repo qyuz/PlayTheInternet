@@ -20,10 +20,12 @@ define(["jstorage", "underscore"], function(js, un) {
 
     copyPlaylists.forEach(function(playlistId) {
         var playlist = $.jStorage.get(playlistId)
-        playlist.id = "lPlaylist" + _.guid()
-        playlistId == "backgroundPageId" && (playlist.name = "Playing") && $.jStorage.set('playingId', playlist.id)
-        $.jStorage.set(playlist.id, playlist)
-        DAO(playlistId).delete()
+        if(playlist) {
+            playlist.id = "lPlaylist" + _.guid()
+            playlistId == "backgroundPageId" && (playlist.name = "Playing") && $.jStorage.set('playingId', playlist.id)
+            $.jStorage.set(playlist.id, playlist)
+            DAO(playlistId).delete()
+        }
     })
     DAO("devices").delete()
 })

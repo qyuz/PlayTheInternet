@@ -36,8 +36,8 @@
 
 
 /* pti-ptilist content notice message */
-.pti-ptilist .pti-content>div.pti-make-last-droppable-work { position: absolute; height: 0px; width: 0px; visibility: hidden; }
-.pti-ptilist .pti-content>div:only-child { position: absolute; top: 45%; height: 100%; width: 100%; text-align: center; visibility: visible; }
+.pti-ptilist .pti-content>div.pti-make-last-droppable-work { position: fixed; top: 9999px; width: 100%; text-align: center; }
+.pti-ptilist .pti-content>div:only-child { position: absolute; top: 45%; bottom: 0px; }
 
 /* COLORS */
 .pti-ptilist .pti-header { background-color: #efeff5; }

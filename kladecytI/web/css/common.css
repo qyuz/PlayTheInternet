@@ -1,7 +1,6 @@
 body { height: 100%; }
 .taArea { position: absolute; height: 60px; width: 100%; left: 0px; resize: none; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; } /* used in parse text area */
-#firstView, #secondView { position: absolute; width: 50%; height: 100%; } /* using id(#) because using class(.) is collapsing when one song in playlist is redropped */
-#secondView { left: 50%; }
+#firstView, #secondView { float: left; width: 50%; height: 100%; }
 #secondViewTabs { margin-left: 1px; }
 /*#iframeView { float: left; width: 100%; height: 100%; }*/ /* for iframe-player.html */
 .leftFull { float: left; width: 100%; height: 100% }
@@ -9,7 +8,7 @@ body { height: 100%; }
 
 /* TABS */
 #splitViews { position: absolute; top: 35px; bottom: 0px; width:100%; overflow: hidden; }
-#splitViews>div>.tabs { height: 100%; }
+#splitViews>div>.tabs { position: relative; height: 100%; }
 #splitViews>div>.tabs>ul { margin-bottom: 0px; height: 40px; }
 #splitViews>div>.tabs>ul * { outline: none; }
 #splitViews>div>.tabs>ul>li>a { margin: 0px 1px 0px 0px; height: 39px; width: 40px; padding: 0px; position: relative; overflow: hidden; }
@@ -21,15 +20,15 @@ body { height: 100%; }
 
 /* Players Container */
 /*#playersContainer { height: 100%;}*/
+.tabs-player-container { position: absolute; width: 100%; top: 41px; bottom: 0px; }
 #spinner-container { position: relative; z-index: 999; height: 100%; background-color: gainsboro; }
 #players { position: absolute; top: 0px; width: 100%; bottom: 0px; }
-.tabs-player-container { position: absolute; width: 100%; top: 41px; bottom: 0px; }
 
 
 /* COLORS */
 #splitViews>div>.tabs>ul { background-color: #efeff5; }
+#splitViews>div>.tabs>ul>li>a { color: #676470; }
 #splitViews>div>.tabs>ul>li>a:hover { background-color: #efeff5; }
-#splitViews>div>.tabs>ul>li>a:hover>div { color: #676470; }
 #splitViews>div>.tabs>ul>li>a>svg>* { fill: #676470; }
 #splitViews>div>.tabs>ul>li>a:hover>svg>* { fill: silver; }
 #splitViews>div>.tabs>ul>li.ui-state-active>a>svg>*, #splitViews>div>.tabs>ul>li:hover.ui-state-active>a>svg>* { fill: #4F7E9C; }

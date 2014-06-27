@@ -48,28 +48,28 @@ function upgradeRun(module) {
         deferred.resolve()
 
         if(currVersion < 0.64) {
-            var newDeferred = $.Deferred()
+            var d064 = $.Deferred()
             deferred.then(function() {
                 console.log('initializing upgrade to 0.64')
                 require(["app/migrate/064"], function() {
                     console.log('done upgrading to 0.64')
-                    newDeferred.resolve()
+                    d064.resolve()
                 })
-                return newDeferred
+                return d064
             })
-            deferred = newDeferred
+            deferred = d064
         }
         if(currVersion < 0.67) {
-            var newDeferred = $.Deferred()
+            var d067 = $.Deferred()
             deferred.then(function() {
                 console.log('initializing upgrade to 0.67')
                 require(["app/migrate/067"], function() {
                     console.log('done upgrading to 0.67')
-                    newDeferred.resolve()
+                    d067.resolve()
                 })
-                return newDeferred
+                return d067
             })
-            deferred = newDeferred
+            deferred = d067
         }
         deferred.then(function() {
             try {

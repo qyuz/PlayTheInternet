@@ -1,4 +1,4 @@
-define(["jquery", "jquery-jobbing"], function () {
+define(["jquery-ui"], function () {
 //GENERIC START
     window.tabs = { first: {}, second: {} }
     var lPlaylistsNotice = 'Here are all your playlists that are bound to this PC. You can create playlist by hitting the "+" button in any playlist you see.';
@@ -57,10 +57,7 @@ define(["jquery", "jquery-jobbing"], function () {
             }
             if (newTabText == "Playlists") {
             }
-            if (newTabText == "Synchronized") {
-                fetchSynch()
-            }
-            if (newTabText == "Devices(Read Only)") {
+            if (newTabText == "Synch") {
                 fetchSynch()
             }
             if (newTabText == "Panel") {
@@ -69,7 +66,7 @@ define(["jquery", "jquery-jobbing"], function () {
                     if(_.findWhere(windows, { type: 'panel' })) {
                         $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-success">You\'ve successfully opened a panel.<br>Make good use of it!</div> </div> </div> </div>')
                     } else {
-                        $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-error"><b>Panel is an experimental feature which should be<br>enabled first.</b><br><a href="chrome://flags/#enable-panels" target="_blank">Follow this link to enable panels and then click<br>"Relaunch Now" to restart Chrome.</a></div> </div> </div> </div>')
+                        $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-danger"><b>Unable to open panel. Follow instructions in open popup window to enable panels.</a></div> </div> </div> </div>')
                     }
                 })
             }
@@ -108,32 +105,14 @@ define(["jquery", "jquery-jobbing"], function () {
     $('#ulFirstSynchronized').on('click', '.image-div', function () {
         window.tabs.first.playlist = window.tabs.first.synchronized.playlist
     })
-    $('#ulFirstDevices').on('click', '.image-div', function () {
-        window.tabs.first.playlist = window.tabs.first.devices.playlist
-    })
-    firstGetPlaylist = function () {
+    function firstGetPlaylist () {
         return window.tabs.first.playlist ? window.tabs.first.playlist : window.tabs.second.playing
     }
     window.tabs.first.getPlaylist = firstGetPlaylist
 
     var selectFirstPlaylists = playlistsFactory($('a[href="#firstPlaylistsDiv"]'), $("#ulFirstPlaylists"), "playlists", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist, lPlaylistsNotice)
     var selectFirstSynchronized = playlistsFactory($('a[href="#firstSynchronizedDiv"]'), $("#ulFirstSynchronized"), "synchronized", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist, sPlaylistsNotice)
-    var selectFirstDevices = playlistsFactory($('a[href="#firstDevicesDiv"]'), $("#ulFirstDevices"), "devices", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist)
 //first playlists end
-
-//first dropdown start
-//    $.dropdown($('#playlistsDropdown'), $('#tabs').find('.playlistsDropdown>a'))
-//    $.dropdown($('#parseDropdown'), $('#tabs').find('.parseDropdown>a'))
-//    $.dropdown($('#optionsDropdown'), $('#tabs').find('.optionsDropdown>a'))
-//first dropdown end
-
-//first panel start
-    $('#panelDiv').on('click', 'a', function() {
-        chrome.windows.create({
-            url: 'chrome://flags/#enable-panels'
-        })
-    })
-//first panel end
 
     $firstTabs.tabs("option", "active", 1)
 //FIRST CREATE TABS END
@@ -151,10 +130,7 @@ define(["jquery", "jquery-jobbing"], function () {
             }
             if (newTabText == "Playlists") {
             }
-            if (newTabText == "Synchronized") {
-                fetchSynch()
-            }
-            if (newTabText == "Devices(Read Only)") {
+            if (newTabText == "Synch") {
                 fetchSynch()
             }
         },
@@ -197,9 +173,6 @@ define(["jquery", "jquery-jobbing"], function () {
     $('#ulSecondSynchronized').on('click', '.image-div', function () {
         window.tabs.second.playlist = window.tabs.second.synchronized.playlist
     })
-    $('#ulSecondDevices').on('click', '.image-div', function () {
-        window.tabs.second.playlist = window.tabs.second.devices.playlist
-    })
     function secondGetPlaylist () {
         return window.tabs.second.playlist ? window.tabs.second.playlist : window.tabs.second.playing
     }
@@ -207,7 +180,6 @@ define(["jquery", "jquery-jobbing"], function () {
 
     var selectSecondPlaylists = playlistsFactory($('a[href="#sPlaylists"]'), $("#ulSecondPlaylists"), "playlists", "lConfigSecondPlaylistsPlaylistHeader", window.tabs.second, firstGetPlaylist, lPlaylistsNotice)
     var selectSecondSynchronizedPlaylists = playlistsFactory($('a[href="#sSynchronized"]'), $("#ulSecondSynchronized"), "synchronized", "lConfigSecondPlaylistsPlaylistHeader", window.tabs.second, firstGetPlaylist, sPlaylistsNotice)
-    var selectSecondDevicesPlaylists = playlistsFactory($('a[href="#sDevices"]'), $("#ulSecondDevices"), "devices", "lConfigSecondPlaylistsPlaylistHeader", window.tabs.second, firstGetPlaylist)
 
 //second playlists end
 //SECOND CREATE TABS END

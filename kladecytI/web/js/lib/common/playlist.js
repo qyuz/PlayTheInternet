@@ -286,7 +286,7 @@ define(["common/ptilist"], function (Ptilist) {
     }
 
     Playlist.prototype.playerType = function (boolean) {
-        !_.isUndefined(boolean) && (this.options.playerType = boolean)
+        _.isUndefined(boolean) || (this.options.playerType = boolean)
         return this.options.playerType
     }
 
@@ -307,7 +307,7 @@ define(["common/ptilist"], function (Ptilist) {
     }
 
     Playlist.prototype.scrollToSelected = function() {
-        this.parent.scrollTo.call(this, this.getSelectedVideoIndex())
+        this.scrollTo(this.getSelectedVideoIndex())
     }
 
     Playlist.prototype.selectVideo = function (video, setStorage) {

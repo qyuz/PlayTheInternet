@@ -14,10 +14,6 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         synchronized: {
             sorted: "synchronized",
             prefix: "sPlaylist"
-        },
-        devices: {
-            sorted: "devices",
-            prefix: "dPlaylist"
         }
     }
 
@@ -33,9 +29,9 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         me.$.container.addClass("pti-action-background")
 
         //playlist
-        me.jPlaylist = $('<div></div>').appendTo(me.$.container.parent())
+        me.$.playlist = $('<div></div>').appendTo(me.$.container.parent())
         me.initPlaylist = _.once(function() {
-            me.playlist = new Playlist(me.jPlaylist,
+            me.playlist = new Playlist(me.$.playlist,
                 {
                     connectWith: "connected-playlist",
                     elementSize: me.options.playlistElementSize,
@@ -58,6 +54,7 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         me.$.content.on('click', '.pti-play-this', function(event, ui) {
             var $button = $(this), playlistId = me.getPtiElement(this).attr('id')
             $.jStorage.set('playingId', playlistId)
+            playlist.scrollToSelected()
             _.delay(function() { //get rid of delay
                 var videoFeed = playlist.getSelectedVideoDiv().data('data')
                 if(videoFeed) {

@@ -2,6 +2,8 @@ body {
     overflow: hidden;
 }
 
+#parsedError a { pointer-events: all; color: white; }
+
 .playerWidget {
     height: 57px;
 }
