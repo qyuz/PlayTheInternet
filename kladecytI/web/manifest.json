@@ -1,8 +1,8 @@
 {
     "key": "asdf",
     "name":"PlayTheInternet",
-    "version":"0.670.704",
-    "description":"Play music/videos from your favorite sites all in one playlist with hotkeys and context buttons! Supports: YouTube,SoundCloud,Vimeo",
+    "version":"0.670.709",
+    "description":"Play music from favorite sites all in one playlist. Features: synchronization, hotkeys, context menu. Supports: YouTube, SoundCloud, Vimeo",
     "icons":{
         "128":"favicon.ico"
     },
@@ -43,7 +43,7 @@
             "suggested_key": {
                 "default": "Alt+D"
             },
-            "description": "Resume play"
+            "description": "Play"
         },
         "next": {
             "suggested_key": {
