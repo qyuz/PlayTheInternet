@@ -39,7 +39,7 @@ define(["jstorage", "underscore", "pti-playlist"], function (one, two, Playlist)
 
 
     function _syncListenerUpsert(sync, key, log) {
-        if (key.match(/^((synchronized|devices)|([ds]Playlist).*)/)) {
+        if (key.match(/^(synchronized|sPlaylist.*)/)) {
             var dao = Playlist.prototype.DAO(key)
             if (!sync[key]) {
 //                dao.delete()
@@ -50,6 +50,9 @@ define(["jstorage", "underscore", "pti-playlist"], function (one, two, Playlist)
                 dao.set(false)
                 console.trace("[%s] [chrome.storage.onChanged][sync.get][key.match][!dao.exists() || (sync.device_id != device_id && sync.updated > dao.updated)] [SET %s TO JSTORAGE]", log, key, { sync: sync[key], device_id: device_id, dao: dao.storageObj })
             }
+        } else if (key.match(/^(devices|dPlaylist.*)/)) { //migration to 0.67
+            deleteKeys.push(key)
+            _jStorageListenerDelete()
         }
     }
 
@@ -66,15 +69,8 @@ define(["jstorage", "underscore", "pti-playlist"], function (one, two, Playlist)
             }
         });
 
-        $.jStorage.listenKeyChange('backgroundPageId', function(key, action) {
-            var playingPlaylist = Playlist.prototype.DAO(key), dPlaylistkey = "dPlaylist" + device_id, dPlaylist = Playlist.prototype.DAO(dPlaylistkey)
-            var name = dPlaylist.storageObj.name //find more elegant solution
-            dPlaylist.storageObj = playingPlaylist.storageObj
-            dPlaylist.update({ id: dPlaylistkey, name: name, device_id: device_id }, false).set() //change id, name is temporary. find more elegant solution
-        })
-
         $.jStorage.listenKeyChange('*', function (key, action) {
-            if (key.match(/^((synchronized|devices)|([ds]Playlist).*)/)) {
+            if (key.match(/^(synchronized|sPlaylist.*)/)) {
                 var dao = Playlist.prototype.DAO(key)
                 if (!dao.exists()) {
                     deleteKeys.push(dao.key)

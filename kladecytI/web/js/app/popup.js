@@ -60,6 +60,8 @@ define(["player/player-widget", "underscore"], function (PlayerWidget) {
                 window.pti = observer.pti
                 _startPlayer(window, backgroundState)
                 window.playerWidget.data.listenObject = window.pti
+                var $spinner = $('#spinner-container')
+                $spinner.animate({ opacity: 0 }, { duration: 1500, complete: $spinner.remove.bind($spinner) })
                 backgroundWindow.pti.pauseVideo() //will throw exception when background isn't initialized
             })
         })

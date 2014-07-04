@@ -1,5 +1,5 @@
 define(["pti-playlist"], function (Playlist) {
-    Playlist.prototype.setSlimScroll('#howDivContainer', '100%')
+    Playlist.prototype._setSlimScroll('#howDivContainer', '100%')
     $('#howDivContainer').on('click', '.temp-panel-heading-how', function () {
 //        console.log(this)
         var $how = $(this), $contentSiblings = $how.siblings()

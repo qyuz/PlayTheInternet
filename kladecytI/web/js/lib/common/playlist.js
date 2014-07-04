@@ -3,16 +3,16 @@ define(["common/ptilist"], function (Ptilist) {
     Playlist.prototype.constructor = Playlist
     Playlist.prototype.parent = Ptilist.prototype
     function Playlist(appendToElementExpression, options) {
-        _.isUndefined(appendToElementExpression) || this.init(appendToElementExpression, options)
+        _.isUndefined(appendToElementExpression) || this._init(appendToElementExpression, options)
     }
 
-    Playlist.prototype.init = function (appendToElementExpression, options) {
+    Playlist.prototype._init = function (appendToElementExpression, options) {
         var me = this
         me.options = _.extend({}, options)
         me.options.ptiElementClass = "pti-element-video " + _.default(me.options.ptiElementClass, "")
         me.options.fillVideoElement = _.default(me.options.fillVideoElement, true)
         me.options.playerType = _.default(me.options.playerType, false)
-        me.parent.init.call(this, appendToElementExpression, me.options)
+        me.parent._init.call(this, appendToElementExpression, me.options)
 
         if(options.execute && options.execute.length) {
             options.execute.forEach(function(item) {
@@ -21,78 +21,10 @@ define(["common/ptilist"], function (Ptilist) {
         }
     }
 
-    Playlist.prototype.addAction = function () {
-        Playlist.prototype.setActionBackground.call(this)
-        this.jContainer.addClass('pti-action-add')
-        this.jContainer.addClass('pti-action-play')
+    Playlist.prototype._createHeader = function () {
         var me = this
-        this.jContent.on('click', '.pti-element', function (event) {
-            if ($(event.target).prop('tagName').match(/^[aA]$/) == null) {
-                var selected = '', $this = $(this), uiselected
-                if ($this.hasClass('ui-selected')) {
-                    selected = me.getIdsUiSelected()
-                    uiselected = me.getPtiElementsUiSelected().not($this)
-                    uiselected.remove()
-                } else {
-                    selected = [this.id]
-                }
-//            console.log(selected)
-                me.tabsGetPlaylist().addElementsToList(selected, true)
-                var remove = function() {
-                    $(this).remove();
-                    me.recalculateJContentImmediate()
-                }
-                $this.hide(400, remove);
-            }
-        })
-    }
-
-    Playlist.prototype.buildHash= function() {
-        return '#' + this.getIds()
-    }
-
-    Playlist.prototype.createHeader = function () {
-        var me = this
-        var $out = $('<div class="pti-header"/><div class="pti-menu temp-display-none"/>'), $header = $out.eq(0), $menu = $out.eq(1)
-        var groupToReplace = { '.size-button': /pti-view-[^\s]+/, '.split-button': /pti-split-[^\s]+/ }
-        if(me.options.headerConfigKey) {
-            var conf = $.jStorage.get(me.options.headerConfigKey)
-            conf && conf.size && ( me.options.elementSize = conf.size )
-            conf && conf.split && ( me.options.elementSplit = conf.split )
-        }
-        var setSizeActive = function(selected) {
-            var $selected = $(this);
-            $selected.addClass('selected')
-            var classes = $selected.attr('class').split(' ')
-            var sizeClass = classes[0].replace(/set/, 'pti')
-            var groupClass = '.' + classes[2]
-            $header.find(groupClass).not(this).removeClass('selected')
-            var before = { scrollTop: me.jContent.scrollTop(), scrollHeight: me.jContent.prop('scrollHeight'), height: me.jContent.height() }
-            me.jContent.attr('class', function (i, c) {
-                return (c.replace(groupToReplace[groupClass], sizeClass))
-            })
-            var after = { scrollTop: me.jContent.scrollTop(), scrollHeight: me.jContent.prop('scrollHeight'), height: me.jContent.height() }
-            moveScrollBar(before, after)
-            me.options.headerConfigKey && headerClick($selected)
-        }
-        var moveScrollBar = function(before, after) {
-            var beforeScrollTop = before.scrollTop / (before.scrollHeight - before.height)
-            var afterScrollTop = (after.scrollHeight - after.height) * beforeScrollTop
-            me.jContent.slimscroll({scrollTo:  afterScrollTop + 'px' })
-        }
-        var headerClick = function(ui) {
-            var options = { size: undefined, split: undefined }
-            ui.parent().find('.selected').each(function (index, item) {
-                var classes = $(item).attr('class').split(' ')
-                var size = classes[0].replace(/set-\w+-/, '')
-                if (classes[2].match(/size/)) {
-                    options.size = size
-                } else if (classes[2].match(/split/)) {
-                    options.split = size
-                }
-            })
-            $.jStorage.set(me.options.headerConfigKey, options)
-        }
+        var $header = this.parent._createHeader.call(this)
+        var $menu = $('<div class="pti-menu temp-display-none"/>')
 
         var createPlaylistDialogToggle = function() {
             if(!$addPlaylist.hasClass('selected')) {
@@ -144,14 +76,7 @@ define(["common/ptilist"], function (Ptilist) {
             }
         }
 
-        var bigView = $('<div class="set-view-big pti-header-button size-button">L</div>').appendTo($header).click(setSizeActive)
-        var mediumView = $('<div class="set-view-medium pti-header-button size-button">M</div>').appendTo($header).click(setSizeActive)
-        var listView = $('<div class="set-view-list pti-header-button size-button">S</div>').appendTo($header).click(setSizeActive)
-        var splitOne = $('<div class="set-split-one pti-header-button split-button temp-playlist-header-margin-left">1</div>').appendTo($header).click(setSizeActive)
-        var splitTwo = $('<div class="set-split-two pti-header-button split-button">2</div>').appendTo($header).click(setSizeActive)
         var $addPlaylist = $('<div class="pti-header-button temp-playlist-header-margin-left">+</div>').appendTo($header).click(createPlaylistDialogToggle)
-        $header.find("[class*=set-view-" + me.options.elementSize + "]").addClass('selected')
-        $header.find("[class*=set-split-" + me.options.elementSplit + "]").addClass('selected')
 
         //menu start
         var createRadio = function(label, group, checked) {
@@ -162,13 +87,105 @@ define(["common/ptilist"], function (Ptilist) {
         var group = _.guid()
         $menu.append(createRadio('Playlist', group))
         $menu.append(createRadio('Synchronized', group, "checked"))
-        var $create = $('<input type="button" class="btn btn-primary" value="Create"/>').appendTo($menu).click(createPlaylistHandler)
+        var $create = $('<input type="button" value="Create"/>').appendTo($menu).click(createPlaylistHandler)
 
-        return $out
+        return $header.add($menu)
     }
 
-    Playlist.prototype.drawPtiElement = function(typeIdText, $ptiElement) {
+    Playlist.prototype._drawPtiElement = function(typeIdText, $ptiElement) {
         return SiteHandlerManager.prototype.drawPtiElement(typeIdText, $ptiElement, this.options.fillVideoElement)
+    }
+
+    Playlist.prototype._listenPlayingId = function(key, action) {
+        var playingId = $.jStorage.get('playingId')
+        this.setId(playingId)
+    }
+
+    Playlist.prototype._listenPlayingIdExecute = function() {
+        $.jStorage.listenKeyChange('playingId', this._listenPlayingId.bind(this))
+        var $playingName = $('<input type="text" class="playing-name"/>').val(Playlist.prototype.DAO(this.options.id).storageObj.name), _redrawContent = this._redrawContent.bind(this), me = this
+        this.$.playingName = $playingName.appendTo(this.$.header.eq(0))
+        $playingName.keypress(function (event) {
+            if (event.keyCode == 13) {
+                $(this).blur()
+            }
+        })
+        var oldName
+        $playingName.focusin(function () {
+            oldName = $(this).val()
+        }).focusout(function () {
+            var newName = $(this).val()
+            if (oldName !== newName) {
+                var dao = playlist.DAO(me.options.id).update({ name: newName, source: me.options.uid }).set()
+            }
+        })
+        this._redrawContent = function(storageObject) {
+            _redrawContent(storageObject)
+            $playingName.val(Playlist.prototype.DAO(this.options.id).storageObj.name)
+        }
+    }
+
+    Playlist.prototype._listenPlaySelectedVideo = function (key, action) {
+        var storageData = this._redrawContentGetCacheObject(key, action, 'listen play selected video', true)
+        storageData && storageData.play && storageData.index >= 0 && this.playVideo({ index: storageData.index }, storageData.playerState, false)
+    }
+
+    Playlist.prototype._recalculateContentBuildStorageObject = function() {
+        var superObject = this.parent._recalculateContentBuildStorageObject.call(this)
+        var storageObject = $.jStorage.get(this.options.id)
+        var recalculatedObject = _.extend(storageObject ? storageObject : { name: "Rename me!" }, superObject)
+        return recalculatedObject
+    }
+
+    Playlist.prototype._recalculateContentImmediate = function(cache) {
+        this.parent._recalculateContentImmediate.call(this, cache)
+        this.options.id && $.jStorage.set('selected_' + this.options.id, { source: this.options.uid, index: this.getSelectedVideoIndex(), date: Date.now() })
+        _.isFunction(this.options.recalculateContentImmediateCallback) && this.options.recalculateContentImmediateCallback()
+    }
+
+    Playlist.prototype._redrawContent = function(storageObject, scrollTo) {
+        if(storageObject.data) {
+            this.parent._redrawContent.call(this, storageObject, scrollTo)
+            var selectedVideo = $.jStorage.get('selected_' + this.options.id)
+            selectedVideo && selectedVideo.index >= 0 && this.selectVideo({index: selectedVideo.index}, false)
+        }
+    }
+
+    Playlist.prototype._setPlaySelectedVideoListen = function(id) {
+        this._listenPlaySelectedVideoLast && $.jStorage.stopListening("selected_" + id, this._listenPlaySelectedVideoLast)
+        this._listenPlaySelectedVideoLast = this._listenPlaySelectedVideo.bind(this)
+        this.options.id && $.jStorage.listenKeyChange("selected_" + this.options.id, this._listenPlaySelectedVideoLast)
+    }
+
+    Playlist.prototype.addAction = function () {
+        Playlist.prototype.setActionBackground.call(this)
+        this.$.container.addClass('pti-action-add')
+        this.$.container.addClass('pti-action-play')
+        var me = this
+        this.$.content.on('click', '.pti-element', function (event) {
+            if ($(event.target).prop('tagName').match(/^[aA]$/) == null) {
+                var selected = '', $this = $(this), uiselected
+                if ($this.hasClass('ui-selected')) {
+                    selected = me.getIdsUiSelected()
+                    uiselected = me.getPtiElementsUiSelected().not($this)
+                    uiselected.remove()
+                } else {
+                    selected = [this.id]
+                }
+//            console.log(selected)
+                me.tabsGetPlaylist().addElements(selected, true)
+                var remove = function() {
+                    $(this).remove();
+                    me._recalculateContentImmediate()
+                }.bind(this)
+                $this.height(0)
+                _.delay(remove, 150);
+            }
+        })
+    }
+
+    Playlist.prototype.buildHash= function() {
+        return '#' + this.getIds()
     }
 
     Playlist.prototype.DAO = function(key) {
@@ -210,7 +227,7 @@ define(["common/ptilist"], function (Ptilist) {
     }
 
     Playlist.prototype.getSelectedVideoDiv = function() {
-        return this.jContent.find('.selected')
+        return this.$.content.find('.selected')
     }
 
     Playlist.prototype.getSelectedVideoIndex = function() {
@@ -245,11 +262,6 @@ define(["common/ptilist"], function (Ptilist) {
         }
     }
 
-    Playlist.prototype.listenPlaySelectedVideo = function (key, action) {
-        var storageData = this.redrawJContentGetCacheObject(key, action, 'listen play selected video', true)
-        storageData && storageData.play && storageData.index >= 0 && this.playVideo({ index: storageData.index }, storageData.playerState, false)
-    }
-
     Playlist.prototype.lookupNextSong = function () {
         var index = this.getSelectedVideoIndex()
         index = index >= this.getIdsCount() - 1 ? 0 : ++index
@@ -263,10 +275,10 @@ define(["common/ptilist"], function (Ptilist) {
     }
 
     Playlist.prototype.playAction = function () {
-        this.jContainer.addClass('pti-action-play')
+        this.$.container.addClass('pti-action-play')
         Playlist.prototype.setActionBackground.call(this)
         var me = this
-        this.jContent.on('click', '.pti-element', function (event) {
+        this.$.content.on('click', '.pti-element', function (event) {
             if ($(event.target).prop('tagName').match(/^[aA]$/) == null) {
                 me.playVideo({videoDiv: $(this)})
             }
@@ -274,7 +286,7 @@ define(["common/ptilist"], function (Ptilist) {
     }
 
     Playlist.prototype.playerType = function (boolean) {
-        !_.isUndefined(boolean) && (this.options.playerType = boolean)
+        _.isUndefined(boolean) || (this.options.playerType = boolean)
         return this.options.playerType
     }
 
@@ -294,29 +306,8 @@ define(["common/ptilist"], function (Ptilist) {
         }
     }
 
-    Playlist.prototype.recalculateJContentBuildStorageObject = function() {
-        var superObject = this.parent.recalculateJContentBuildStorageObject.call(this)
-        var storageObject = $.jStorage.get(this.options.id)
-        var recalculatedObject = _.extend(storageObject ? storageObject : { name: new Date() }, superObject)
-        return recalculatedObject
-    }
-
-    Playlist.prototype.recalculateJContentImmediate = function(cache) {
-        this.parent.recalculateJContentImmediate.call(this, cache)
-        this.options.id && $.jStorage.set('selected_' + this.options.id, { source: this.uid, index: this.getSelectedVideoIndex(), date: Date.now() })
-        _.isFunction(this.options.recalculateJContentImmediateCallback) && this.options.recalculateJContentImmediateCallback()
-    }
-
-    Playlist.prototype.redrawJContent = function(storageObject, scrollTo) {
-        if(storageObject.data) {
-            this.parent.redrawJContent.call(this, storageObject, scrollTo)
-            var selectedVideo = $.jStorage.get('selected_' + this.options.id)
-            selectedVideo && selectedVideo.index >= 0 && this.selectVideo({index: selectedVideo.index}, false)
-        }
-    }
-
     Playlist.prototype.scrollToSelected = function() {
-        this.parent.scrollTo.call(this, this.getSelectedVideoIndex())
+        this.scrollTo(this.getSelectedVideoIndex())
     }
 
     Playlist.prototype.selectVideo = function (video, setStorage) {
@@ -327,24 +318,18 @@ define(["common/ptilist"], function (Ptilist) {
         $(videoDiv).addClass("selected")
         if (this.options.id && _.default(setStorage, true)) {
             console.log('setting currVideoData to storage')
-            $.jStorage.set("selected_" + this.options.id, { source:this.uid, index:this.getSelectedVideoIndex(), play: true, date: Date.now() })
+            $.jStorage.set("selected_" + this.options.id, { source:this.options.uid, index:this.getSelectedVideoIndex(), play: true, date: Date.now() })
         }
 //        setWindowTitle(this.currVideoData);
     }
 
     Playlist.prototype.setActionBackground = function() {
-        this.jContainer.addClass('pti-action-background')
+        this.$.container.addClass('pti-action-background')
     }
 
-    Playlist.prototype.setIdListen = function(id, listenId, scrollTo) {
-        this.parent.setIdListen.call(this, id, listenId, scrollTo)
-        this.setPlaySelectedVideoListen(id)
-    }
-
-    Playlist.prototype.setPlaySelectedVideoListen = function(id) {
-        this.listenPlaySelectedVideoLast && $.jStorage.stopListening("selected_" + id, this.listenPlaySelectedVideoLast)
-        this.listenPlaySelectedVideoLast = this.listenPlaySelectedVideo.bind(this)
-        this.options.id && $.jStorage.listenKeyChange("selected_" + this.options.id, this.listenPlaySelectedVideoLast)
+    Playlist.prototype.setId = function(id, listenId, scrollTo) {
+        this.parent.setId.call(this, id, listenId, scrollTo)
+        this._setPlaySelectedVideoListen(id)
     }
 
     return Playlist

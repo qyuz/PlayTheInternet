@@ -23,7 +23,7 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
         this.jBackgroundCurrentTime = $('<div class="progressBarBackgroundCurrentTime"></div>').appendTo(this.jProgressBar)
         this.jTrackLength = $('<div class="progressBarTrackLength"></div>').appendTo(this.jProgressBar)
         this.jBackgroundTrackLength = $('<div class="progressBarBackgroundTrackLength"></div>').appendTo(this.jProgressBarContainer)
-        this.jProgressBarCursorTime = $('<div class="progressBarCursorTime"></div>').appendTo(this.jPlayerWidget)
+        this.jProgressBarCursorTime = $('<div class="progressBarCursorTime"></div>').insertAfter(this.jProgressBarContainer)
 
         this.jVolume.val(this.volume == null ? 100 : this.volume)
         this.jVolume.attr('step', 5)
@@ -62,7 +62,7 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
 
         this.jPlayerWidget.on('change', '.volume', function () {
             var volume = Number($(this).val())
-            volume >= 0 && volume <= 100 && debounceVolume(volume)
+            debounceVolume(volume)
         })
         this.jPlayerWidget.on('mousewheel', '.volume', function(event) {
             var $range = $(this), range = Number($range.val())
@@ -89,17 +89,16 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
         })
 
         var debounceVolume = _.debounce(function(volume) {
+            volume = volume < 0 ? 0 : volume > 100 ? 100 : volume //sanity check, also mousewheel tends to go above 100
             $.jStorage.set('volume', volume)
             _.getPti().volume(volume)
         }, 200)
 
         var mouseMoveOut = function(evt, ui) {
             if(evt.relatedTarget && $(evt.relatedTarget).attr('class').match(/progressBar/)) return;
-            self.jProgressBarCursorTime.hide('slow')
         }
 
         var throttleMouseMove = _.throttle(function (jElement, evt) {
-                self.jProgressBarCursorTime.show('fast')
                 var progress = evt.pageX / jElement.width() * 100
                 var seconds = self.trackLength * ( progress / 100)
                 self.jProgressBarCursorTime.text(_.formatDuration(seconds))

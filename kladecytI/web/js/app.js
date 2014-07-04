@@ -48,29 +48,39 @@ function upgradeRun(module) {
         deferred.resolve()
 
         if(currVersion < 0.64) {
-            var newDeferred = $.Deferred()
+            var d064 = $.Deferred()
             deferred.then(function() {
                 console.log('initializing upgrade to 0.64')
                 require(["app/migrate/064"], function() {
                     console.log('done upgrading to 0.64')
-                    newDeferred.resolve()
+                    d064.resolve()
                 })
-                return newDeferred
+                return d064
             })
-            deferred = newDeferred
+            deferred = d064
         }
-		deferred.then(function() {
-			setTimeout(function () {
-				try {
-					var manifestVersion = chrome.runtime.getManifest().version.replace(/^(\d+\.\d+)(\..*)?/, '$1')
-					$.jStorage.set('manifest_version', manifestVersion)
-				} catch (e) {
-					alert("Failed to set manifest version\r\n" + e)
-				}
-				console.log('ran')
-				requirejs([module])
-			}, 0)
-		})
+        if(currVersion < 0.67) {
+            var d067 = $.Deferred()
+            deferred.then(function() {
+                console.log('initializing upgrade to 0.67')
+                require(["app/migrate/067"], function() {
+                    console.log('done upgrading to 0.67')
+                    d067.resolve()
+                })
+                return d067
+            })
+            deferred = d067
+        }
+        deferred.then(function() {
+            try {
+                var manifestVersion = chrome.runtime.getManifest().version.replace(/^(\d+\.\d+)(\..*)?/, '$1')
+                $.jStorage.set('manifest_version', manifestVersion)
+            } catch (e) {
+                alert("Failed to set manifest version\r\n" + e)
+            }
+            console.log('ran')
+            requirejs([module])
+        })
     })
 }
 
@@ -93,5 +103,9 @@ if (typeof chrome == "undefined" || !chrome.extension) {
 } else if (chrome.extension.getBackgroundPage() == window) {
     upgradeRun("app/background")
 } else {
-    requirejs(["app/popup"])
+    if (window.location.href.match('panel')) {
+        requirejs(["app/panel"])
+    } else {
+        requirejs(["app/popup"])
+    }
 }

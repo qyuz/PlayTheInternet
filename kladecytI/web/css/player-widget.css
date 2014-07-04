@@ -3,11 +3,12 @@
     width: 100%;
     height: 34px;
     margin-bottom: 1px;
-    background-color: #077fff;
+    background-color: #6796b4;
 }
 
 /* CONTROLS START */
 .playerWidget .control {
+    transition: background-color 0.3s ease-in-out;
     margin-left: 1px;
     float: right;
     width: 34px;
@@ -15,7 +16,7 @@
 }
 
 .playerWidget .control:hover {
-    background-color: royalblue;
+    background-color: #7EA6BF;
     cursor: pointer;
 }
 .playerWidget .control.mouseDown, .playerWidget .control.mouseDown:hover {
@@ -98,6 +99,7 @@
 }
 
 .playerWidget .control.volume::-webkit-slider-thumb {
+    transition: all 0.3s ease-in-out;
     -webkit-appearance: none;
     background-color: #666;
     opacity: 0.5;
@@ -105,7 +107,7 @@
     height: 26px;
 }
 .playerWidget .control.volume:hover::-webkit-slider-thumb {
-    background-color: royalblue;
+    background-color: #7EA6BF;
 }
 /* CONTROLS END */
 
@@ -126,13 +128,13 @@
     cursor: pointer;
 }
 .playerWidget .progressBarContainer:hover .progressBar {
-    background: royalblue;
+    background: #7EA6BF;
     cursor: pointer;
 }
 
 .playerWidget .progressBar {
     position: relative;
-    background: #007FFF;
+    background: #6796b4;
     width: 0%;
     height: 20px;
     left: 1px;
@@ -147,7 +149,7 @@
     left: 1px;
 }
 .playerWidget .progressBar .progressBarBackgroundCurrentTime {
-    color: #077fff;
+    color: #6796b4;
     left: 1px;
 }
 
@@ -165,14 +167,17 @@
     float: right;
     height: 100%;
     top: -20px;
-    color: #077fff;
+    color: #6796b4;
     line-height: 22px;
 }
 
 .playerWidget .progressBarContainer:hover .progressBarBackgroundTrackLength, .playerWidget .progressBarContainer:hover .progressBarBackgroundCurrentTime {
-    color: royalblue;
+    color: #7EA6BF;
 }
 
+.playerWidget .progressBarContainer, .playerWidget .progressBarContainer .progressBar, .playerWidget .progressBarContainer .progressBarBackgroundTrackLength, .playerWidget .progressBarContainer .progressBarBackgroundCurrentTime {
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
 
 .playerWidget .progressBar .progressBarCurrentTime, .playerWidget .progressBar .progressBarBackgroundCurrentTime, .playerWidget .progressBarTrackLength, .playerWidget .progressBarBackgroundTrackLength, .playerWidget .progressBarCursorTime {
     pointer-events: none;
@@ -180,11 +185,21 @@
 
 
 .playerWidget .progressBarCursorTime {
+    transition: height 0.075s 0.025s ease-in-out, opacity 0.075s 0.025s ease-in-out, left 0.05s ease;
     position: absolute;
     color: aliceblue;
-    background-color: royalblue;
+    background-color: #7EA6BF;
     z-index: 999;
     top: 23px;
-    border: 1px solid #077fff;
+    border: 1px solid #6796b4;
+}
+
+.playerWidget .progressBarContainer+.progressBarCursorTime {
+    height: 0px;
+    opacity: 0;
+}
+.playerWidget .progressBarContainer:hover+.progressBarCursorTime {
+    height: 20px;
+    opacity: 1;
 }
 /* PROGRESSBAR END */

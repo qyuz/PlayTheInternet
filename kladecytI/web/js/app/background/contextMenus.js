@@ -9,7 +9,7 @@ define(function() {
 
     function addToPlaylist(ids) {
         var links = []
-        ids.length && (links = _.stringToArray(ids)) | playlist.addElementsToList(links, true)
+        ids.length && (links = _.stringToArray(ids)) | playlist.addElements(links, true)
         notify(links)
     }
 
