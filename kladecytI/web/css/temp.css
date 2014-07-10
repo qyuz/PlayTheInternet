@@ -12,7 +12,7 @@
 .temp-margin-none { margin: 0px; }
 .temp-player-widget { position: relative; width: 100%; height: 35px; margin: auto;}
 .temp-popup-nav-content { position: absolute; top: 41px; bottom: 0px; width: 100%; background-color: #f7f7f7; transition: all 0.33s ease; }
-.temp-absolute-off-scren { position: absolute; left: -9999px; }
+.temp-absolute-off-screen { position: absolute; left: -9999px; }
 .temp-parsed-error { position: absolute; width: 100%; top: 0px; bottom: 0px; z-index: 999; word-break: break-all; pointer-events: none; }
 .temp-parsed-error>div { display: table; height: 100%; width: 100%; }
 .temp-parsed-error>div>div { display: table-cell; vertical-align: middle; text-align: center; height: 23px; line-height: 23px; }

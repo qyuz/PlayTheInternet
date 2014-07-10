@@ -1,5 +1,5 @@
 define(["underscore", "slimscroll"], function () {
-    $('#dummyInput').length || $('body').append('<input id="dummyInput" class="temp-absolute-off-scren"/>')
+    $('#dummyInput').length || $('body').append('<input id="dummyInput" class="temp-absolute-off-screen"/>')
     var focusout = function () {
         $('#dummyInput').focus()
     }

@@ -87,12 +87,6 @@ define(["player/iframe-player", "soundcloud-api", "jquery", "underscore", "ctemp
             onSeekTo:function (seekTo) {
                 scWidget.seekTo(seekTo * 1000)
             },
-            onBeforeCurrentTime:function (inputs) {
-                return inputs ? [inputs] : [0]
-            },
-            onBeforeDuration:function (inputs) {
-                return inputs ? [inputs] : [0]
-            },
             onVolume:function (volume) {
                 _.isUndefined(volume) || scWidget.setVolume(volume)
             },

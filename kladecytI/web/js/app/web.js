@@ -1,70 +1,21 @@
-require(["jquery", "underscore"], function () {
-    var onceLoaded = _.once(function () {
-        var currVideo = playlist.getSelectedVideoDiv()
-        currVideo = currVideo ? currVideo : playlist.lookupNextSong()
-        playlist.playVideo({videoDiv:currVideo})
-    })
-
-    window.playFirstLoaded = _.after(3, function () {
-        console.log('playFirstLoaded')
-        onceLoaded()
-    })
-})
-define(["playlist", "app/web/pti-web", "youtube-api", "player/iframe-soundcloud", "player/iframe-vimeo", "player/player-widget", "parse", "app/web/calendar", "app/web/tabsDrool", "app/common/hash-qr"], function (a, pti, c, d, e, f, g, h, i, redrawHashAndQRCode) {
-    window.pti = pti
+define(["app/common/tabs", "app/web/pti-web"], function (tabs, ptiWeb) {
+    window.pti = ptiWeb.pti
+    ptiWeb.pti.volume($.jStorage.get('volume'))
     $(document).ready(function () {
-        var playerWidget
         require(["player/player-widget"], function (PlayerWidget) {
-            playerWidget = new PlayerWidget('#playerWidgetContainer')
-            playerWidget.data.listenObject = pti
+            window.playerWidget = new PlayerWidget('#playerWidgetContainer', true)
+            window.playerWidget.data.listenObject = ptiWeb.pti
         })
 
-        window.windowId = GUID()
-        document.title = windowId
-
-        window.playlist = new Playlist("#ulSecond",
-            {
-                id:windowId,
-                redraw:false,
-                listenKeyChangeCallback:redrawHashAndQRCode,
-                debounceRecalculatePlaylistCallback:_.once(function () {
-                    console.log('playFirstLoaded debounce')
-                    playFirstLoaded()
-                }),
-                execute: [
-                    Playlist.prototype.playAction
-                ]
-            });
-        var playlist = window.playlist
-        playlist.addSongsToPlaylist(playlist.parseSongIds(window.location.hash), true)
-
-        $.jStorage.subscribe('queryWindowIds', function (message) {
-//        console.log(message)
-            $.jStorage.publish('windowIds', windowId)
+        tabs.$firstTabs.tabs("option", "active", 0)
+        tabs.$secondTabs.tabs("option", 'active', 0)
+        tabs.playingReady.then(function() {
+            window.playlist.addElements(window.location.hash.replace("#", "").split(","), true)
         })
-        window.ulFirst = new Playlist('#ulFirst', {
-            dontPlay:true,
-            execute: [
-                Playlist.prototype.addAction
-            ]
+        $.when(tabs.playingReady, ptiWeb.youtubeReady, ptiWeb.soundcloudReady).then(function() {
+            var currVideo = window.playlist.getSelectedVideoDiv()
+            currVideo = currVideo ? currVideo : window.playlist.lookupNextSong()
+            window.playlist.playVideo({videoDiv:currVideo})
         })
-        $('#tAreaParseButton').click(function () {
-            var tAreaText = $('#tArea').val()
-            playlist.addSongsToPlaylist(playlist.parseSongIds(playTheInternetParse(tAreaText)), true)
-        })
-        $('#buildHash').click(function () {
-            $('#buildHashInput').val(window.location.origin + '/display-grid.html' + playlist.buildHash())
-        })
-        $('#renameWindow').click(function () {
-            var renameWindowInputVal = $('#renameWindowInput').val();
-            if (renameWindowInputVal.length > 0) {
-                document.title = document.title.replace(windowId, renameWindowInputVal)
-                windowId = renameWindowInputVal
-            }
-        })
-
-        if (window.location.hash.length == 0) {
-            $("#tabs").tabs("option", "active", 1);
-        }
     })
 })
