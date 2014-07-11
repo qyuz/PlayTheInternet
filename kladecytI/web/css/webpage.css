@@ -1,2 +1,4 @@
 html { width: 100%; height: 100%; overflow: hidden; }
-.tabs-player-container #youtube { position: absolute; top: 0px; bottom: 0px; width: 100%; }
+
+#playerWidgetContainer { top: 1px; right: 1px; left: 1px; }
+#splitViews { top: 36px; right: 1px; bottom: 1px; left: 1px; }

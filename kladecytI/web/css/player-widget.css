@@ -1,5 +1,5 @@
 .playerWidget {
-    position: absolute;
+    position: relative;
     width: 100%;
     height: 34px;
     margin-bottom: 1px;

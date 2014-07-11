@@ -1,4 +1,5 @@
 body { height: 100%; }
+#playerWidgetContainer { position: absolute; height: 35px; margin: auto; }
 .taArea { position: absolute; height: 60px; width: 100%; left: 0px; resize: none; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; } /* used in parse text area */
 #firstView, #secondView { float: left; width: 50%; height: 100%; }
 #secondViewTabs { margin-left: 1px; }
@@ -7,7 +8,7 @@ body { height: 100%; }
 .shlop { -webkit-transform: translate3d(0px, -45px, 0px) rotateX(35deg) scale(0.925); opacity: 0.9; -webkit-perspective: 3000; }
 
 /* TABS */
-#splitViews { position: absolute; top: 35px; bottom: 0px; width:100%; overflow: hidden; }
+#splitViews { position: absolute; overflow: hidden; }
 #splitViews>div>.tabs { position: relative; height: 100%; }
 #splitViews>div>.tabs>ul { margin-bottom: 0px; height: 40px; }
 #splitViews>div>.tabs>ul * { outline: none; }

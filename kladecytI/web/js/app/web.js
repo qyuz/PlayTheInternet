@@ -3,7 +3,7 @@ define(["app/common/tabs", "app/web/pti-web"], function (tabs, ptiWeb) {
     ptiWeb.pti.volume($.jStorage.get('volume'))
     $(document).ready(function () {
         require(["player/player-widget"], function (PlayerWidget) {
-            window.playerWidget = new PlayerWidget('#playerWidgetContainer')
+            window.playerWidget = new PlayerWidget('#playerWidgetContainer', true)
             window.playerWidget.data.listenObject = ptiWeb.pti
         })
 
