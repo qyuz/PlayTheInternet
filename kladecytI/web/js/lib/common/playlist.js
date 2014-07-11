@@ -96,6 +96,10 @@ define(["common/ptilist"], function (Ptilist) {
         return SiteHandlerManager.prototype.drawPtiElement(typeIdText, $ptiElement, this.options.fillVideoElement)
     }
 
+    Playlist.prototype._getSelectedVideoDiv = function() {
+        return this.$.content.find('.selected')
+    }
+
     Playlist.prototype._listenPlayingId = function(key, action) {
         var playingId = $.jStorage.get('playingId')
         this.setId(playingId)
@@ -227,11 +231,12 @@ define(["common/ptilist"], function (Ptilist) {
     }
 
     Playlist.prototype.getSelectedVideoDiv = function() {
-        return this.$.content.find('.selected')
+        var selectedDiv = this._getSelectedVideoDiv();
+        return selectedDiv.length ? selectedDiv : null
     }
 
     Playlist.prototype.getSelectedVideoIndex = function() {
-        return this.getPtiElements().index(this.getSelectedVideoDiv())
+        return this.getPtiElements().index(this._getSelectedVideoDiv())
     }
 
     Playlist.prototype.getVideoDivAndData = function (video) {
@@ -320,7 +325,11 @@ define(["common/ptilist"], function (Ptilist) {
             console.log('setting currVideoData to storage')
             $.jStorage.set("selected_" + this.options.id, { source:this.options.uid, index:this.getSelectedVideoIndex(), play: true, date: Date.now() })
         }
-//        setWindowTitle(this.currVideoData);
+        try {
+            window.document.title = JSON.parse(localStorage.getItem(videoData.id)).title
+        } catch (e) {
+            window.document.title = videoData.id
+        }
     }
 
     Playlist.prototype.setActionBackground = function() {

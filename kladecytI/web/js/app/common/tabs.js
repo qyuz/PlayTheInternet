@@ -1,6 +1,7 @@
-define(["jquery-ui"], function () {
+define(["jquery-ui", "underscore"], function () {
 //GENERIC START
     window.tabs = { first: {}, second: {} }
+    var playingReady = $.Deferred()
     var lPlaylistsNotice = 'Here are all your playlists that are bound to this PC. You can create playlist by hitting the "+" button in any playlist you see.';
     var sPlaylistsNotice = 'Here are all your playlists that will be shared between PCs, just don\'t forget to sign in chrome. You can create synchronized playlist by hitting the "+" button in any playlist you see.';
 
@@ -49,16 +50,22 @@ define(["jquery-ui"], function () {
                 })
             }
             if (newTabText == "Player") {
-                tabsPlayerContainer.removeClass('temp-absolute-off-scren')
+                tabsPlayerContainer.removeClass('temp-absolute-off-screen')
                 tabsPlayerContainer.addClass('tabs-player-container')
             } else {
-                tabsPlayerContainer.addClass('temp-absolute-off-scren')
+                tabsPlayerContainer.addClass('temp-absolute-off-screen')
                 tabsPlayerContainer.removeClass('tabs-player-container')
+            }
+            if (newTabText == "Text") {
+                createTextParsePlaylist()
             }
             if (newTabText == "Playlists") {
             }
             if (newTabText == "Synch") {
                 fetchSynch()
+            }
+            if (newTabText == "Help") {
+                require(["app/common/how"])
             }
             if (newTabText == "Panel") {
                 _.openPanel()
@@ -83,6 +90,32 @@ define(["jquery-ui"], function () {
     var tabsPlayerContainer = $('#playersContainer')
 //first player end
 
+//first textParse start
+    var createTextParsePlaylist = _.once(function () {
+        require(["pti-playlist"], function (Playlist) {
+            window.textParsePlaylist = new Playlist("#textAreaParsePlaylist", {
+                playerType: false,
+                connectWith: "connected-playlist",
+                headerConfigKey: "lConfigTextAreaParsePlaylistHeader",
+                execute: [
+                    Playlist.prototype.addAction,
+                    function () {
+                        this.tabsGetPlaylist = window.tabs.second.getPlaylist
+                    }
+                ]
+            })
+            window.tabs.first.playlist = textParsePlaylist //TODO dirty, do other way
+        })
+    })
+    $('#tAreaParseButton').click(function () {
+        var tAreaText = $('#tArea').val()
+        window.textParsePlaylist._emptyContent();
+        require(["cparse"], function () {
+            window.textParsePlaylist.addElements(_.stringToArray(playTheInternetParse(tAreaText)), true)
+        })
+    })
+//first textParse end
+
 //first options start
 //first options end
 
@@ -91,9 +124,6 @@ define(["jquery-ui"], function () {
         window.tabs.first.playlist = null
     })
     $('#firstView').on('click', '[href="#tAreaDiv"]', function () {
-        window.tabs.first.playlist = typeof textParsePlaylist !== "undefined" ? textParsePlaylist : null
-    })
-    $('#firstView').on('click', '#tAreaParseButton', function () {
         window.tabs.first.playlist = textParsePlaylist
     })
     $('#firstView').on('click', '[href="#parsedDiv"]', function () {
@@ -113,8 +143,6 @@ define(["jquery-ui"], function () {
     var selectFirstPlaylists = playlistsFactory($('a[href="#firstPlaylistsDiv"]'), $("#ulFirstPlaylists"), "playlists", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist, lPlaylistsNotice)
     var selectFirstSynchronized = playlistsFactory($('a[href="#firstSynchronizedDiv"]'), $("#ulFirstSynchronized"), "synchronized", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist, sPlaylistsNotice)
 //first playlists end
-
-    $firstTabs.tabs("option", "active", 1)
 //FIRST CREATE TABS END
 
 //SECOND CREATE TABS START
@@ -144,21 +172,36 @@ define(["jquery-ui"], function () {
 
 //second playing start
     var initPlaying = _.once(function (redrawHashAndQRCode, Playlist) {
-        var playingId = $.jStorage.get("playingId"), selected = $.jStorage.get("selected_" + playingId), index = selected && selected.index >= 0 && selected.index
-        window.tabs.second.playing = new Playlist("#ulSecond", {
+        if(chrome && chrome.extension) {
+            var playingId = $.jStorage.get("playingId"), selected = $.jStorage.get("selected_" + playingId), index = selected && selected.index >= 0 && selected.index
+            var playingOptions = {
                 id: playingId,
-                notice: "This is your playlist. Drop songs in here and listen.",
+                playerType: false,
                 scrollTo: index,
-                recalculateContentImmediateCallback: redrawHashAndQRCode,
-                connectWith: "connected-playlist",
-                headerConfigKey: "lConfigPlaylistHeader",
                 execute: [
                     Playlist.prototype.playAction,
                     Playlist.prototype._listenPlayingIdExecute
                 ]
             }
+        } else {
+            var playingOptions = {
+                id: null,
+                playerType: true,
+                scrollTo: 0,
+                execute: [
+                    Playlist.prototype.playAction
+                ]
+            }
+        }
+        window.tabs.second.playing = new Playlist("#ulSecond", _.extend({
+                notice: "This is your playlist. Drop songs in here and listen.",
+                recalculateContentImmediateCallback: redrawHashAndQRCode,
+                connectWith: "connected-playlist",
+                headerConfigKey: "lConfigPlaylistHeader"
+            }, playingOptions)
         )
         window.playlist = window.tabs.second.playing //can remove this
+        playingReady.resolve()
         return window.tabs.second.playing
     })
 //second playing end
@@ -183,6 +226,5 @@ define(["jquery-ui"], function () {
 
 //second playlists end
 //SECOND CREATE TABS END
-
-    $secondTabs.tabs("option", 'active', 0)
+    return { $firstTabs: $firstTabs, $secondTabs: $secondTabs, playingReady: playingReady }
 })

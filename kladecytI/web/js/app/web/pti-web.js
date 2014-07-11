@@ -1,20 +1,25 @@
-define(["player/iframe-player", "player/iframe-youtube", "player/iframe-soundcloud", "player/iframe-vimeo", "jquery", "underscore"], function (pti) {
+define(["player/iframe-player", "youtube-api", "player/iframe-soundcloud", "player/iframe-vimeo", "jquery", "underscore"], function (pti) {
+    var youtubeDeferred = $.Deferred(), soundcloudDeferred = $.Deferred()
+
     pti.y.options.onAfterPlayerReady = function () {
-        playFirstLoaded()
+        console.log('youtube ready')
+        youtubeDeferred.resolve()
     }
     pti.y.options.onAfterPlayerState = function (state) {
         if (state == 0) {
             SiteHandlerManager.prototype.stateChange('NEXT')
         }
     }
-//    pti.y.options.onAfterError = function (error) {
-//        SiteHandlerManager.prototype.stateChange('ERROR')
-//    }
+
+    pti.options.onAfterError = function (error) {
+        SiteHandlerManager.prototype.stateChange('ERROR')
+    }
 
     pti.s.options.onAfterPlayerReady = function () {
-        console.log('play first loaded sc')
-        playFirstLoaded()
+        console.log('soundcloud ready')
+        soundcloudDeferred.resolve()
     }
+
     pti.s.options.onAfterPlayerState = function (state) {
         if (state == 0) {
             SiteHandlerManager.prototype.stateChange('NEXT')
@@ -27,5 +32,5 @@ define(["player/iframe-player", "player/iframe-youtube", "player/iframe-soundclo
         }
     }
 
-    return pti
+    return { pti: pti, youtubeReady: youtubeDeferred, soundcloudReady: soundcloudDeferred }
 })

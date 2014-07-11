@@ -198,4 +198,4 @@ Text - file_export
 Playlist - Albums, Playlist
 Synchronized - cloud-upload
 Options -
-Help -
+Help - 

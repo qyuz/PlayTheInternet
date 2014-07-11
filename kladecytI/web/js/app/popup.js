@@ -1,16 +1,16 @@
-define(["player/player-widget", "underscore"], function (PlayerWidget) {
-    require(["app/popup/playlists"])
-
+define(["player/player-widget", "app/common/tabs", "underscore"], function (PlayerWidget, tabs) {
     var backgroundWindow = chrome.extension.getBackgroundPage()
     window.playerWidget = new PlayerWidget('#playerWidgetContainer', true)
     window.playerWidget.data.listenObject = backgroundWindow.pti
 
-    require(["app/common/tabs"])
     require(["app/popup/parse-content"], function () {
         window.tabs.first.playlist = parsedPlaylist //TODO move it to tabs
     })
 
     $(document).ready(function () {
+        tabs.$firstTabs.tabs("option", "active", 1)
+        tabs.$secondTabs.tabs("option", "active", 0)
+
         //hack to make scrollbar disappear
         $('html, body').css('height', '600px')
     })
@@ -68,6 +68,4 @@ define(["player/player-widget", "underscore"], function (PlayerWidget) {
     }
 
     $('#tabs a[href="#player"]').one('click', startPopupPlayer)
-
-    require(["app/common/how"])
 })

@@ -52,11 +52,11 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         })
 
         me.$.content.on('click', '.pti-play-this', function(event, ui) {
-            var $button = $(this), playlistId = me.getPtiElement(this).attr('id')
-            $.jStorage.set('playingId', playlistId)
+            var $button = $(this), playlistId = me.getPtiElement(this).attr('id');
+            (chrome && chrome.extension) ? $.jStorage.set('playingId', playlistId) : playlist.setId(playlistId) //TODO dirty, do other way
             playlist.scrollToSelected()
             _.delay(function() { //get rid of delay
-                var videoFeed = playlist.getSelectedVideoDiv().data('data')
+                var videoFeed = playlist._getSelectedVideoDiv().data('data')
                 if(videoFeed) {
                     playerWidget.loadVideo(videoFeed.type, videoFeed.id)
                     playerWidget.data.listenObject.playVideo()

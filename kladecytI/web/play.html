@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <head>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/ptilist.css">
+    <link rel="stylesheet" href="css/ptilist-element.css">
     <meta charset="utf-8">
     <title>Play The Internet</title>
-    <LINK REL="SHORTCUT ICON" HREF="favicon.ico" />
+    <LINK REL="SHORTCUT ICON" HREF="favicon.ico"/>
     <script data-main="js/app" src="js/lib/common/require.js"></script>
-    <link rel="stylesheet" href="css/webpage.css">
     <link rel="stylesheet" href="bootswatch/cosmo.css">
-    <link rel="stylesheet" href="bootswatch/cosmo-custom.css">
-    <link rel="stylesheet" href="css/datepicker.css">
-    <link rel="stylesheet" href="css/playlist.css">
-    <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/temp.css">
     <link rel="stylesheet" href="css/player-widget.css">
+    <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="css/checkbox.css">
 </head>
 <body>
 <!--<script type="text/javascript">-->
@@ -26,87 +26,150 @@
 <!--})();-->
 
 <!--</script>-->
-<div id="playerWidgetContainer" class="temp-player-widget"></div>
-<div id="dPLists" class="iframeParentdPLists">
+<div id="playerWidgetContainer" class="temp-player-widget">
+    <div class="playerWidget">
+        <div class="next control"></div>
+        <div class="play control"></div>
+        <div class="prev control"></div>
+        <input class="volume control" type="range" min="0" max="100" value="100"/>
+        <div class="progressBarContainer">
+            <div class="progressBar"></div>
+        </div>
+    </div>
+</div>
+<div id="splitViews">
     <div id="firstView">
-        <div id="tabs" class="leftFull temp-position-relative">
+        <div id="tabs" class="tabs">
             <ul class="nav nav-pills temp-no-height">
-                <li class="active"><a href="#player">Player<div id="podPlayer" style="position: fixed; z-index: -1; left: 0px; width: 65px;"></div></a></li>
-                <li><a href="#tAreaDiv">Text Area<div id="podTa" style="position: fixed; z-index: -1; left: 65px; width: 87px;"></div></a></li>
-                <li><a href="#optionsDiv">Options<div id="podOptions" style="position: fixed; z-index: -1; left: 152px; width: 77px;"></div></a></li>
-                <li><a href="#recycleBinDiv">Bin<div id="podBin" style="position: fixed; z-index: -1; left: 229px; width: 46px;"></div></a></li>
-                <!--<li><a href="#parsedDiv">Parsed<div id="podParsed" style="position: fixed; z-index: -1; left: 229px; width: 46px;"></div></a></li>-->
-                <!--<li><a href="#calendarDiv">Calendar<div id="podCalendar" style="position: fixed; z-index: -1; left: 229px; width: 46px;"></div></a></li>-->
+                <li>
+                    <a href="#player">
+                        <svg viewBox="0 0 24 16" version="1.1">
+                            <path d="M 24.1,2.0621786 V 14.062183 c 0,0.3 -0.2,0.4 -0.4,0.2 L 17.1,8.9621782 v 5.6000048 c 0,0.8 -0.7,1.5 -1.5,1.5 h -14 c -0.8,0 -1.5,-0.7 -1.5,-1.5 V 1.5621786 C 0.1,0.76217878 0.8,0.06217878 1.6,0.06217878 h 14 c 0.8,0 1.5,0.7 1.5,1.49999982 v 5.5999996 l 6.6,-5.2999996 c 0.2,-0.2 0.4,-0.1 0.4,0.2 z"/>
+                        </svg>
+                        <div>Player</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tAreaDiv">
+                        <svg viewBox="0 0 22 24" version="1.1"> <path d="m16.211,17.495c-2.6244-0.014-5.2491,0.027-7.8734-0.02,0.03699-1.2855-0.91365-3.559,0.91952-3.9453,1.3382-0.18856,2.6901,0.11102,4.0331-0.0598,0.98418-0.10294,3.3543,0.64948,2.8187-1.0518-0.22157-1.2748,1.0629-1.8267,1.7345-0.7038,1.4848,1.2439,2.9479,2.5139,4.455,3.731-1.5449,1.7747-3.6059,2.9838-5.2542,4.6495-1.4938,0.44412-0.63856-1.9261-0.83325-2.5999zm1.2,4.1c-0.92358,0.90632-2.27-0.19718-2.3051-1.2764,0.42434-1.0733-0.2643-2.24-1.5602-1.9322-1.8927,0.20874-3.8025,0.12533-5.7002,0.03081-1.2397-1.0755-0.29438-2.8158-0.7308-4.1613-0.08543-1.5669,1.7273-2.1102,2.9894-1.7941,1.7014,0.07668,3.4046,0.01231,5.1068,0.03085-0.04741-1.1414-0.25659-2.8068,1.0531-3.3282,1.2173-0.75053,2.1048,2.0399,3.017,0.84798,0.26434-1.0225,0.27633-3.1735-1.3399-2.7201h-5.13c-1.0402-0.84092-0.24796-2.2626-0.5-3.3673v-3.6327h-11.5c-1.0402,0.84092-0.24796,2.2626-0.5,3.3673v20.132c0.8409,1.0402,2.2626,0.248,3.3673,0.5h15.132c1.0402-0.84092,0.24796-2.2626,0.5-3.3673-0.05623-0.37797,0.20003-1.455-0.3563-0.71352-0.51506,0.46063-1.0315,0.91977-1.5435,1.3837zm-3.7-15.1h5.5l-6-6c0.0204,1.899-0.04109,3.7988,0.0312,5.6972,0.07226,0.18506,0.26804,0.31888,0.4688,0.3028z"/> </svg>
+                        <div>Text</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#firstPlaylistsDiv">
+                        <svg viewBox="0 0 28.5 18" version="1.1"> <path id="path3975" d="m0.8896,2.0009v14c-0.97821,0.04912-1.0625-1.0095-1-1.7323,0.012192-3.828-0.02442-7.6573,0.018359-11.483,0.064598-0.4762,0.51207-0.8052,0.98164-0.7848z"/> <path id="path3977" d="m26.89,2.0009v14c0.97821,0.04912,1.0625-1.0095,1-1.7323v-11.268c0.01675-0.53871-0.4672-1.0073-1-1z"/> <path id="path3979" d="m2.8896,1.0009c0.2943,0.10561,1.029-0.22922,1,0.19972v15.8c-0.6702-0.039-1.6086,0.203-1.9281-0.591-0.1528-1.143-0.0347-2.316-0.0719-3.472,0.0122-3.7169-0.0244-7.4363,0.0184-11.152,0.0646-0.4762,0.512-0.80524,0.9816-0.7848z"/> <path id="path3981" d="m24.89,1.0009c-0.2943,0.10561-1.029-0.22922-1,0.19972v15.8c0.6702-0.03855,1.6086,0.20284,1.9281-0.59062,0.15273-1.1428,0.03468-2.3161,0.07188-3.4718v-10.938c0.01675-0.53871-0.4672-1.0073-1-1z"/> <path id="path3983" d="m21.89,0.00087069h-16c-0.91152,0.031983-1.0824,1.0095-1,1.7323v15.268c0.031983,0.91152,1.0095,1.0824,1.7323,1h15.268c0.91152-0.03198,1.0824-1.0095,1-1.7323v-15.268c-0.01313-0.51627-0.48373-0.98687-1-1zm-3,12c-0.04297,1.3621-1.742,1.8784-2.8766,1.6281-1.3451-0.16973-1.7249-1.9404-0.54238-2.6219,0.51988-0.74889,1.9957-0.441,2.3189-0.80595v-4.2004c-2,0.46667-4,0.93333-6,1.4-0.01501,2.0064,0.03051,4.0156-0.02366,6.0202-0.25785,1.4953-2.4059,2.3155-3.5931,1.3599-1.1056-0.986,0.0693-2.527,1.2171-2.78,0.75392-0.18665,1.6926,0.16564,1.4-0.89889,0.0125-1.9875-0.025-3.978,0.01875-5.9637,0.17656-0.52203,0.87612-0.4078,1.3138-0.59908,2.1558-0.54614,4.3116-1.0923,6.4674-1.6384,0.51993,0.22016,0.21949,0.94129,0.3,1.3986v7.7016z"/> </svg>
+                        <div>Playlists</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#optionsDiv">
+                        <svg viewBox="0 0 24 24" version="1.1"> <path d="m 23.836268,13.581328 c -0.03656,-0.975133 0.563498,-2.479622 -0.395691,-3.09892 C 22.505807,10.248715 21.571038,10.015022 20.636268,9.781329 20.633597,8.8866099 19.591075,8.1112295 19.947943,7.2326957 20.444051,6.4155734 20.94016,5.5984512 21.436268,4.781329 20.677666,4.1125567 20.00782,2.6215722 18.887635,2.7930036 18.070512,3.2891121 17.25339,3.7852205 16.436268,4.281329 15.793047,3.6634614 14.515972,3.8490539 14.137348,2.9856382 13.903654,2.0508685 13.669961,1.1160987 13.436268,0.18132894 12.461135,0.21789012 10.956646,-0.38216873 10.337348,0.57701971 10.103655,1.5117895 9.8699614,2.4465592 9.6362682,3.381329 8.7415491,3.3839997 7.9661687,4.4265222 7.0876349,4.0696544 6.2705126,3.5735459 5.4533904,3.0774375 4.6362682,2.581329 3.9674959,3.3399305 2.4765114,4.0097772 2.6479428,5.1299623 3.1440513,5.9470846 3.6401597,6.7642068 4.1362682,7.581329 3.5184006,8.2245495 3.7039931,9.5016248 2.8405774,9.8802493 1.9058077,10.113942 0.97103789,10.347635 0.03626813,10.581328 c 0.03656118,0.975133 -0.56349767,2.479622 0.39569076,3.09892 0.93476981,0.233694 1.86953951,0.467387 2.80430931,0.70108 0.00267,0.894719 1.0451932,1.6701 0.6883254,2.548633 -0.4961085,0.817123 -0.9922169,1.634245 -1.4883254,2.451367 0.7586015,0.668772 1.4284482,2.159757 2.5486333,1.988325 0.8171223,-0.496108 1.6342445,-0.992217 2.4513667,-1.488325 0.6432205,0.617868 1.9202957,0.432275 2.2989203,1.295691 0.2336932,0.93477 0.4673865,1.869539 0.7010795,2.804309 0.975133,-0.03656 2.479622,0.563498 3.09892,-0.395691 0.233694,-0.93477 0.467387,-1.869539 0.70108,-2.804309 0.894719,-0.0027 1.6701,-1.045193 2.548633,-0.688325 0.817123,0.496108 1.634245,0.992217 2.451367,1.488325 0.668772,-0.758602 2.159757,-1.428448 1.988325,-2.548633 -0.496108,-0.817123 -0.992217,-1.634245 -1.488325,-2.451367 0.617868,-0.643221 0.432275,-1.920296 1.295691,-2.29892 0.93477,-0.233694 1.869539,-0.467387 2.804309,-0.70108 z m -11.8,2.6 C 9.323468,16.286187 7.0924294,13.255913 8.0310165,10.695849 8.7545037,8.281132 11.877721,6.9792538 14.06546,8.2998347 c 2.039247,1.0849527 2.830658,3.9608343 1.518845,5.8948093 -0.735379,1.213378 -2.122161,2.014735 -3.548037,1.986684 z"/> </svg>
+                        <div>Options</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#howDiv">
+                        <svg viewBox="0 0 24.5 24.5" version="1.1"> <path d="m 14.219942,19.686784 c -0.627177,1.019303 -2.098555,0.230246 -3.096666,0.520039 -1.5150518,-0.0056 -0.699445,-1.989175 -0.904234,-2.951862 -0.2514583,-1.622529 1.786994,-0.905551 2.730168,-1.068692 0.900705,-0.275879 1.476005,0.424218 1.270692,1.259799 2.7e-5,0.746892 -5.3e-5,1.493891 4e-5,2.240716 z m -2,-19.7000001 C 6.4109066,-0.15757072 0.96155814,4.5094843 0.16193089,10.25834 -0.83805531,15.900015 2.7809359,21.909528 8.2110213,23.715672 13.427733,25.631907 19.77086,23.351283 22.608689,18.578335 25.71067,13.74137 24.701737,6.7419987 20.295485,3.0288446 18.092446,1.0799516 15.163325,-0.03307224 12.219942,-0.0132161 z m 2.8,12.0000001 c -1.56335,0.20322 -0.636577,3.22236 -2.566282,2.585822 -0.913056,0.146693 -2.147498,0.115551 -1.741818,-1.165655 0.05707,-1.453251 1.114473,-2.571924 2.322878,-3.202917 C 13.927292,9.3935089 13.176679,7.5554221 11.91398,7.9675279 10.815949,8.2145687 10.75552,10.321465 9.2882624,9.6867839 8.2811044,9.814647 6.8833263,9.8109599 7.4288551,8.4164004 7.761316,6.5690373 9.4938133,5.2304937 11.330052,5.1206816 c 2.161423,-0.3051704 4.849365,0.7251954 5.319873,3.0733807 0.399387,1.4649512 -0.01816,3.2888667 -1.629983,3.7927217 z"/> </svg>
+                        <div>Help</div>
+                    </a>
+                </li>
             </ul>
-            <div id="tAreaDiv" class="temp-popup-nav-content temp-display-none">
+            <div id="tAreaDiv" class="temp-popup-nav-content shlop temp-display-none">
                 <textArea id="tArea" class="taArea" placeholder="Paste any text that contains links, for example Skype conversation, etc"></textArea>
                 <br>
-                <input id="tAreaParseButton" class="temp-parse-button btn btn-primary" type="button" value="Parse"/>
+                <input id="tAreaParseButton" class="temp-parse-button" type="button" value="Parse"/>
                 <div class="temp-textarea-parse-playlist-wrapper">
                     <div id="textAreaParsePlaylist" class="playlistFrame"></div>
                 </div>
             </div>
-            <div id="optionsDiv" class="temp-popup-nav-content temp-display-none">
-                <fieldset>
-                    <legend>Share this link</legend>
-                    <input id="buildHash" type="button" value="Build link"/>
-                    <br>
-                    <input id="buildHashInput" class="max-width" type="text"/>
-                </fieldset>
-                <fieldset>
-                    <legend>Rename window</legend>
-                    <input id="renameWindow" type="button" value="Rename window"/>
-                    <br>
-                    <input id="renameWindowInput" class="max-width" type="text"/>
-                </fieldset>
-                <fieldset>
-                    <legend>Go mobile</legend>
-                    <div class="temp-alignQRCode" id="qrcode"></div>
-                </fieldset>
-            </div>
-            <div id="recycleBinDiv" class="temp-popup-nav-content temp-display-none">
-                <div id="ulFirst" class=" playlistFrame"></div>
-            </div>
-            <div id="parsedDiv" class="temp-popup-nav-content temp-display-none">
-                <div id="parsedPlaylist" class=" playlistFrame"></div>
-            </div>
-            <div id="calendarDiv" class="temp-popup-nav-content temp-display-none">
-                <div class="input-daterange">
-                    <input class="input-small datepicker" name="start" id="calendarStart" data-date-format="dd-mm-yyyy"/>
-                    <span class="add-on">to</span>
-                    <input class="input-small datepicker" name="end" id="calendarEnd" data-date-format="dd-mm-yyyy"/>
-                    <button id="searchCalendar" class="btn" type="button">Search</button>
-                </div>
-                <div id="calendarFilter" class="input-append">
-                    <span class="add-on">Title</span>
-                    <input class="input-small" id="calendarFilterTitle">
-                    <span class="add-on">More than</span>
-                    <input class="input-small" id="calendarFilterDurationMore">
-                    <span class="add-on">Less than</span>
-                    <input class="input-small" id="calendarFilterDurationLess">
-                </div>
-                <div id="calendarPlaylist" class=" playlistFrame"></div>
-            </div>
-            <div id="players" class="tabs-player-container" >
-                <div id="soundCloudContainer" class="leftFull temp-width-zero-percent" >
-                    <div id="soundCloud">
+            <div id="optionsDiv" class="temp-popup-nav-content shlop temp-display-none">
+                <div class="temp-panel temp-options-share-this-link">
+                    <div class="temp-panel-heading">Share this link</div>
+                    <div class="temp-options-url-line temp-options-long-line">
+                        <div>Long</div>
+                        <input id="buildHashInput" type="text"/>
+                        <a id="longLinkA" href="" target="_blank">Open</a>
+                    </div>
+                    <div class="temp-options-url-line temp-options-short-line">
+                        <div>Short</div>
+                        <input id="shortBuildHashInput" type="text"/>
+                        <a id="shortLinkA" href="" target="_blank">Open</a>
                     </div>
                 </div>
-                <div id="youtubeContainer" class="leftFull temp-width-hundred-percent">
-                    <div id="youtube"></div>
+                <div class="temp-panel temp-options-go-mobile-wrapper">
+                    <div class="temp-options-go-mobile">
+                        <div class="temp-panel-heading">Go mobile</div>
+                        <div class="temp-alignQRCode" id="qrcode"></div>
+                    </div>
                 </div>
-                <div id="vimeoContainer" class="leftFull temp-width-zero-percent">
+            </div>
+            <div id="firstPlaylistsDiv" class="temp-popup-nav-content shlop">
+                <div id="ulFirstPlaylists"></div>
+            </div>
+            <div id="howDiv" class="temp-popup-nav-content shlop temp-display-none">
+                <div id="howDivContainer">
+                    <div class="temp-panel">
+                        <div pti-video="/embed/Zf7jhuCR-VI?list=PLneVFLAzmtBZY4iUZxMmW176eDKN_L9WQ" class="temp-panel-heading temp-panel-heading-how">Playlist with videos covering all topics</div>
+                    </div>
+                    <div class="temp-panel">
+                        <div pti-video="P1G4_XoF7CA" class="temp-panel-heading temp-panel-heading-how">Keyboard Shortcuts</div>
+                    </div>
+                    <div class="temp-panel">
+                        <div pti-video="V3zT-q2CyHU" class="temp-panel-heading temp-panel-heading-how">Context Menu</div>
+                    </div>
+                    <div class="temp-panel">
+                        <div pti-video="6yz2AVvOxLA" class="temp-panel-heading temp-panel-heading-how">One Click Actions</div>
+                    </div>
+                    <div class="temp-panel">
+                        <div pti-video="YQ9wb_DgGtY" class="temp-panel-heading temp-panel-heading-how">Playlists</div>
+                    </div>
+                    <div class="temp-panel">
+                        <div pti-video="kf5zYao0aLo" class="temp-panel-heading temp-panel-heading-how">Synchronization</div>
+                    </div>
+                    <div class="temp-panel">
+                        <div pti-video="iEs6yuhH2xs" class="temp-panel-heading temp-panel-heading-how">Panel</div>
+                    </div>
+                </div>
+            </div>
+            <div id="playersContainer" class="tabs-player-container">
+                <div id="players" class="tabs-player-container">
+                    <div id="soundCloudContainer" class="leftFull temp-width-zero-percent" >
+                        <div id="soundCloud">
+                        </div>
+                    </div>
+                    <div id="youtubeContainer" class="leftFull temp-width-hundred-percent">
+                        <div id="youtube"></div>
+                    </div>
+                    <div id="vimeoContainer" class="leftFull temp-width-zero-percent">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="secondView">
-        <!--WRAPP IN THIS TO MAKE A SCROLLBAR START-->
-        <!--<div id="ulSecondWrapper" style="overflow-y: scroll; overflow-x: hidden; height: 100%">-->
-        <div id="ulSecond" class="playlistFrame"></div>
-        <!--</div>-->
-        <!--WRAPP IN THIS TO MAKE A SCROLLBAR END-->
+        <div id="secondViewTabs" class="tabs">
+            <ul class="nav nav-pills temp-no-height">
+                <li class="ui-state-active">
+                    <a href="#sPlaying">
+                        <svg viewBox="0 0 28 23.5" version="1.1"><path d="M 25.169858,11.040163 C 25.058913,9.6126412 26.611511,8.0890447 25.236275,6.8110641 24.171311,5.8806919 22.317408,5.4449538 21.052519,5.5668476 20.9274,7.013844 21.017159,8.4923258 20.989749,9.9542182 c 0,3.1786078 0,6.3572158 0,9.5358238 -0.67909,3.030693 -4.270846,4.492103 -7.100681,3.869906 -1.46445,-0.322641 -2.813834,-1.83188 -2.254743,-3.381294 0.56438,-1.961592 2.594728,-3.017323 4.459795,-3.418781 0.971256,0.299301 2.367662,-0.08259 1.90984,-1.339948 0,-4.839479 0,-9.6789575 0,-14.51843651 0.898882,-1.31314844 2.975244,-0.65158488 3.372144,0.66350621 2.045564,1.1005146 4.807167,1.1706248 6.181943,3.2859273 1.235172,2.3035734 -0.206221,5.2562458 -2.388193,6.389241 z M 0.58685945,8.0578534 c 5.14219235,0 10.28438555,0 15.42657755,0 0,-0.9941034 0,-1.9882067 0,-2.9823101 -5.142192,0 -10.2843852,0 -15.42657755,0 -0.82238232,0.699004 -0.8044095,2.2840997 0,2.9823101 z m 0,5.9646196 c 5.14219235,0 10.28438555,0 15.42657755,0 0,-0.994103 0,-1.988207 0,-2.98231 -5.142192,0 -10.2843852,0 -15.42657755,0 -0.822395,0.698999 -0.80439126,2.284144 0,2.98231 z M 10.639017,17.004784 c -3.3507195,0 -6.7014385,0 -10.05215755,0 -1.06427966,0.83905 -0.77045234,3.427507 0.96209375,2.971386 2.532319,0.02701 5.0647874,0.002 7.5971689,0.01092 0.1034733,-1.140617 0.7488508,-2.146112 1.4928949,-2.98231 z"/></svg>
+                        <div>Playing</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#sPlaylists">
+                        <svg viewBox="0 0 28.5 18" version="1.1"> <path id="path3975" d="m0.8896,2.0009v14c-0.97821,0.04912-1.0625-1.0095-1-1.7323,0.012192-3.828-0.02442-7.6573,0.018359-11.483,0.064598-0.4762,0.51207-0.8052,0.98164-0.7848z"/> <path id="path3977" d="m26.89,2.0009v14c0.97821,0.04912,1.0625-1.0095,1-1.7323v-11.268c0.01675-0.53871-0.4672-1.0073-1-1z"/> <path id="path3979" d="m2.8896,1.0009c0.2943,0.10561,1.029-0.22922,1,0.19972v15.8c-0.6702-0.039-1.6086,0.203-1.9281-0.591-0.1528-1.143-0.0347-2.316-0.0719-3.472,0.0122-3.7169-0.0244-7.4363,0.0184-11.152,0.0646-0.4762,0.512-0.80524,0.9816-0.7848z"/> <path id="path3981" d="m24.89,1.0009c-0.2943,0.10561-1.029-0.22922-1,0.19972v15.8c0.6702-0.03855,1.6086,0.20284,1.9281-0.59062,0.15273-1.1428,0.03468-2.3161,0.07188-3.4718v-10.938c0.01675-0.53871-0.4672-1.0073-1-1z"/> <path id="path3983" d="m21.89,0.00087069h-16c-0.91152,0.031983-1.0824,1.0095-1,1.7323v15.268c0.031983,0.91152,1.0095,1.0824,1.7323,1h15.268c0.91152-0.03198,1.0824-1.0095,1-1.7323v-15.268c-0.01313-0.51627-0.48373-0.98687-1-1zm-3,12c-0.04297,1.3621-1.742,1.8784-2.8766,1.6281-1.3451-0.16973-1.7249-1.9404-0.54238-2.6219,0.51988-0.74889,1.9957-0.441,2.3189-0.80595v-4.2004c-2,0.46667-4,0.93333-6,1.4-0.01501,2.0064,0.03051,4.0156-0.02366,6.0202-0.25785,1.4953-2.4059,2.3155-3.5931,1.3599-1.1056-0.986,0.0693-2.527,1.2171-2.78,0.75392-0.18665,1.6926,0.16564,1.4-0.89889,0.0125-1.9875-0.025-3.978,0.01875-5.9637,0.17656-0.52203,0.87612-0.4078,1.3138-0.59908,2.1558-0.54614,4.3116-1.0923,6.4674-1.6384,0.51993,0.22016,0.21949,0.94129,0.3,1.3986v7.7016z"/> </svg>
+                        <div>Playlists</div>
+                    </a>
+                </li>
+            </ul>
+            <div id="sPlaying" class="temp-popup-nav-content">
+                <div id="ulSecond" class="playlistFrame"></div>
+            </div>
+            <div id="sPlaylists" class="temp-popup-nav-content shlop">
+                <div id="ulSecondPlaylists"></div>
+            </div>
+        </div>
     </div>
 
 </div>
