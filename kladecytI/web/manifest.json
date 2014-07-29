@@ -1,6 +1,6 @@
 {
     "name":"PlayTheInternet",
-    "version":"0.670.709",
+    "version":"0.670.710",
     "description":"Play music from favorite sites all in one playlist. Features:synchronization,hotkeys,context menu. Supports:YouTube,SoundCloud,Vimeo",
     "icons":{
         "128":"favicon.ico"
