@@ -48,11 +48,11 @@
 .pti-ptilist .pti-content.pti-view-list>* .error-text {  }
 
 /* Playlists start */
-.pti-ptilist .pti-content .pti-playlists-content { line-height: 40px; font-size: 12px; }
+.pti-ptilist .pti-content .pti-playlists-content { position: absolute; left: 120px; right: 0px; line-height: 40px; font-size: 12px; }
 
 
 .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-info>* { margin-top: 11px; margin-bottom: 11px; height: 19px; line-height: normal; }
-.pti-ptilist .pti-content .pti-playlists-content .pti-playlists-info .pti-name { float: left; margin-left: 5px; padding: 0px 5px 0px 5px; color: inherit; border: transparent solid 1px; font-size: inherit; background-color: inherit; }
+.pti-ptilist .pti-content .pti-playlists-content .pti-playlists-info .pti-name { margin-left: 5px; padding: 0px 5px 0px 5px; width: 75%; color: inherit; border: transparent solid 1px; font-size: inherit; background-color: inherit; }
 .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-info .pti-count { float: right; margin-right: 20px; }
 .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons { clear: right; }
 .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>* { float: left; cursor: pointer; }
