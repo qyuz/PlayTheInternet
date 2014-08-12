@@ -64,6 +64,18 @@ function upgradeRun(module) {
             })
             upgrade = e067
         }
+        if(currVersion < 0.68 && module == WEB) {
+            var w068 = $.Deferred()
+            $.when(upgrade).then(function() {
+                console.log('initializing upgrade to 0.68')
+                require(["app/migrate/w068"], function() {
+                    console.log('done upgrading to 0.68')
+                    w068.resolve()
+                })
+                return w068
+            })
+            upgrade = w068
+        }
         $.when(upgrade).then(function () {
             $.when($.getJSON('/manifest.json')).then(function (manifest) {
                 try {
