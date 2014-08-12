@@ -13,7 +13,7 @@ body { height: 100%; }
 #splitViews>div>.tabs>ul { margin-bottom: 0px; height: 40px; }
 #splitViews>div>.tabs>ul * { outline: none; }
 #splitViews>div>.tabs>ul>li>a { margin: 0px 1px 0px 0px; height: 39px; width: 40px; padding: 0px; position: relative; overflow: hidden; }
-#splitViews>div>.tabs>ul>li>a>svg { -webkit-transform-origin: top right; -webkit-transform: scale(0.7); transition: all 0.3s ease;  }
+#splitViews>div>.tabs>ul>li>a>svg { width: 40px; height: 39px; -webkit-transform-origin: top right; -webkit-transform: scale(0.7); transition: all 0.3s ease;  }
 #splitViews>div>.tabs>ul>li>a>svg>* { transition: all 0.3s ease;  } /* * - path, rect */
 #splitViews>div>.tabs>ul>li.ui-state-active>a>svg { -webkit-transform: scale(1); }
 #splitViews>div>.tabs>ul>li>a>div { position: absolute; left: 1px; bottom: 1px; font-size: 10px; font-family: sans-serif; transition: all 0.3s ease; }
