@@ -6,3 +6,21 @@ html { width: 100%; height: 100%; overflow: hidden; }
 .pti-ptilist .pti-header+.pti-menu+.slimScrollDiv { top: 95px; }
 .pti-ptilist .pti-menu label { display: none; }
 .pti-ptilist .pti-menu>input[type=button] { margin-top: 2px; }
+
+#installDiv>div { height: 100%; overflow-x: hidden; overflow-y: scroll;}
+#installDiv .title-text { width: 100%; text-align: center; margin-top: 50px; font-size: 17px; }
+#installDiv .title-text-wonder-why { margin-top: 30px; }
+#installDiv .install-container { display: table; margin-left: auto; margin-right: auto; margin-top: 11px; }
+#installDiv .install-button { display: block; float: left; position: relative; color: white; border: none; padding: 10px 50px; }
+#installWeb { background-color: royalblue; color: white; text-decoration: none; }
+#installChrome { background-color: tomato; left: 1px; }
+#installDiv .feature-block { float: left; width: 45%; margin-top: 15px; min-width: 180px; }
+#installDiv .feature-block:nth-child(4), #installDiv .feature-block:nth-child(5) { margin-top: 20px; } /* bigger margin for first feature elements */
+#installDiv .feature-block:nth-child(2n) { clear: both; }
+#installDiv .feature-block:nth-child(2n), #installDiv .feature-block:nth-child(2n+1) { margin-left: 5%; }
+#installDiv .title-features-text { float: left; color: darkslategrey; font-size: 15px; }
+#installDiv .title-feature-platform { float: left; color: white; border-radius: 50%; padding: 0px 5px; margin-left: 3px; }
+#installDiv .web { background-color: royalblue; }
+#installDiv .chrome { background-color: tomato; }
+#installDiv .content-features-text { clear: both; margin-top: 5px; color: dimgrey; margin-left: 5px; margin-right: 10%; font-size: 14px; }
+#installDiv .know-more { clear: both; position: relative; top: 11px; text-align: center; }

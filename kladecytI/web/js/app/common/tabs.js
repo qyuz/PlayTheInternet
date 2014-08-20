@@ -64,6 +64,9 @@ define(["jquery-ui", "underscore"], function () {
             if (newTabText == "Synch") {
                 fetchSynch()
             }
+            if (newTabText == "Install") {
+                require(["app/web/install"])
+            }
             if (newTabText == "Help") {
                 require(["app/common/how"])
             }
