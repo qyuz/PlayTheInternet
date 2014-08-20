@@ -172,7 +172,7 @@ define(["jquery-ui", "underscore"], function () {
 
 //second playing start
     var initPlaying = _.once(function (redrawHashAndQRCode, Playlist) {
-        if(chrome && chrome.extension) {
+        if(window.chrome && window.chrome.extension) {
             var playingId = $.jStorage.get("playingId"), selected = $.jStorage.get("selected_" + playingId), index = selected && selected.index >= 0 && selected.index
             var playingOptions = {
                 id: playingId,
