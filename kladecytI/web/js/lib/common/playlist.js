@@ -85,8 +85,8 @@ define(["common/ptilist"], function (Ptilist) {
         }
         var $input = $('<input type="text" class="create-playlist-name" placeholder="Playlist name to create"/>').appendTo($menu).keypress(inputHandler)
         var group = _.guid()
-        $menu.append(createRadio('Playlist', group, (chrome && chrome.extension) ? null : "checked" ))
-        $menu.append(createRadio('Synchronized', group, (chrome && chrome.extension) ? "checked" : null))
+        $menu.append(createRadio('Playlist', group, (window.chrome && window.chrome.extension) ? null : "checked" ))
+        $menu.append(createRadio('Synchronized', group, (window.chrome && window.chrome.extension) ? "checked" : null))
         var $create = $('<input type="button" value="Create"/>').appendTo($menu).click(createPlaylistHandler)
 
         return $header.add($menu)
