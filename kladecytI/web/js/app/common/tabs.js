@@ -229,5 +229,10 @@ define(["jquery-ui", "underscore"], function () {
 
 //second playlists end
 //SECOND CREATE TABS END
+
+    //convenience stuff after tab initialization
+    $('#tabs a, #secondViewTabs a').css('pointer-events', 'all')
+    $secondTabs.tabs("option", 'active', 0)
+
     return { $firstTabs: $firstTabs, $secondTabs: $secondTabs, playingReady: playingReady }
 })

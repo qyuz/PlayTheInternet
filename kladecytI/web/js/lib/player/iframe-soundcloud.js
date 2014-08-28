@@ -88,7 +88,7 @@ define(["player/iframe-player", "soundcloud-api", "jquery", "underscore", "ctemp
                 scWidget.seekTo(seekTo * 1000)
             },
             onVolume:function (volume) {
-                _.isUndefined(volume) || scWidget.setVolume(volume)
+                _.isUndefined(volume) || scWidget.setVolume(volume / 100)
             },
             onSoundIndex: function (index, invoke) {
                 invoke && scWidget.skip(index)

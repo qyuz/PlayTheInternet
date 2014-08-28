@@ -4,7 +4,7 @@ function playTheInternetParseTemp(htmlText) {
         var unique = {};
 
         arr.forEach(function (item) {
-            item.id = item.id.replace(/\\/g, '').replace(/\u00252F/g, '/')
+            item.id = item.id.replace(/[\\()]/g, '').replace(/\u00252F/g, '/')
                 .replace(/\u00253F((fb_action)|(utm_source)).*/, '');
             if (!unique[item.id]) {
                 newarr.push(item);

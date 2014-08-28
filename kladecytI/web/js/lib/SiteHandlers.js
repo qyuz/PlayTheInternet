@@ -193,7 +193,7 @@ function SoundCloudHandler() {
     SoundCloudHandler.prototype.defaultThumbnail = "/css/resources/sc.jpeg"
     SoundCloudHandler.prototype.prefix = "s"
 //    %3F
-    SoundCloudHandler.prototype.regex = /((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<]+)/
+    SoundCloudHandler.prototype.regex = /((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<>]+)/
     SoundCloudHandler.prototype.regexGroup = 5
     SoundCloudHandler.prototype.loadVideoData = function (typeId, $ptiElement) {
     }

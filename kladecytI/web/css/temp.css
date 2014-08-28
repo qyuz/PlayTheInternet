@@ -10,6 +10,7 @@
 .temp-position-relative { position: relative }
 .temp-border-none { border: none; }
 .temp-margin-none { margin: 0px; }
+.temp-overflow-hidden { overflow: hidden; }
 .temp-popup-nav-content { position: absolute; top: 41px; bottom: 0px; width: 100%; background-color: #f7f7f7; transition: all 0.33s ease; }
 .temp-absolute-off-screen { position: absolute; left: -9999px; }
 .temp-parsed-error { position: absolute; width: 100%; top: 0px; bottom: 0px; z-index: 999; word-break: break-all; pointer-events: none; }

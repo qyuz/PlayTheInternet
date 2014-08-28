@@ -1,4 +1,4 @@
-define(["app/common/tabs", "app/web/pti-web"], function (tabs, ptiWeb) {
+define(["app/common/tabs", "app/common/globals", "app/web/pti-web"], function (tabs, b, ptiWeb) {
     window.pti = ptiWeb.pti
     ptiWeb.pti.volume($.jStorage.get('volume'))
     $(document).ready(function () {

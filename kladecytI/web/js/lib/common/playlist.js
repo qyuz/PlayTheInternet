@@ -326,9 +326,10 @@ define(["common/ptilist"], function (Ptilist) {
             $.jStorage.set("selected_" + this.options.id, { source:this.options.uid, index:this.getSelectedVideoIndex(), play: true, date: Date.now() })
         }
         try {
+            window.document.title = videoData.id
             window.document.title = JSON.parse(localStorage.getItem(videoData.id)).title
         } catch (e) {
-            window.document.title = videoData.id
+            console.log("couldn't set video id in window.title")
         }
     }
 
