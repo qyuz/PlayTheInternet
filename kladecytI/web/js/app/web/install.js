@@ -3,17 +3,18 @@ define(["parse"], function (a) {
         $(document).on({
             mouseenter: function () {
                 $installText.css('background-color', 'yellow');
+                $installText.css('color', '#555');
                 $installText.text(text)
             },
             mouseleave: function () {
                 $installText.css('background', 'none');
+                $installText.css('color', defaultColor);
                 $installText.text(defaultText);
             }
         }, selector);
     }
 
-    var defaultText = 'Install PlayTheInternet!';
-    var $installText = $('#installText').text(defaultText);
+    var $installText = $('#installText'), defaultText = $installText.text(), defaultColor = $installText.css('color')
     installHint('#installWeb', 'Drag this to your bookmark toolbar, to install Web version.')
     installHint('#installChrome', 'Click to install Chrome extension.')
 
