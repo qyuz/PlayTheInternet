@@ -146,7 +146,6 @@
     color: aliceblue;
     overflow: hidden;
     z-index: 1;
-    left: 1px;
 }
 .playerWidget .progressBar .progressBarBackgroundCurrentTime {
     color: #6796b4;
