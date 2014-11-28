@@ -106,7 +106,7 @@ function SiteHandlerManager() {
         }
     }
 
-    $.each(siteHandlers, function (index, item) {
+    _.each(siteHandlers, function (item) {
         SiteHandlerManager.prototype.mapping[item.prefix] = item
     })
 }

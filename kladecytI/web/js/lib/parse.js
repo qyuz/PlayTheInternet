@@ -39,14 +39,14 @@ function playTheInternetParseTemp(htmlText) {
 }
 
 (function () {
-    var regexs = $.map(siteHandlers,function (item) {
+    var regexs = _.map(siteHandlers,function (item) {
         var regex = String(item.__proto__.regex)
         //remove '/' regex wrappers and wrap in group '()'
         return("(" + regex.substring(1).substring(0, regex.length - 2) + ")")
     }).join("|")
     var matchFunction = "function(match) {"
     var lastGroupCount = 0;
-    var ifs = $.map(siteHandlers,function (item, index) {
+    var ifs = _.map(siteHandlers,function (item, index) {
         var regex = String(item.__proto__.regex)
         var group = item.__proto__.regexGroup + index + 1 + lastGroupCount;
         var groupCount = regex.split('(').length - 1
