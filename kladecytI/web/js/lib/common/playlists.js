@@ -167,6 +167,7 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
     }
 
     Playlists.prototype.playlistClose = function() {
+        this.$.playlist.addClass('temp-display-none')
         this.$.container.removeClass('temp-display-none')
     }
 
@@ -174,6 +175,7 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         this.initPlaylist()
         this.playlist.setId(id)
         this.$.container.addClass('temp-display-none')
+        this.$.playlist.removeClass('temp-display-none')
     }
 
     Playlists.prototype.filterJStorageBy = function(filter, sort) {
