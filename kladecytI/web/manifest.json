@@ -60,5 +60,5 @@
     },
 
     "manifest_version":2,
-    "content_security_policy":"default-src 'self'; script-src https://vimeo.com/; img-src https://i.vimeocdn.com/video/ http://i.ytimg.com/vi/; frame-src http://*.playtheinternet.appspot.com/ http://playtheinternet.appspot.com/ http://*.playtheinter.net/ http://localhost:8888/ http://*.youtube.com https://*.youtube.com; connect-src http://gdata.youtube.com/ https://www.googleapis.com/"
+    "content_security_policy":"default-src 'self'; script-src https://vimeo.com/; img-src https://*.vimeocdn.com/video/ http://*.ytimg.com/vi/; frame-src http://*.playtheinternet.appspot.com/ http://playtheinternet.appspot.com/ http://*.playtheinter.net/ http://localhost:8888/ http://*.youtube.com https://*.youtube.com; connect-src http://gdata.youtube.com/ https://www.googleapis.com/"
 }
