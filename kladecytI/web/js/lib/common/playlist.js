@@ -69,9 +69,9 @@ define(["common/ptilist"], function (Ptilist) {
             $input.css('color', "")
         }
 
-        var createPlaylistHandler = _.throttle(function() {
+        var createPlaylistHandler = _.throttle(function(play) {
             $input.prop('disabled', true)
-            createPlaylist()
+            createPlaylist(play)
             $input.val('Playlist created')
             $input.css('color', 'green')
             createPlaylistCloseTimeout = setTimeout(function() {
@@ -79,7 +79,7 @@ define(["common/ptilist"], function (Ptilist) {
             }, 2000)
         }, 2000, { trailing: false })
 
-        var createPlaylist = function() {
+        var createPlaylist = function(play) {
             var name = $input.val()
             var radio = $menu.find('input[type="radio"]:checked').parent().text()
             var type = radio.match('Playlist') ? 'l' : 's'
@@ -88,6 +88,10 @@ define(["common/ptilist"], function (Ptilist) {
             var thumbnail = SiteHandlerManager.prototype.getThumbnail( playlist.length ? playlist[0] : "" )
             var dao = Playlist.prototype.DAO(id).addVideos(playlist, { name: name, thumbnail: thumbnail})
             dao.set()
+            if(play) {
+                $.jStorage.set('selected_' + dao.key, { index: 0, play: true, date: Date.now() })
+                $.jStorage.set('playingId', dao.key)
+            }
         }
 
         var inputHandler = function(event) {
@@ -108,6 +112,7 @@ define(["common/ptilist"], function (Ptilist) {
         $menu.append(createRadio('Playlist', group, (window.chrome && window.chrome.extension) ? null : "checked" ))
         $menu.append(createRadio('Synchronized', group, (window.chrome && window.chrome.extension) ? "checked" : null))
         var $create = $('<input type="button" value="Create"/>').appendTo($menu).click(createPlaylistHandler)
+        var $andPlay = $('<label>and start</label><input type="button" value="Playng"/>').appendTo($menu).click(_.partial(createPlaylistHandler, true))
 
         return $header.add($menu)
     }
