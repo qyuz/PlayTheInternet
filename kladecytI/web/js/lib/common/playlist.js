@@ -257,8 +257,7 @@ define(["common/ptilist"], function (Ptilist) {
             },
             setVideos: function(videosArr, extend) {
                 this.storageObj.data = []
-                this.addVideos(videosArr, extend)
-                return this
+                return this.addVideos(videosArr, extend)
             }
         }
     }
