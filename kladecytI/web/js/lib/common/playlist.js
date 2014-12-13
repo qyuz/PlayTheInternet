@@ -71,7 +71,13 @@ define(["common/ptilist"], function (Ptilist) {
 
         var createPlaylistHandler = _.throttle(function(play) {
             $input.prop('disabled', true)
-            createPlaylist(play)
+
+            var name = $input.val()
+            var radio = $menu.find('input[type="radio"]:checked').parent().text()
+            var type = radio.match('Playlist') ? 'l' : 's'
+            var id = type + "Playlist" + _.guid()
+            me._createPlaylist(id, name, play)
+
             $input.val('Playlist created')
             $input.css('color', 'green')
             createPlaylistCloseTimeout = setTimeout(function() {
@@ -79,27 +85,13 @@ define(["common/ptilist"], function (Ptilist) {
             }, 2000)
         }, 2000, { trailing: false })
 
-        var createPlaylist = function(play) {
-            var name = $input.val()
-            var radio = $menu.find('input[type="radio"]:checked').parent().text()
-            var type = radio.match('Playlist') ? 'l' : 's'
-            var id = type + "Playlist" + _.guid()
-            var selected = me.getIdsUiSelected(), playlist = selected.length ? selected : me.getIds()
-            var thumbnail = SiteHandlerManager.prototype.getThumbnail( playlist.length ? playlist[0] : "" )
-            var dao = Playlist.prototype.DAO(id).addVideos(playlist, { name: name, thumbnail: thumbnail})
-            dao.set()
-            if(play) {
-                $.jStorage.set('selected_' + dao.key, { index: 0, play: true, date: Date.now() })
-                $.jStorage.set('playingId', dao.key)
-            }
-        }
-
         var inputHandler = function(event) {
             if(event.keyCode == 13) {
                 createPlaylistHandler()
             }
         }
 
+        me.options.quickPlay && $('<div class="pti-header-button temp-playlist-header-margin-left">►</div>').appendTo($header).click(me.options.quickPlay.bind(this))
         var $addPlaylist = $('<div class="pti-header-button temp-playlist-header-margin-left">+</div>').appendTo($header).click(createPlaylistDialogToggle)
 
         //menu start
@@ -111,10 +103,21 @@ define(["common/ptilist"], function (Ptilist) {
         var group = _.guid()
         $menu.append(createRadio('Playlist', group, (window.chrome && window.chrome.extension) ? null : "checked" ))
         $menu.append(createRadio('Synchronized', group, (window.chrome && window.chrome.extension) ? "checked" : null))
-        var $create = $('<input type="button" value="Create"/>').appendTo($menu).click(createPlaylistHandler)
+        var $create = $('<input type="button" value="Create"/>').appendTo($menu).click(_.partial(createPlaylistHandler, false))
         var $andPlay = $('<label>and start</label><input type="button" value="Playng"/>').appendTo($menu).click(_.partial(createPlaylistHandler, true))
 
         return $header.add($menu)
+    }
+
+    Playlist.prototype._createPlaylist = function(id, name, play) {
+        var selected = this.getIdsUiSelected(), playlist = selected.length ? selected : this.getIds()
+        var thumbnail = SiteHandlerManager.prototype.getThumbnail( playlist.length ? playlist[0] : "" )
+        var dao = Playlist.prototype.DAO(id).setVideos(playlist, { name: name, thumbnail: thumbnail})
+        dao.set()
+        if(play) {
+            $.jStorage.set('selected_' + dao.key, { index: 0, play: true, date: Date.now() })
+            $.jStorage.set('playingId', dao.key)
+        }
     }
 
     Playlist.prototype._drawPtiElement = function(typeIdText, $ptiElement) {
@@ -250,6 +253,11 @@ define(["common/ptilist"], function (Ptilist) {
                 _.default(serialize, true) && this.serialize()
                 $.jStorage.set(this.key, this.storageObj)
                 console.log('set', this.storageObj)
+                return this
+            },
+            setVideos: function(videosArr, extend) {
+                this.storageObj.data = []
+                this.addVideos(videosArr, extend)
                 return this
             }
         }

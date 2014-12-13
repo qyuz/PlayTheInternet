@@ -100,6 +100,7 @@ define(["jquery-ui", "underscore"], function () {
                 playerType: false,
                 connectWith: "connected-playlist",
                 headerConfigKey: "lConfigTextAreaParsePlaylistHeader",
+                quickPlay: _.partial(Playlist.prototype._createPlaylist, 'qPlaylist', 'Quick Play', true),
                 execute: [
                     Playlist.prototype.addAction,
                     function () {
