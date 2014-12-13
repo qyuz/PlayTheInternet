@@ -1,0 +1,27 @@
+var start = new $.Deferred(), log = console.log.bind(console), step
+var r = _.reduce([1, 2, 3], function(d, item) {
+    var next = $.Deferred()
+    d.then(function() {
+        _.delay(function() {
+            log(item)
+            step = next
+        }, 2000)
+    })
+    return next
+}, start)
+start.resolve()
+
+_.times(100, function() {
+	var start = new $.Deferred(), log = console.log.bind(console), step
+	var r = _.reduce(_.range(1000), function(d, item) {
+		var next = $.Deferred()
+		d.then(function() {
+			_.delay(function() {
+				log(item)
+				next.reject()
+			}, 2000)
+		})
+		return next
+	}, start)
+	start.resolve()
+})

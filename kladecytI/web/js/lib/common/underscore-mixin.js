@@ -54,6 +54,13 @@ define(["underscore-core"], function() {
                 type: 'panel'
             })
         },
+        setWindowTitle: function(typeId) {
+            try {
+                window.document.title = JSON.parse(localStorage.getItem(typeId.id)).title
+            } catch (e) {
+                window.document.title = typeId.id
+            }
+        },
         stringToArray: function (string) {
             var resultArray = string ? string.replace(/\\,/g, "&thisiscomma;").split(/,/).map(function (item) {
                 return item.replace(/&thisiscomma;/g, ',')

@@ -11,6 +11,7 @@ define(["app/common/tabs", "app/common/globals", "app/web/pti-web"], function (t
         tabs.$secondTabs.tabs("option", 'active', 0)
         tabs.playingReady.then(function() {
             window.playlist.addElements(window.location.hash.replace("#", "").split(","), true)
+            window.playlist.on('selected', _.setWindowTitle)
         })
         $.when(tabs.playingReady, ptiWeb.youtubeReady, ptiWeb.soundcloudReady).then(function() {
             var currVideo = window.playlist.getSelectedVideoDiv()

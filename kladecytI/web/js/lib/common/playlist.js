@@ -12,6 +12,7 @@ define(["common/ptilist"], function (Ptilist) {
         me.options.ptiElementClass = "pti-element-video " + _.default(me.options.ptiElementClass, "")
         me.options.fillVideoElement = _.default(me.options.fillVideoElement, true)
         me.options.playerType = _.default(me.options.playerType, false)
+        me._callbacksAdd({ name: 'selected', flags: 'memory' })
         me.parent._init.call(this, appendToElementExpression, me.options)
 
         if(options.execute && options.execute.length) {
@@ -19,6 +20,25 @@ define(["common/ptilist"], function (Ptilist) {
                 _.isFunction(item) && item.call(me)
             })
         }
+    }
+
+    Playlist.prototype._callbacksAdd = function() {
+        this._callbacks = this._callbacks || {}
+        for(var i in arguments) {
+            var eventCallback = _.isObject(arguments[i]) ? _.object([arguments[i].name], [new $.Callbacks(arguments[i].flags)]) : _.object([arguments[i]], [new $.Callbacks()])
+            _.extend(this._callbacks, eventCallback)
+        }
+    }
+    Playlist.prototype._callbacksFindAndCall = function(eventName, methodName) {
+        var callback = this._callbacks[eventName]
+        callback && callback[methodName].apply(null, (_.toArray(arguments).slice(2)))
+        return callback
+    }
+    Playlist.prototype._callbacksFire = function(eventName, data) {
+        var callback = this._callbacksFindAndCall(eventName, 'fire', data)
+    }
+    Playlist.prototype._callbacksRemove = function(eventName, func) {
+        var callback = this._callbacksFindAndCall(eventName, 'remove', func)
     }
 
     Playlist.prototype._createHeader = function () {
@@ -279,6 +299,10 @@ define(["common/ptilist"], function (Ptilist) {
         return this.getPtiElements()[index]
     }
 
+    Playlist.prototype.on = function (eventName, func) {
+        var callback = this._callbacksFindAndCall(eventName, 'add', func)
+    }
+
     Playlist.prototype.playAction = function () {
         this.$.container.addClass('pti-action-play')
         Playlist.prototype.setActionBackground.call(this)
@@ -321,15 +345,10 @@ define(["common/ptilist"], function (Ptilist) {
         var videoData = videoObject.videoData
         var videoDiv = videoObject.videoDiv
         $(videoDiv).addClass("selected")
+        this._callbacksFire('selected', _.stringToTypeId(videoDiv.id))
         if (this.options.id && _.default(setStorage, true)) {
             console.log('setting currVideoData to storage')
             $.jStorage.set("selected_" + this.options.id, { source:this.options.uid, index:this.getSelectedVideoIndex(), play: true, date: Date.now() })
-        }
-        try {
-            window.document.title = videoData.id
-            window.document.title = JSON.parse(localStorage.getItem(videoData.id)).title
-        } catch (e) {
-            console.log("couldn't set video id in window.title")
         }
     }
 

@@ -13,6 +13,13 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
                     Playlist.prototype._listenPlayingIdExecute
                 ]
             });
+        window.playlist.on('selected', function(typeId) {
+            try {
+                chrome.browserAction.setTitle({ title: JSON.parse(localStorage.getItem(typeId.id)).title })
+            } catch (e) {
+                chrome.browserAction.setTitle({ title: typeId.id })
+            }
+        })
         require(["app/background/synchronization", "app/background/commands", "app/background/contextMenus"], function(synchronization) {
             synchronization.init()
         })
