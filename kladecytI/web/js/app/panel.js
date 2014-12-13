@@ -1,9 +1,11 @@
 define(["player/player-widget", "underscore"], function(PlayerWidget) {
+    var setWindowTitle = _.setWindowTitle.bind(window)
     chrome.windows.getAll(function (windows) {
         if(_.findWhere(windows, { type: 'panel' })) {
             var $window = $(window), backgroundWindow = chrome.extension.getBackgroundPage()
             window.playlist = backgroundWindow.playlist
-            window.playlist.on('selected', _.setWindowTitle)
+            window.playlist.on('selected', setWindowTitle)
+            window.addEventListener("unload", _.bind(window.playlist._callbacksRemove, window.playlist, 'selected', setWindowTitle), true);
             window.playerWidget = new PlayerWidget('#playerWidgetContainer', true)
             window.playerWidget.data.listenObject = _.getPti()
             window.ptiInterval = setInterval(function() {
