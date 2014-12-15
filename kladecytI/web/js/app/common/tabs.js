@@ -45,8 +45,9 @@ define(["jquery-ui", "underscore"], function () {
             var newTab = $(ui.newTab);
             var newTabText = newTab.text().trim();
             if (newTabText == "Options") {
-                require(["app/common/hash-qr"], function (redraw) {
-                    redraw()
+                require(["app/common/hash-qr"], function (hashqr) {
+                    hashqr.redraw()
+                    initOptions(hashqr)
                 })
             }
             if (newTabText == "Player") {
@@ -121,6 +122,11 @@ define(["jquery-ui", "underscore"], function () {
 //first textParse end
 
 //first options start
+    var initOptions = _.once(function(hashqr) {
+        playingReady.then(function() {
+            window.playlist.on('selected', hashqr.setFullURL)
+        })
+    })
 //first options end
 
 //first playlists start
@@ -156,8 +162,8 @@ define(["jquery-ui", "underscore"], function () {
             var newTab = $(ui.newTab);
             var newTabText = newTab.text().trim();
             if (newTabText == "Playing") {
-                require(["app/common/hash-qr", "pti-playlist"], function (redrawHashAndQRCode, Playlist) {
-                    window.tabs.second.playlist = initPlaying(redrawHashAndQRCode, Playlist)
+                require(["app/common/hash-qr", "pti-playlist"], function (hashqr, Playlist) {
+                    window.tabs.second.playlist = initPlaying(hashqr.redraw, Playlist)
                 })
             }
             if (newTabText == "Playlists") {

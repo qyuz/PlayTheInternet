@@ -41,6 +41,11 @@ function SiteHandlerManager() {
         }
     }
 
+    SiteHandlerManager.prototype.fullURL = function (type, id) {
+        var handler = SiteHandlerManager.prototype.getHandler(type)
+        return handler.fullURL(id)
+    }
+
     SiteHandlerManager.prototype.getHandler = function (type) {
         var handler = SiteHandlerManager.prototype.mapping[type]
         if (handler) {
@@ -125,6 +130,7 @@ function YoutubeHandler() {
         this.thumbnail = data.thumbnail.sqDefault
     }
     YoutubeHandler.prototype.defaultThumbnail = "/css/resources/youtube.jpg"
+    YoutubeHandler.prototype.fullURL = function(id) { return "https://www.youtube.com/watch?v=" + id }
     YoutubeHandler.prototype.prefix = "y"
     //TODO https://www.youtube.com/embed/?listType=playlist&amp;list=PLhBgTdAWkxeBX09BokINT1ICC5IZ4C0ju&amp;showinfo=1
     YoutubeHandler.prototype.regex = /(youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11})/
@@ -191,6 +197,7 @@ function YoutubeHandler() {
 function SoundCloudHandler() {
     SoundCloudHandler.prototype.rawTemplate = PTITemplates.prototype.SoundCloudRawTemplate
     SoundCloudHandler.prototype.defaultThumbnail = "/css/resources/sc.jpeg"
+    SoundCloudHandler.prototype.fullURL = function(id) { return "https://soundcloud.com/" + id }
     SoundCloudHandler.prototype.prefix = "s"
 //    %3F
     SoundCloudHandler.prototype.regex = /((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<>]+)/
@@ -212,6 +219,7 @@ function VimeoHandler() {
         this.thumbnail = data.thumbnail_medium
     }
     VimeoHandler.prototype.defaultThumbnail = "/css/resources/vimeo.jpg"
+    VimeoHandler.prototype.fullURL = function(id) { return "http://vimeo.com/" + id }
     VimeoHandler.prototype.prefix = 'v'
     VimeoHandler.prototype.regex = /vimeo.com\\?\/((video\/)|(moogaloop.swf\?.*clip_id=))?(\d+)/
     VimeoHandler.prototype.regexGroup = 4

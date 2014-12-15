@@ -1,4 +1,4 @@
-define(["underscore", "app/common/tabs"], function (a) {
+define(["underscore"], function (a) {
     function buildQR() {
         if (typeof playlist != "undefined") {
             var playlistHash = playlist.buildHash(), location = 'http://playtheinter.net/play.html'
@@ -28,9 +28,17 @@ define(["underscore", "app/common/tabs"], function (a) {
         }
     }
 
+    function setFullURL(typeId) {
+        var fullURL = SiteHandlerManager.prototype.fullURL(typeId.type, typeId.id)
+        $('#fullURLInput').val(fullURL)
+        $('#fullURLLinkA').attr('href', fullURL)
+    }
+
     function redrawHashAndQRCode() {
         if (typeof playlist != "undefined") {
             window.location.hash = playlist.getIds()
+            var _pti = _.getPti()
+            _pti.data.currentPlayer && _pti.data.videoId && setFullURL({ type: _pti.data.currentPlayer, id: _pti.data.videoId })
             $('#buildHashInput').val('http://playtheinter.net/play.html' + playlist.buildHash())
             $('#longLinkA').attr('href', 'http://playtheinter.net/play.html' + playlist.buildHash())
         }
@@ -41,5 +49,5 @@ define(["underscore", "app/common/tabs"], function (a) {
         }
     }
 
-    return redrawHashAndQRCode
+    return { redraw: redrawHashAndQRCode, setFullURL: setFullURL }
 })

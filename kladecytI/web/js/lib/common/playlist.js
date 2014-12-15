@@ -357,7 +357,7 @@ define(["common/ptilist"], function (Ptilist) {
         var videoData = videoObject.videoData
         var videoDiv = videoObject.videoDiv
         $(videoDiv).addClass("selected")
-        this._callbacksFire('selected', _.stringToTypeId(videoDiv.id))
+        videoDiv && this._callbacksFire('selected', _.stringToTypeId(videoDiv.id))
         if (this.options.id && _.default(setStorage, true)) {
             console.log('setting currVideoData to storage')
             $.jStorage.set("selected_" + this.options.id, { source:this.options.uid, index:this.getSelectedVideoIndex(), play: true, date: Date.now() })

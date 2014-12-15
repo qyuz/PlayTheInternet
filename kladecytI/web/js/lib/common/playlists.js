@@ -63,8 +63,8 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
                 } else {
                     playlist.playNextVideo()
                 }
-                require(["app/common/hash-qr"], function (redraw) {
-                    redraw()
+                require(["app/common/hash-qr"], function (hashqr) {
+                    hashqr.redraw()
                 })
             }, 100)
         })
