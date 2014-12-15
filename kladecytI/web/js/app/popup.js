@@ -11,10 +11,6 @@ define(["player/player-widget", "app/common/tabs", "underscore"], function (Play
         tabs.$firstTabs.tabs("option", "active", 1)
         tabs.$secondTabs.tabs("option", "active", 0)
 
-        $.when(tabs.playingReady).then(function() {
-            window.playlist.on('selected', _.setWindowTitle)
-        })
-
         //hack to make scrollbar disappear
         $('html, body').css('height', '600px')
     })

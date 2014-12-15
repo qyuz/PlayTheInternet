@@ -211,6 +211,7 @@ define(["jquery-ui", "underscore"], function () {
             }, playingOptions)
         )
         window.playlist = window.tabs.second.playing //can remove this
+		window.playlist.on('selected', _.setWindowTitle)
         playingReady.resolve()
         return window.tabs.second.playing
     })
