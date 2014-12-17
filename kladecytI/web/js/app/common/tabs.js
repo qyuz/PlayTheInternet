@@ -10,6 +10,9 @@ define(["jquery-ui", "underscore"], function () {
             tabs[jStorageType] = new Playlists($playlistsEl, {
                 jStorageType: jStorageType,
                 playlistHeaderConfigKey: headerConfigKey,
+                playlistQuickPlay: function() {
+                    this._playThis(this.options.id)
+                },
                 playlistTabsGetPlaylist: function () {
                     this.tabsGetPlaylist = getPlaylist
                 },

@@ -37,6 +37,7 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
                     elementSize: me.options.playlistElementSize,
                     elementSplit: me.options.playlistElementSplit,
                     headerConfigKey: me.options.playlistHeaderConfigKey,
+                    quickPlay: me.options.playlistQuickPlay,
                     execute: [
                         Playlist.prototype.addAction,
                         me.options.playlistTabsGetPlaylist

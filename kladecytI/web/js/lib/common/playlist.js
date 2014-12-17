@@ -115,10 +115,8 @@ define(["common/ptilist"], function (Ptilist) {
         var thumbnail = SiteHandlerManager.prototype.getThumbnail( playlist.length ? playlist[0] : "" )
         var dao = Playlist.prototype.DAO(id).setVideos(playlist, { name: name, thumbnail: thumbnail})
         dao.set()
-        if(play) {
-            $.jStorage.set('selected_' + dao.key, { index: 0, play: true, date: Date.now() })
-            $.jStorage.set('playingId', dao.key)
-        }
+        $.jStorage.set('selected_' + id, { index: 0, play: play, date: Date.now() })
+        play && Playlist.prototype._playThis(id)
     }
 
     Playlist.prototype._drawPtiElement = function(typeIdText, $ptiElement) {
@@ -161,6 +159,22 @@ define(["common/ptilist"], function (Ptilist) {
     Playlist.prototype._listenPlaySelectedVideo = function (key, action) {
         var storageData = this._redrawContentGetCacheObject(key, action, 'listen play selected video', true)
         storageData && storageData.play && storageData.index >= 0 && this.playVideo({ index: storageData.index }, storageData.playerState, false)
+    }
+
+    Playlist.prototype._playThis = function(playlistId) {
+        (window.chrome && window.chrome.extension) ? $.jStorage.set('playingId', playlistId) : window.playlist.setId(playlistId) //TODO dirty, do other way
+        window.playlist.scrollToSelected()
+        var selected = $.jStorage.get("selected_" + playlistId), selectedId = selected && selected.index >= 0 && Playlist.prototype.DAO(playlistId).storageObj.data[selected.index]
+        if(selectedId) {
+            var typeId = _.stringToTypeId(selectedId)
+            window.playerWidget.loadVideo(typeId.type, typeId.id)
+            window.playerWidget.data.listenObject.playVideo()
+        } else {
+            window.playlist.playNextVideo()
+        }
+        require(["app/common/hash-qr"], function (hashqr) {
+            hashqr.redraw()
+        })
     }
 
     Playlist.prototype._recalculateContentBuildStorageObject = function() {

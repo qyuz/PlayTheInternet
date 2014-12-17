@@ -36,6 +36,7 @@
 
 /* videoText error-text */
 .pti-ptilist .pti-content>* .error-text { position: absolute; }
+.pti-ptilist .pti-content>* .error-text a { pointer-events: all!important; } /* get rid of important */
 .pti-ptilist .pti-content>* .videoText { position: absolute; word-break: break-all; font-family: Arial, Helvetica, sans-serif; }
 
 .pti-ptilist .pti-content.pti-view-big>* .videoText, .pti-ptilist .pti-content.pti-view-big>* .videoText, .pti-ptilist .pti-content.pti-view-medium>* .videoText, .pti-ptilist .pti-content.pti-view-medium>* .videoText { padding-top: 2px; }
