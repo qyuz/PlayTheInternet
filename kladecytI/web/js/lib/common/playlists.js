@@ -54,20 +54,7 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
 
         me.$.content.on('click', '.pti-play-this', function(event, ui) {
             var $button = $(this), playlistId = me.getPtiElement(this).attr('id');
-            (window.chrome && window.chrome.extension) ? $.jStorage.set('playingId', playlistId) : playlist.setId(playlistId) //TODO dirty, do other way
-            playlist.scrollToSelected()
-            _.delay(function() { //get rid of delay
-                var videoFeed = playlist._getSelectedVideoDiv().data('data')
-                if(videoFeed) {
-                    playerWidget.loadVideo(videoFeed.type, videoFeed.id)
-                    playerWidget.data.listenObject.playVideo()
-                } else {
-                    playlist.playNextVideo()
-                }
-                require(["app/common/hash-qr"], function (hashqr) {
-                    hashqr.redraw()
-                })
-            }, 100)
+            Playlist.prototype._playThis(playlistId)
         })
 
         me.$.content.on('click', '.pti-add-all', function(event, ui) {

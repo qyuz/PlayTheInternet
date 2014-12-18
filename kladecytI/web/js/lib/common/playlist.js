@@ -152,9 +152,6 @@ define(["common/ptilist"], function (Ptilist) {
         } else {
             window.playlist.playNextVideo()
         }
-        require(["app/common/hash-qr"], function (hashqr) {
-            hashqr.redraw()
-        })
     }
 
     Playlist.prototype._recalculateContentBuildStorageObject = function() {
