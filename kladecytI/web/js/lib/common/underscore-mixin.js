@@ -1,5 +1,5 @@
 define(["underscore-core"], function() {
-    _.mixin({
+    var underscore_mixin = {
         arrayToString: function (arr) {
             return arr.map(function (item) {
                 return item.replace(/(,)/g, "\\$1")
@@ -72,8 +72,26 @@ define(["underscore-core"], function() {
             var typeIdObj = { type: typeIdText.replace(pattern, '$1'), id: typeIdText.replace(pattern, '$2') };
             return typeIdObj
         },
+        typeId: function(a, b) {
+            if(_.isArguments(a)) {
+                b = a[1]
+                a = a[0]
+            }
+            if (a && a.type && a.id) {
+                return a
+            } else if (a && b) {
+                return { type: a, id: b }
+            } else if (a) {
+                return underscore_mixin.stringToTypeId(a)
+            } else {
+                console.log("Couldn't determine typeId", a, b)
+                throw "Couldn't determine typeId, check log"
+            }
+        },
         typeIdToString: function(typeIdObj) {
             return typeIdObj.type && typeIdObj.id ? typeIdObj.type + "=" + typeIdObj.id : ""
         }
-    })
+    }
+
+    _.mixin(underscore_mixin)
 })

@@ -12,33 +12,15 @@ define(["common/ptilist"], function (Ptilist) {
         me.options.ptiElementClass = "pti-element-video " + _.default(me.options.ptiElementClass, "")
         me.options.fillVideoElement = _.default(me.options.fillVideoElement, true)
         me.options.playerType = _.default(me.options.playerType, false)
-        me._callbacksAdd({ name: 'selected', flags: 'memory' })
         me.parent._init.call(this, appendToElementExpression, me.options)
+        me._callbacksAdd({ name: 'selected', flags: 'memory' })
+        me._recalculateContentImmediateFire = function(){}
 
         if(options.execute && options.execute.length) {
             options.execute.forEach(function(item) {
                 _.isFunction(item) && item.call(me)
             })
         }
-    }
-
-    Playlist.prototype._callbacksAdd = function() {
-        this._callbacks = this._callbacks || {}
-        for(var i in arguments) {
-            var eventCallback = _.isObject(arguments[i]) ? _.object([arguments[i].name], [new $.Callbacks(arguments[i].flags)]) : _.object([arguments[i]], [new $.Callbacks()])
-            _.extend(this._callbacks, eventCallback)
-        }
-    }
-    Playlist.prototype._callbacksFindAndCall = function(eventName, methodName) {
-        var callback = this._callbacks[eventName]
-        callback && callback[methodName].apply(null, (_.toArray(arguments).slice(2)))
-        return callback
-    }
-    Playlist.prototype._callbacksFire = function(eventName, data) {
-        var callback = this._callbacksFindAndCall(eventName, 'fire', data)
-    }
-    Playlist.prototype._callbacksRemove = function(eventName, func) {
-        var callback = this._callbacksFindAndCall(eventName, 'remove', func)
     }
 
     Playlist.prototype._createHeader = function () {
@@ -185,7 +167,7 @@ define(["common/ptilist"], function (Ptilist) {
     Playlist.prototype._recalculateContentImmediate = function(cache) {
         this.parent._recalculateContentImmediate.call(this, cache)
         this.options.id && $.jStorage.set('selected_' + this.options.id, { source: this.options.uid, index: this.getSelectedVideoIndex(), date: Date.now() })
-        _.isFunction(this.options.recalculateContentImmediateCallback) && this.options.recalculateContentImmediateCallback()
+        this._callbacksFire('change')
     }
 
     Playlist.prototype._redrawContent = function(storageObject, scrollTo) {
@@ -328,10 +310,6 @@ define(["common/ptilist"], function (Ptilist) {
         var index = this.getSelectedVideoIndex()
         index = index <= 0 ? this.getIdsCount() - 1 : --index
         return this.getPtiElements()[index]
-    }
-
-    Playlist.prototype.on = function (eventName, func) {
-        var callback = this._callbacksFindAndCall(eventName, 'add', func)
     }
 
     Playlist.prototype.playAction = function () {

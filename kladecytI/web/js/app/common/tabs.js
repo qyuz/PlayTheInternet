@@ -208,12 +208,12 @@ define(["jquery-ui", "underscore"], function () {
         }
         window.tabs.second.playing = new Playlist("#ulSecond", _.extend({
                 notice: "This is your playlist. Drop songs in here and listen.",
-                recalculateContentImmediateCallback: redrawHashAndQRCode,
                 connectWith: "connected-playlist",
                 headerConfigKey: "lConfigPlaylistHeader"
             }, playingOptions)
         )
         window.playlist = window.tabs.second.playing //can remove this
+		window.playlist.on('change', redrawHashAndQRCode)
 		window.playlist.on('selected', _.setWindowTitle)
         playingReady.resolve()
         return window.tabs.second.playing

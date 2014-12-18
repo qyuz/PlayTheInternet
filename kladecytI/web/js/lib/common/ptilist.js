@@ -35,6 +35,9 @@ define(["underscore", "slimscroll"], function () {
         me.options.notice = _.default(me.options.notice, "")
         me.options.uid = _.guid()
 
+        //events
+        me._callbacksAdd({ name: 'change', flags: 'memory' })
+
         //draw
         me.$ = {}
         me.$.container = $(me.options.containerElementExpression)
@@ -157,6 +160,25 @@ define(["underscore", "slimscroll"], function () {
         this.setId(this.options.id, this.options.listenId, this.options.scrollTo)
     }
 
+    Ptilist.prototype._callbacksAdd = function() {
+        this._callbacks = this._callbacks || {}
+        for(var i in arguments) {
+            var eventCallback = _.isObject(arguments[i]) ? _.object([arguments[i].name], [new $.Callbacks(arguments[i].flags)]) : _.object([arguments[i]], [new $.Callbacks()])
+            _.extend(this._callbacks, eventCallback)
+        }
+    }
+    Ptilist.prototype._callbacksFindAndCall = function(eventName, methodName) {
+        var callback = this._callbacks[eventName]
+        callback && callback[methodName].apply(null, (_.toArray(arguments).slice(2)))
+        return callback
+    }
+    Ptilist.prototype._callbacksFire = function(eventName, data) {
+        var callback = this._callbacksFindAndCall(eventName, 'fire', data)
+    }
+    Ptilist.prototype._callbacksRemove = function(eventName, func) {
+        var callback = this._callbacksFindAndCall(eventName, 'remove', func)
+    }
+    
     Ptilist.prototype._createHeader = function () {
         var me = this
         var $header = $('<div class="pti-header"/>')
@@ -230,10 +252,7 @@ define(["underscore", "slimscroll"], function () {
     Ptilist.prototype._ptiElement = PTITemplates.prototype.PtilistElement
 
     Ptilist.prototype._recalculateContent = function () {
-        var me = this
-        _.defer(function () {
-            me._recalculateContentImmediate()
-        })
+        _.defer(_.bind(this._recalculateContentImmediate, this))
     }
 
     Ptilist.prototype._recalculateContentBuildStorageObject = function () {
@@ -247,6 +266,11 @@ define(["underscore", "slimscroll"], function () {
             var storageObj = this._recalculateContentBuildStorageObject()
             storageObj && $.jStorage.set(storageObj.id, storageObj)
         }
+        this._recalculateContentImmediateFire()
+    }
+
+    Ptilist.prototype._recalculateContentImmediateFire = function() {
+        this._callbacksFire('change')
     }
 
     Ptilist.prototype._redrawContent = function (storageObject, scrollTo) {
@@ -401,6 +425,11 @@ define(["underscore", "slimscroll"], function () {
             return $(item).attr('id')
         })).get()
     }
+
+    Ptilist.prototype.on = function (eventName, func) {
+        var callback = this._callbacksFindAndCall(eventName, 'add', func)
+    }
+
     Ptilist.prototype.scrollTo = function(index) {
         var rowHeight = this.$.content.prop('scrollHeight') / this.getIdsCount()
 		var elementHeight = this.getPtiElements().height()

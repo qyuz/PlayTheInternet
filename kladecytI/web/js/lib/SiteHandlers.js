@@ -41,9 +41,10 @@ function SiteHandlerManager() {
         }
     }
 
-    SiteHandlerManager.prototype.fullURL = function (type, id) {
-        var handler = SiteHandlerManager.prototype.getHandler(type)
-        return handler.fullURL(id)
+    SiteHandlerManager.prototype.fullURL = function () {
+        var typeId = _.typeId(arguments)
+        var handler = SiteHandlerManager.prototype.getHandler(typeId.type)
+        return handler.fullURL(typeId.id)
     }
 
     SiteHandlerManager.prototype.getHandler = function (type) {
