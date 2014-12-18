@@ -76,7 +76,7 @@ define(["common/ptilist"], function (Ptilist) {
             var radio = $menu.find('input[type="radio"]:checked').parent().text()
             var type = radio.match('Playlist') ? 'l' : 's'
             var id = type + "Playlist" + _.guid()
-            me._createPlaylist(id, name, play)
+            me.createPlaylist(id, name, play)
 
             $input.val('Playlist created')
             $input.css('color', 'green')
@@ -110,12 +110,10 @@ define(["common/ptilist"], function (Ptilist) {
         return $header.add($menu)
     }
 
-    Playlist.prototype._createPlaylist = function(id, name, play) {
-        var selected = this.getIdsUiSelected(), playlist = selected.length ? selected : this.getIds()
-        var thumbnail = SiteHandlerManager.prototype.getThumbnail( playlist.length ? playlist[0] : "" )
+    Playlist.prototype._createPlaylist = function(id, name, playlist, thumbnail, play) {
         var dao = Playlist.prototype.DAO(id).setVideos(playlist, { name: name, thumbnail: thumbnail})
         dao.set()
-        $.jStorage.set('selected_' + id, { index: 0, play: play, date: Date.now() })
+        $.jStorage.set('selected_' + id, { index: 0, date: Date.now() })
         play && Playlist.prototype._playThis(id)
     }
 
@@ -233,6 +231,12 @@ define(["common/ptilist"], function (Ptilist) {
 
     Playlist.prototype.buildHash= function() {
         return '#' + this.getIds()
+    }
+
+    Playlist.prototype.createPlaylist = function(id, name, play) {
+        var selected = this.getIdsUiSelected(), playlist = selected.length ? selected : this.getIds()
+        var thumbnail = SiteHandlerManager.prototype.getThumbnail( playlist.length ? playlist[0] : "" )
+        this._createPlaylist(id, name, playlist, thumbnail, play)
     }
 
     Playlist.prototype.DAO = function(key) {

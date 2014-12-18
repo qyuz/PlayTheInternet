@@ -11,7 +11,7 @@ define(["jquery-ui", "underscore"], function () {
                 jStorageType: jStorageType,
                 playlistHeaderConfigKey: headerConfigKey,
                 playlistQuickPlay: function() {
-                    this._playThis(this.options.id)
+                    this.getIdsUiSelected().length ? this.createPlaylist('qPlaylist', 'Quick Play', true) : this._playThis(this.options.id)
                 },
                 playlistTabsGetPlaylist: function () {
                     this.tabsGetPlaylist = getPlaylist
@@ -104,7 +104,7 @@ define(["jquery-ui", "underscore"], function () {
                 playerType: false,
                 connectWith: "connected-playlist",
                 headerConfigKey: "lConfigTextAreaParsePlaylistHeader",
-                quickPlay: _.partial(Playlist.prototype._createPlaylist, 'qPlaylist', 'Quick Play', true),
+                quickPlay: _.partial(Playlist.prototype.createPlaylist, 'qPlaylist', 'Quick Play', true),
                 execute: [
                     Playlist.prototype.addAction,
                     function () {

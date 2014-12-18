@@ -16,7 +16,7 @@ define(["pti-playlist"], function(Playlist) {
     window.parsedPlaylist = new Playlist('#parsedPlaylist', {
             connectWith: "connected-playlist",
             headerConfigKey: "lConfigParsedPlaylistHeader",
-            quickPlay: _.partial(Playlist.prototype._createPlaylist, 'qPlaylist', 'Quick Play', true),
+            quickPlay: _.partial(Playlist.prototype.createPlaylist, 'qPlaylist', 'Quick Play', true),
             execute: [
                 Playlist.prototype.addAction,
                 function() {
