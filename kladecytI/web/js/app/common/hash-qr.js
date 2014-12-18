@@ -29,8 +29,8 @@ define(["underscore"], function (a) {
         }
     }
 
-    function setFullURL(typeId) {
-        var fullURL = SiteHandlerManager.prototype.fullURL(typeId.type, typeId.id)
+    function setFullURL(type, id) {
+        var fullURL = SiteHandlerManager.prototype.fullURL(type, id)
         $('#fullURLInput').val(fullURL)
         $('#fullURLLinkA').attr('href', fullURL)
     }
@@ -39,7 +39,7 @@ define(["underscore"], function (a) {
         if (window.playlist) {
             window.location.hash = window.playlist.getIds()
             var _pti = _.getPti()
-            _pti.data.currentPlayer && _pti.data.videoId && setFullURL({ type: _pti.data.currentPlayer, id: _pti.data.videoId })
+            _pti.data.currentPlayer && _pti.data.videoId && setFullURL( _pti.data.currentPlayer, _pti.data.videoId )
             $('#buildHashInput').val('http://playtheinter.net/play.html' + window.playlist.buildHash())
             $('#longLinkA').attr('href', 'http://playtheinter.net/play.html' + window.playlist.buildHash())
         }
