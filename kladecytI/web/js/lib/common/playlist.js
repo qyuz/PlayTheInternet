@@ -142,13 +142,13 @@ define(["common/ptilist"], function (Ptilist) {
     }
 
     Playlist.prototype._playThis = function(playlistId) {
-        (window.chrome && window.chrome.extension) ? $.jStorage.set('playingId', playlistId) : window.playlist.setId(playlistId) //TODO dirty, do other way
+        window.playlist.options.id != playlistId && (window.chrome && window.chrome.extension ? $.jStorage.set('playingId', playlistId) : window.playlist.setId(playlistId)) //TODO dirty, do other way
         window.playlist.scrollToSelected()
         var selected = $.jStorage.get("selected_" + playlistId), selectedId = selected && selected.index >= 0 && Playlist.prototype.DAO(playlistId).storageObj.data[selected.index]
         if(selectedId) {
             var typeId = _.stringToTypeId(selectedId)
             window.playerWidget.loadVideo(typeId.type, typeId.id)
-            window.playerWidget.data.listenObject.playVideo()
+            _.delay(_.bind(window.playerWidget.data.listenObject.playVideo, window.playerWidget.data.listenObject), 250) //using delay because idk the hell why makes _listenPlayingId execute twice on app's first invocation
         } else {
             window.playlist.playNextVideo()
         }
