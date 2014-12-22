@@ -12,8 +12,8 @@ define(["common/ptilist"], function (Ptilist) {
         me.options.ptiElementClass = "pti-element-video " + _.default(me.options.ptiElementClass, "")
         me.options.fillVideoElement = _.default(me.options.fillVideoElement, true)
         me.options.playerType = _.default(me.options.playerType, false)
+        me.options.callbacks = [{ name: 'selected', flags: 'memory' }]
         me.parent._init.call(this, appendToElementExpression, me.options)
-        me._callbacksAdd({ name: 'selected', flags: 'memory' })
         me._recalculateContentImmediateFire = function(){}
 
         if(options.execute && options.execute.length) {

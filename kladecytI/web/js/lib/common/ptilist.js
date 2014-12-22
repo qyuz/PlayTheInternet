@@ -36,6 +36,7 @@ define(["underscore", "slimscroll"], function () {
         me.options.uid = _.guid()
 
         //events
+        me.options.callbacks && me._callbacksAdd.apply(me, me.options.callbacks)
         me._callbacksAdd({ name: 'change', flags: 'memory' })
 
         //draw
