@@ -242,7 +242,7 @@ define(["jquery-ui", "underscore"], function () {
 //SECOND CREATE TABS END
 
     //convenience stuff after tab initialization
-    $('#tabs a, #secondViewTabs a').css('pointer-events', 'all')
+    $('#tabs>.nav>li>a, #secondViewTabs>.nav>li>a').css('pointer-events', 'all')
     $secondTabs.tabs("option", 'active', 0)
 
     return { $firstTabs: $firstTabs, $secondTabs: $secondTabs, playingReady: playingReady }
