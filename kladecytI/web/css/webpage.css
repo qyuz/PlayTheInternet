@@ -4,6 +4,7 @@ html { width: 100%; height: 100%; overflow: hidden; }
 #splitViews { top: 36px; right: 1px; bottom: 1px; left: 1px; }
 
 .pti-ptilist .pti-header+.pti-menu+.slimScrollDiv { top: 95px; }
+.pti-ptilist .pti-menu label:nth-of-type(3) { display: block; margin-left: 10px; line-height: 30px;; }
 .pti-ptilist .pti-menu label { display: none; }
 .pti-ptilist .pti-menu>input[type=button] { margin-top: 2px; }
 
