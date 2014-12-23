@@ -161,6 +161,10 @@ define(["underscore", "slimscroll"], function () {
         this.setId(this.options.id, this.options.listenId, this.options.scrollTo)
     }
 
+    Ptilist.prototype._addElementsFire = function() {
+        this._callbacksFire('change')
+    }
+
     Ptilist.prototype._callbacksAdd = function() {
         this._callbacks = this._callbacks || {}
         for(var i in arguments) {
@@ -395,6 +399,8 @@ define(["underscore", "slimscroll"], function () {
             })
             deferred.then(defObj.then)
             deferred = defObj.defer
+        } else {
+            this._addElementsFire()
         }
 
         return deferred
