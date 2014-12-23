@@ -93,9 +93,9 @@ define(["common/ptilist"], function (Ptilist) {
     }
 
     Playlist.prototype._createPlaylist = function(id, name, playlist, thumbnail, play) {
+        $.jStorage.set('selected_' + id, { index: 0, date: Date.now() })
         var dao = Playlist.prototype.DAO(id).setVideos(playlist, { name: name, thumbnail: thumbnail})
         dao.set()
-        $.jStorage.set('selected_' + id, { index: 0, date: Date.now() })
         play && Playlist.prototype._playThis(id)
     }
 
