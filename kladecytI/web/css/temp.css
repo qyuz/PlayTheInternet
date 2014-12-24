@@ -34,7 +34,7 @@
 .temp-options-short-line { top: 123px; }
 .temp-options-fullurls-line { top: 163px; }
 .temp-options-fullurls-line textarea { resize: none; }
-.temp-panel.temp-options-go-mobile-wrapper { height : 320px; margin-top: 1px; background-color: #f7f7f7; }
+.temp-panel.temp-options-go-mobile-wrapper { height : 300px; margin-top: 1px; background-color: #f7f7f7; }
 .temp-options-go-mobile { position: absolute; width: 100%; }
 .temp-alignQRCode { position: relative; top: -2px; }
 .temp-panel.temp-options-tooltips-wrapper { height: 127px; margin-top: 1px; }
