@@ -71,9 +71,6 @@ define(["jquery-ui", "underscore"], function () {
             if (newTabText == "Install") {
                 require(["app/web/install"])
             }
-            if (newTabText == "Help") {
-                require(["app/common/how"])
-            }
             if (newTabText == "Panel") {
                 _.openPanel()
                 chrome.windows.getAll(function (windows) {
@@ -173,6 +170,9 @@ define(["jquery-ui", "underscore"], function () {
             }
             if (newTabText == "Synch") {
                 fetchSynch()
+            }
+            if (newTabText == "Help") {
+                require(["app/common/how"])
             }
         },
         beforeActivate: function (event, ui) {
