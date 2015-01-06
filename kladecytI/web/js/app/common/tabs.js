@@ -71,16 +71,6 @@ define(["jquery-ui", "underscore"], function () {
             if (newTabText == "Install") {
                 require(["app/web/install"])
             }
-            if (newTabText == "Panel") {
-                _.openPanel()
-                chrome.windows.getAll(function (windows) {
-                    if(_.findWhere(windows, { type: 'panel' })) {
-                        $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-success">You\'ve successfully opened a panel.<br>Make good use of it!</div> </div> </div> </div>')
-                    } else {
-                        $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-danger"><b>Unable to open panel. Follow instructions in open popup window to enable panels.</a></div> </div> </div> </div>')
-                    }
-                })
-            }
         },
         beforeActivate: function (event, ui) {
             ui.oldPanel.addClass('shlop')
@@ -173,6 +163,16 @@ define(["jquery-ui", "underscore"], function () {
             }
             if (newTabText == "Help") {
                 require(["app/common/how"])
+            }
+            if (newTabText == "Panel") {
+                _.openPanel()
+                chrome.windows.getAll(function (windows) {
+                    if(_.findWhere(windows, { type: 'panel' })) {
+                        $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-success">You\'ve successfully opened a panel.<br>Make good use of it!</div> </div> </div> </div>')
+                    } else {00
+                        $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-danger"><b>Unable to open panel. Follow instructions in open popup window to enable panels.</a></div> </div> </div> </div>')
+                    }
+                })
             }
         },
         beforeActivate: function (event, ui) {
