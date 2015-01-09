@@ -43,7 +43,7 @@ define(["underscore"], function (a) {
             $('#buildHashInput').val('http://playtheinter.net/play.html' + window.playlist.buildHash())
             $('#longLinkA').attr('href', 'http://playtheinter.net/play.html' + window.playlist.buildHash())
         }
-        if ($('#tabs').find('.ui-state-active').text().trim() == "Options") {
+        if ($('#tabs').find('.ui-state-active').text().trim() == "Share") {
             require(["qrcode"], function () {
                 buildQR()
             })

@@ -47,10 +47,10 @@ define(["jquery-ui", "underscore"], function () {
         activate: function (event, ui) {
             var newTab = $(ui.newTab);
             var newTabText = newTab.text().trim();
-            if (newTabText == "Options") {
+            if (newTabText == "Share") {
                 require(["app/common/hash-qr"], function (hashqr) {
                     hashqr.redraw()
-                    initOptions(hashqr)
+                    initShare(hashqr)
                 })
             }
             if (newTabText == "Player") {
@@ -111,13 +111,13 @@ define(["jquery-ui", "underscore"], function () {
     })
 //first textParse end
 
-//first options start
-    var initOptions = _.once(function(hashqr) {
+//first share start
+    var initShare = _.once(function(hashqr) {
         playingReady.then(function() {
             window.playlist.on('selected', hashqr.setFullURL)
         })
     })
-//first options end
+//first share end
 
 //first playlists start
     $('#tabs').on('click', 'ul>li>a', function () {
@@ -169,7 +169,7 @@ define(["jquery-ui", "underscore"], function () {
                 chrome.windows.getAll(function (windows) {
                     if(_.findWhere(windows, { type: 'panel' })) {
                         $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-success">You\'ve successfully opened a panel.<br>Make good use of it!</div> </div> </div> </div>')
-                    } else {00
+                    } else {
                         $('#panelDiv').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-danger"><b>Unable to open panel. Follow instructions in open popup window to enable panels.</a></div> </div> </div> </div>')
                     }
                 })
