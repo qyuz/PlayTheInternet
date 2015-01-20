@@ -109,6 +109,19 @@
 .playerWidget .control.volume:hover::-webkit-slider-thumb {
     background-color: #7EA6BF;
 }
+
+.playerWidget .control.recycle {
+    margin: 0px 5px 0px 9px;
+}
+.playerWidget .control.recycle svg {
+    transition: fill 0.5s ease-in-out;
+}
+.playerWidget .control.recycle.confirm svg {
+    fill: salmon;
+}
+.playerWidget .control.recycle.confirmed svg {
+    fill: greenyellow;
+}
 /* CONTROLS END */
 
 /* PROGRESS BAR START */
@@ -117,7 +130,7 @@
     background: #efeff5;
     left: 1px;
     top: 1px;
-    right: 175px;
+    right: 223px;
     padding-right: 2px;
     height: 22px;
     overflow: hidden;

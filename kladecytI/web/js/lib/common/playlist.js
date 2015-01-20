@@ -9,6 +9,7 @@ define(["common/ptilist"], function (Ptilist) {
     Playlist.prototype._init = function (appendToElementExpression, options) {
         var me = this
         me.options = _.extend({}, options)
+        me.options.defaultName = me.options.defaultName || "Rename me"
         me.options.ptiElementClass = "pti-element-video " + _.default(me.options.ptiElementClass, "")
         me.options.fillVideoElement = _.default(me.options.fillVideoElement, true)
         me.options.playerType = _.default(me.options.playerType, false)
@@ -148,7 +149,7 @@ define(["common/ptilist"], function (Ptilist) {
         if(selectedId) {
             var typeId = _.stringToTypeId(selectedId)
             window.playerWidget.loadVideo(typeId.type, typeId.id)
-            _.delay(_.bind(window.playerWidget.data.listenObject.playVideo, window.playerWidget.data.listenObject), 250) //using delay because idk the hell why makes _listenPlayingId execute twice on app's first invocation
+            _.delay(_.bind(window.playerWidget.data.listenObject.playVideo, window.playerWidget.data.listenObject), 400) //using delay because idk the hell why makes _listenPlayingId execute twice on app's first invocation
         } else {
             window.playlist.playNextVideo()
         }
@@ -157,7 +158,7 @@ define(["common/ptilist"], function (Ptilist) {
     Playlist.prototype._recalculateContentBuildStorageObject = function() {
         var superObject = this.parent._recalculateContentBuildStorageObject.call(this)
         var storageObject = $.jStorage.get(this.options.id)
-        var recalculatedObject = _.extend(storageObject ? storageObject : { name: "Rename me!" }, superObject)
+        var recalculatedObject = _.extend(storageObject ? storageObject : { name: this.options.defaultName }, superObject)
         return recalculatedObject
     }
 
@@ -238,11 +239,6 @@ define(["common/ptilist"], function (Ptilist) {
             exists: function() {
                 return Boolean(obj)
             },
-            update: function (obj, update) {
-                _.default(update, true) && _.extend(obj, { updated: Date.now() })
-                _.extend(this.storageObj, obj)
-                return this
-            },
             serialize: function() {
                 this.storageObj.data = _.arrayToString(this.storageObj.data)
                 return this
@@ -256,6 +252,16 @@ define(["common/ptilist"], function (Ptilist) {
             setVideos: function(videosArr, extend) {
                 this.storageObj.data = []
                 return this.addVideos(videosArr, extend)
+            },
+            unshiftVideos: function(videosArr, extend) {
+                this.storageObj.data = videosArr.concat(this.storageObj.data)
+                _.isUndefined(extend) ||  this.update(extend)
+                return this
+            },
+            update: function (obj, update) {
+                _.default(update, true) && _.extend(obj, { updated: Date.now() })
+                _.extend(this.storageObj, obj)
+                return this
             }
         }
     }
@@ -298,9 +304,13 @@ define(["common/ptilist"], function (Ptilist) {
     }
 
     Playlist.prototype.lookupNextSong = function () {
+        return this.getPtiElements()[this.lookUpNextSongIndex()]
+    }
+
+    Playlist.prototype.lookUpNextSongIndex = function() {
         var index = this.getSelectedVideoIndex()
         index = index >= this.getIdsCount() - 1 ? 0 : ++index
-        return this.getPtiElements()[index]
+        return index
     }
 
     Playlist.prototype.lookupPrevSong = function () {
@@ -345,7 +355,7 @@ define(["common/ptilist"], function (Ptilist) {
         this.scrollTo(this.getSelectedVideoIndex())
     }
 
-    Playlist.prototype.selectVideo = function (video, setStorage) {
+    Playlist.prototype.selectVideo = function (video, setStorage, play) {
         this.getPtiElements().removeClass("selected")
         var videoObject = this.getVideoDivAndData(video)
         var videoData = videoObject.videoData
@@ -354,7 +364,7 @@ define(["common/ptilist"], function (Ptilist) {
         videoDiv && this._callbacksFire('selected', _.stringToTypeId(videoDiv.id))
         if (this.options.id && _.default(setStorage, true)) {
             console.log('setting currVideoData to storage')
-            $.jStorage.set("selected_" + this.options.id, { source:this.options.uid, index:this.getSelectedVideoIndex(), play: true, date: Date.now() })
+            $.jStorage.set("selected_" + this.options.id, { source:this.options.uid, index:this.getSelectedVideoIndex(), play: _.default(play, true), date: Date.now() })
         }
     }
 

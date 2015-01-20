@@ -29,6 +29,34 @@ define(["jquery-ui", "underscore"], function () {
         return selectNav
     }
 
+    function playlistFactory($nav, $playlistsEl, name, headerConfigKey, tabs, getPlaylist, quickPlay, id, defaultName, noticeMessage) {
+        var initPlaylist = _.once(function(Playlist) {
+            tabs[name] = new Playlist($playlistsEl, {
+                playerType: false,
+                connectWith: "connected-playlist",
+                headerConfigKey: headerConfigKey,
+                quickPlay: quickPlay,
+                id: id,
+                defaultName: defaultName,
+                notice: noticeMessage,
+                execute: [
+                    Playlist.prototype.addAction,
+                    function () {
+                        this.tabsGetPlaylist = getPlaylist
+                    }
+                ]
+            })
+            return tabs[name]
+        })
+        var selectNav = function() {
+            require(["pti-playlist"], function (Playlist) {
+                tabs.playlist = initPlaylist(Playlist)
+            })
+        }
+        $nav.click(selectNav)
+        return selectNav
+    }
+
     function fetchSynch() {
         require(["app/background/synchronization"], function (synchronization) {
             chrome.storage.sync.get(function (sync) {
@@ -60,9 +88,6 @@ define(["jquery-ui", "underscore"], function () {
                 tabsPlayerContainer.addClass('temp-absolute-off-screen')
                 tabsPlayerContainer.removeClass('tabs-player-container')
             }
-            if (newTabText == "Text") {
-                createTextParsePlaylist()
-            }
             if (newTabText == "Playlists") {
             }
             if (newTabText == "Synch") {
@@ -85,28 +110,14 @@ define(["jquery-ui", "underscore"], function () {
 //first player end
 
 //first textParse start
-    var createTextParsePlaylist = _.once(function () {
-        require(["pti-playlist"], function (Playlist) {
-            window.textParsePlaylist = new Playlist("#textAreaParsePlaylist", {
-                playerType: false,
-                connectWith: "connected-playlist",
-                headerConfigKey: "lConfigTextAreaParsePlaylistHeader",
-                quickPlay: _.partial(Playlist.prototype.createPlaylist, 'qPlaylist', 'Quick Play', true),
-                execute: [
-                    Playlist.prototype.addAction,
-                    function () {
-                        this.tabsGetPlaylist = window.tabs.second.getPlaylist
-                    }
-                ]
-            })
-            window.tabs.first.playlist = textParsePlaylist //TODO dirty, do other way
-        })
+    var selectTextAreaPlaylist = playlistFactory($('a[href="#tAreaDiv"]'), $("#textAreaParsePlaylist"), 'textParse', "lConfigTextAreaParsePlaylistHeader", window.tabs.first, secondGetPlaylist, function() {
+        this.createPlaylist('qPlaylist', 'Quick Play', true) //we want code to be synchronous, so had to avoid require
     })
     $('#tAreaParseButton').click(function () {
         var tAreaText = $('#tArea').val()
-        window.textParsePlaylist._emptyContent();
+        window.tabs.first.textParse._emptyContent();
         require(["cparse"], function () {
-            window.textParsePlaylist.addElements(_.stringToArray(playTheInternetParse(tAreaText)), true)
+            window.tabs.first.textParse.addElements(_.stringToArray(playTheInternetParse(tAreaText)), true)
         })
     })
 //first textParse end
@@ -122,9 +133,6 @@ define(["jquery-ui", "underscore"], function () {
 //first playlists start
     $('#tabs').on('click', 'ul>li>a', function () {
         window.tabs.first.playlist = null
-    })
-    $('#firstView').on('click', '[href="#tAreaDiv"]', function () {
-        window.tabs.first.playlist = textParsePlaylist
     })
     $('#firstView').on('click', '[href="#parsedDiv"]', function () {
         window.tabs.first.playlist = parsedPlaylist
@@ -143,6 +151,12 @@ define(["jquery-ui", "underscore"], function () {
     var selectFirstPlaylists = playlistsFactory($('a[href="#firstPlaylistsDiv"]'), $("#ulFirstPlaylists"), "playlists", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist, lPlaylistsNotice)
     var selectFirstSynchronized = playlistsFactory($('a[href="#firstSynchronizedDiv"]'), $("#ulFirstSynchronized"), "synchronized", "lConfigFirstPlaylistsPlaylistHeader", window.tabs.first, secondGetPlaylist, sPlaylistsNotice)
 //first playlists end
+
+//first recycle start
+    var selectRecyclePlaylist = playlistFactory($('a[href="#recycleDiv"]'), $("#recyclePlaylist"), 'recycle', "lConfigRecyclePlaylistHeader", window.tabs.first, secondGetPlaylist, function() {
+        this.getIdsUiSelected().length ? this.createPlaylist('qPlaylist', 'Quick Play', true) : this._playThis(this.options.id)
+    }, 'rPlaylist', 'Recycle', "This is your Recycle Bin. Songs in here won't synchronize between PCs. Remember: clicking recycle bin button in player widget will add songs at the top.")
+//first recycle end
 //FIRST CREATE TABS END
 
 //SECOND CREATE TABS START

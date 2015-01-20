@@ -50,7 +50,7 @@ define(["underscore-core"], function() {
             chrome.windows.create({
                 url: 'panel.html',
                 height: 93,
-                width: 200,
+                width: 310,
                 type: 'panel'
             })
         },

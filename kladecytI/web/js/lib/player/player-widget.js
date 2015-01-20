@@ -60,6 +60,30 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
             playlist.playVideo({videoDiv: playlist.lookupNextSong()})
         })
 
+        var lastConfirm
+        this.jPlayerWidget.on('click', '.recycle', function (elt) {
+            var $elt = $(elt.currentTarget)
+            if(!$elt.hasClass('confirm')) {
+                clearTimeout(lastConfirm)
+                $(elt.currentTarget).removeClass('confirmed').addClass('confirm')
+                lastConfirm = _.delay(_.bind($elt.removeClass, $elt, 'confirm'), 3000)
+            }
+        })
+        this.jPlayerWidget.on('click', '.recycle.confirm', function (elt) {
+            clearTimeout(lastConfirm)
+            require(["pti-playlist"], function(Playlist) {
+                var $elt = $(elt.currentTarget), $toRemove = window.playlist.getSelectedVideoDiv(), toPlay = _.stringToTypeId(window.playlist.lookupNextSong().id)
+                var nextIndex = window.playlist.lookUpNextSongIndex(), calcNextIndex = nextIndex == 0 ? 0 : --nextIndex
+                Playlist.prototype.DAO('rPlaylist').unshiftVideos([$toRemove.attr('id')], { source: undefined }).set()
+                $toRemove.remove()
+                $elt.removeClass('confirm').addClass('confirmed')
+                window.playlist._recalculateContentImmediate()
+                window.playlist.selectVideo({ index: calcNextIndex }, true, false)
+                lastConfirm = _.delay(_.bind($elt.removeClass, $elt,'confirmed'), 1500)
+                _.delay(_.bind(window.playerWidget.loadVideo, window.playerWidget, toPlay.type, toPlay.id), 100) //fix animation stutter
+            })
+        })
+
         this.jPlayerWidget.on('change', '.volume', function () {
             var volume = Number($(this).val())
             debounceVolume(volume)

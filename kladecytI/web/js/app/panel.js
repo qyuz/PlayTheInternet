@@ -13,7 +13,7 @@ define(["player/player-widget", "underscore"], function(PlayerWidget) {
             }, 300)
             function resizePlayer() {
                 window.playerWidget.jProgressBarContainer.width($window.width() - 4)
-                window.playerWidget.jVolume.width($window.width() - 106)
+                window.playerWidget.jVolume.width($window.width() - 154)
             }
             $window.resize(_.debounce(resizePlayer, 50))
             resizePlayer()
