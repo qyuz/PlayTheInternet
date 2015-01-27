@@ -8,9 +8,12 @@ html { width: 100%; height: 100%; overflow: hidden; }
 .pti-ptilist .pti-menu label { display: none; }
 .pti-ptilist .pti-menu>input[type=button] { margin-top: 2px; }
 
+.temp-share-fullurls-line>div>label[for="fullURLsTitle"] { left: -3px; }
+.temp-share-fullurls-line>div>label[for="fullURLsTitle"] { left: -3px; }
+
 #installDiv>div { height: 100%; overflow-x: hidden; overflow-y: scroll;}
 #installDiv .title-text { width: 100%; text-align: center; margin-top: 50px; font-size: 17px; }
-#installDiv .title-text-wonder-why { margin-top: 30px; }
+#installDiv .title-text-wonder-why { width: 86%; margin: 30px 7% 25px 7%; font-size: 16px; }
 #installDiv .install-container { display: table; margin-left: auto; margin-right: auto; margin-top: 11px; }
 #installDiv .install-button { display: block; float: left; position: relative; color: white; border: none; padding: 10px 50px; }
 #installWeb { background-color: royalblue; color: white; text-decoration: none; }
@@ -24,4 +27,4 @@ html { width: 100%; height: 100%; overflow: hidden; }
 #installDiv .web { background-color: royalblue; }
 #installDiv .chrome { background-color: tomato; }
 #installDiv .content-features-text { clear: both; margin-top: 5px; color: dimgrey; margin-left: 5px; margin-right: 10%; font-size: 14px; }
-#installDiv .know-more { clear: both; position: relative; top: 11px; text-align: center; }
+#installDiv .know-more { clear: both; position: relative; top: 25px; text-align: center; }

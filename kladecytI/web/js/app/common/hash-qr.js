@@ -25,14 +25,31 @@ define(["underscore"], function (a) {
                     console.log(arguments)
                 }
             })
-            $('#fullURLsInput').text(window.playlist.getIds().map(_.stringToTypeId).map(SiteHandlerManager.prototype.fullURL).join('\r\n'))
+            setFullURLs()
         }
     }
 
+    var $fullURLsTitle = $('#fullURLsTitle').click(setFullURLs), $fullURLsTab = $('#fullURLsTab').click(setFullURLs)
+    function setFullURLs() {
+        $('#fullURLsInput').text(window.playlist.getIds().map(_.stringToTypeId).map(function(typeId) {
+            var output = SiteHandlerManager.prototype.fullURL(typeId.type, typeId.id);
+            if($fullURLsTitle.prop('checked')) {
+                try {
+                    var title = JSON.parse(localStorage.getItem(typeId.id)).title
+                    output += $fullURLsTab.prop('checked') ? String.fromCharCode(9) : ' '
+                    output += title
+                } catch (e) {}
+            }
+            return output
+        }).join('\r\n'))
+    }
+
     function setFullURL(type, id) {
-        var fullURL = SiteHandlerManager.prototype.fullURL(type, id)
+        var fullURL = SiteHandlerManager.prototype.fullURL(type, id), downloadUrl = 'http://sfrom.net/' + fullURL
         $('#fullURLInput').val(fullURL)
         $('#fullURLLinkA').attr('href', fullURL)
+        $('#downloadInput').val(downloadUrl)
+        $('#downloadLinkA').attr('href', downloadUrl)
     }
 
     function redrawHashAndQRCode() {

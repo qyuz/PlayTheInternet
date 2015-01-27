@@ -4,9 +4,17 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-#installText {
+#installText, #appDescription {
     display: inline;
     text-align: center;
+}
+
+#appDescription {
+    color: #c2c2c2
+}
+
+#viewDemo svg {
+    width: 25px;
 }
 
 body,

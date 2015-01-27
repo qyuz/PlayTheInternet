@@ -24,19 +24,26 @@
 .temp-parse-button { position: absolute; top: 61px; background-color: #6796b4; color: white; }
 .temp-parse-button:hover { background-color: #7EA6BF; }
 .temp-textarea-parse-playlist-wrapper { position: absolute; width: 100%; top: 92px; bottom: 0px; }
-.temp-share-share-this-link { height: 221px; }
+.temp-share-share-this-link { height: 261px; }
 .temp-share-url-line { display: inline; text-align: center; position: absolute; width: 100%; line-height: 30px;}
 .temp-share-url-line>*:nth-child(1) { float: left; margin-left: 1%; width: 15%; }
-.temp-share-url-line>*:nth-child(2) { float: left; font-size: 13px; width: 65%; }
+.temp-share-url-line>*:nth-child(2) { float: left; margin-left: 1%; font-size: 13px; width: 65%; }
 .temp-share-url-line>*:nth-child(3) { margin-right: 1%; width: 15%; color: #6796b4; }
 .temp-share-fullurl-line { top: 43px; }
-.temp-share-long-line { top: 83px; }
-.temp-share-short-line { top: 123px; }
-.temp-share-fullurls-line { top: 163px; }
+.temp-share-download-line { top: 83px; }
+.temp-share-long-line { top: 123px; }
+.temp-share-short-line { top: 163px; }
+.temp-share-fullurls-line { top: 203px; }
 .temp-share-fullurls-line textarea { resize: none; }
+.temp-share-fullurls-line>div { display: inline; }
+.temp-share-fullurls-line>div>input[type="checkbox"] { display: none; }
+.temp-share-fullurls-line>div>label { display: inline; position: relative; }
+.temp-share-fullurls-line>div>input:checked+label { font-weight: bold; }
+.temp-share-fullurls-line>div>label[for="fullURLsTitle"] { top: -4px; }
+.temp-share-fullurls-line>div>label[for="fullURLsTab"] { top: -10px; }
 .temp-panel.temp-share-go-mobile-wrapper { height : 300px; margin-top: 1px; background-color: #f7f7f7; }
 .temp-share-go-mobile { position: absolute; width: 100%; }
-.temp-alignQRCode { position: relative; top: -2px; }
+.temp-alignQRCode { position: relative; top: -7px; }
 .temp-panel.temp-share-tooltips-wrapper { height: 127px; margin-top: 1px; }
 .temp-share-tooltip { float: left; width: 50%; text-align: center; color: black; height: 30px; line-height: 30px; }
 .temp-share-tooltip * { margin: 0px!important; }
@@ -88,7 +95,7 @@
 #howDiv .slimScrollDiv { top: 0px; }
 #howDiv #howDivContainer { position: absolute; width: 100%; height: 100%; top: -1px; background-color: #f7f7f7; }
 .temp-how-item { float: left; width: 100%; height: 100%; text-align: center; color: black; }
-.temp-how-item>*:nth-child(1) { width: 100%; height: 100%; }
+.temp-how-item>*:nth-child(1) { width: 100%; }
 .temp-panel-heading-how { cursor: pointer; margin-bottom: 0px; height: auto; }
 .temp-panel-heading-how:hover { background-color: #7EA6BF; color: white; }
 .temp-panel-heading-how.selected { background-color: #4F7E9C; color: white; }
