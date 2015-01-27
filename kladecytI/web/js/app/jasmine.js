@@ -1,13 +1,16 @@
-define(["sitehandlers", "playlist", "cparse"], function (a, b, c) {
+define(["sitehandlers", "pti-playlist", "cparse"], function (a, Playlist, c) {
     window.compiledPlayTheInternetParse = playTheInternetParse
     require(["jasmine", "parse"], function () {
         require(["jasmine-html"], function () {
             require(["jasmine-runner"], function () {
                 $(document).ready(function () {
                     Playlist()
-                    var youtube = Playlist.prototype.parseSongIds(playTheInternetParse($('#youtube').val()))
-                    var soundcloud = Playlist.prototype.parseSongIds(playTheInternetParse($('#soundcloud').val()))
-                    var vimeo = Playlist.prototype.parseSongIds(playTheInternetParse($('#vimeo').val()))
+                    function typeIds(text) {
+                        return _.stringToArray(playTheInternetParse(text)).map(_.typeId)
+                    }
+                    var youtube = typeIds($('#youtube').val())
+                    var soundcloud = typeIds($('#soundcloud').val())
+                    var vimeo = typeIds($('#vimeo').val())
 
 //--- SPECS -------------------------
                     describe("youtube", function () {

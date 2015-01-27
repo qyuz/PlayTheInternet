@@ -79,7 +79,7 @@ define(["underscore-core"], function() {
             }
             if (a && a.type && a.id) {
                 return a
-            } else if (a && b) {
+            } else if (_.isString(a) && _.isString(b)) {
                 return { type: a, id: b }
             } else if (a) {
                 return underscore_mixin.stringToTypeId(a)
