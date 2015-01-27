@@ -134,7 +134,7 @@ function YoutubeHandler() {
     YoutubeHandler.prototype.fullURL = function(id) { return "https://www.youtube.com/watch?v=" + id }
     YoutubeHandler.prototype.prefix = "y"
     //TODO https://www.youtube.com/embed/?listType=playlist&amp;list=PLhBgTdAWkxeBX09BokINT1ICC5IZ4C0ju&amp;showinfo=1
-    YoutubeHandler.prototype.regex = /(youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11})/
+    YoutubeHandler.prototype.regex = /(youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>\r\n]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11})/
     YoutubeHandler.prototype.regexGroup = 11
     YoutubeHandler.prototype.loadVideoDataQueue = new Array()
     YoutubeHandler.prototype.loadVideoDataQueueConcurrent = 0

@@ -16,8 +16,8 @@ function playTheInternetParse(htmlText) {
         htmlText = window.location.href + " ";
         htmlText += document.documentElement.innerHTML;
     }
-    var youtube = /((youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11}))|(((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<>]+))|(vimeo.com\\?\/((video\/)|(moogaloop.swf\?.*clip_id=))?(\d+))/g;
-    var local = /((youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11}))|(((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<>]+))|(vimeo.com\\?\/((video\/)|(moogaloop.swf\?.*clip_id=))?(\d+))/;
+    var youtube = /((youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>\r\n]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11}))|(((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<>]+))|(vimeo.com\\?\/((video\/)|(moogaloop.swf\?.*clip_id=))?(\d+))/g;
+    var local = /((youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>\r\n]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11}))|(((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<>]+))|(vimeo.com\\?\/((video\/)|(moogaloop.swf\?.*clip_id=))?(\d+))/;
     var youtubeLinks = htmlText.match(youtube);
     var result = new Array();
     if (youtubeLinks == null) {
