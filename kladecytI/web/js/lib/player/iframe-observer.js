@@ -1,6 +1,6 @@
 define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", "jstorage"], function (PTI, IframeWrapper, c, d, e) {
 //    var host = "localhost:8888"
-    var host = "0-70.playtheinternet.appspot.com"
+    var host = "0-71.playtheinternet.appspot.com"
 //        var host = "playtheinternet.appspot.com"
 //        var host = "web.playtheinter.net"
     var iframeContainer = $('#players'), playerIframeHosts = ["http://" + host], playerIframe, iw
