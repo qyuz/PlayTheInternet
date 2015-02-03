@@ -72,15 +72,28 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
         this.jPlayerWidget.on('click', '.recycle.confirm', function (elt) {
             clearTimeout(lastConfirm)
             require(["pti-playlist"], function(Playlist) {
-                var $elt = $(elt.currentTarget), $toRemove = window.playlist.getSelectedVideoDiv(), toPlay = _.stringToTypeId(window.playlist.lookupNextSong().id)
-                var nextIndex = window.playlist.lookUpNextSongIndex(), calcNextIndex = nextIndex == 0 ? 0 : --nextIndex
-                Playlist.prototype.DAO('rPlaylist').unshiftVideos([$toRemove.attr('id')], { source: undefined }).set()
-                $toRemove.remove()
+                var $elt = $(elt.currentTarget), $toRemove = window.playlist._getSelectedVideoDiv()
+                var selectedIndex = window.playlist.getSelectedVideoIndex(), nextIndex = window.playlist.lookUpNextSongIndex()
+                var recycleId
+                if($toRemove.length) {
+                    recycleId = $toRemove.attr('id')
+                    $toRemove.remove()
+                    window.playlist._recalculateContentImmediate()
+                } else {
+                    var _pti = _.getPti()
+                    _pti.data.currentPlayer && _pti.data.videoId && (recycleId = _.typeIdToString({ type: _pti.data.currentPlayer, id: _pti.data.videoId }))
+                }
+                if(selectedIndex != nextIndex) {
+                    var calcNextIndex = nextIndex == 0 ? 0 : --nextIndex, toPlayTypeIdString = window.playlist.getIds()[calcNextIndex], toPlay
+                    window.playlist.selectVideo({ index: calcNextIndex }, true, false)
+                    toPlayTypeIdString && (toPlay = _.stringToTypeId(toPlayTypeIdString)) && _.delay(_.bind(window.playerWidget.loadVideo, window.playerWidget, toPlay.type, toPlay.id), 100) //fix animation stutter
+                }
+                window.playlist.getIdsCount() || window.playerWidget.data.listenObject.pauseVideo()
+                recycleId && setTimeout(function() {
+                    Playlist.prototype.DAO('rPlaylist').unshiftVideos([recycleId], { source: undefined }).set()
+                }, 100)
                 $elt.removeClass('confirm').addClass('confirmed')
-                window.playlist._recalculateContentImmediate()
-                window.playlist.selectVideo({ index: calcNextIndex }, true, false)
-                lastConfirm = _.delay(_.bind($elt.removeClass, $elt,'confirmed'), 1500)
-                _.delay(_.bind(window.playerWidget.loadVideo, window.playerWidget, toPlay.type, toPlay.id), 100) //fix animation stutter
+                lastConfirm = _.delay(_.bind($elt.removeClass, $elt, 'confirmed'), 1500)
             })
         })
 
