@@ -45,11 +45,11 @@ define(["underscore"], function (a) {
     }
 
     function setFullURL(type, id) {
-        var fullURL = SiteHandlerManager.prototype.fullURL(type, id), downloadUrl = 'http://sfrom.net/' + fullURL
+        var fullURL = SiteHandlerManager.prototype.fullURL(type, id), templateUrl = fullURL
         $('#fullURLInput').val(fullURL)
         $('#fullURLLinkA').attr('href', fullURL)
-        $('#downloadInput').val(downloadUrl)
-        $('#downloadLinkA').attr('href', downloadUrl)
+        $('#templateInput').val(templateUrl)
+        $('#templateLinkA').attr('href', templateUrl)
     }
 
     function redrawHashAndQRCode() {

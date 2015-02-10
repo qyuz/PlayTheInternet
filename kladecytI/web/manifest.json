@@ -2,8 +2,7 @@
     "key": "asdf",
     "name":"PlayTheInternet",
     "version":"0.700.760",
-    "description":"Add YouTube, SoundCloud, Vimeo music from any web page to playlist. Listen, aggregate, synchronize between PCs, share and download.",
-    "description":"Play music from favorite sites all in one playlist. Features:synchronization,hotkeys,context menu. Supports:YouTube,SoundCloud,Vimeo",
+    "description":"Add YouTube, SoundCloud, Vimeo music from any web page to playlist. Listen, aggregate, synchronize between PCs and share.",
     "icons":{
         "128":"favicon.ico"
     },
