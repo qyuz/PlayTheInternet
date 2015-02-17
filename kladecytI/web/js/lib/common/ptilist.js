@@ -341,14 +341,6 @@ define(["underscore", "slimscroll"], function () {
 
     Ptilist.prototype.addElements = function (elementsData, unique, recalculcate, scrollTo) {
         var me = this, dataPtiElements = new Array(), slices = new Array(), sliceCap = 33, deferred = new $.Deferred()
-        var _defer = function (func) {
-            var _defer = new $.Deferred()
-            var _then = function () {
-                func(_defer)
-                return _defer
-            }
-            return { defer:_defer, then:_then }
-        }
 
         unique && ( elementsData = this._unique(this.getIds(), elementsData) )
 
@@ -380,25 +372,23 @@ define(["underscore", "slimscroll"], function () {
 				})
 			}
             _drawSlice(firstSlice)
-			slices.forEach(function(slice) {
-                var defObj = _defer(function(deferred) {
-                    _.defer(function() {
-                        _drawSlice(slice)
-                        deferred.resolve()
-                    })
-                })
-                deferred.then(defObj.then)
-                deferred = defObj.defer
-			})
+            _.reduce(slices, function (def, slice) {
+                deferred = $.Deferred()
+                def.then(_.defer(function () {
+                    _drawSlice(slice)
+                    deferred.resolve()
+                }))
+                return deferred
+            }, deferred)
 		}
 
         if(_.default(recalculcate, true)) {
-            defObj = _defer(function(deferred) {
+            var recalcDef = $.Deferred()
+            deferred.then(function(){
                 me._recalculateContentDebounce()
-                deferred.resolve()
+                recalcDef.resolve()
             })
-            deferred.then(defObj.then)
-            deferred = defObj.defer
+            deferred = recalcDef
         } else {
             this._addElementsFire()
         }
