@@ -147,7 +147,7 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
     Playlists.prototype._redrawContentGetCacheObject = function (key, action, functionName, filterOwn) {
         var pattern = "^(" + this.options.jStorageTypeValues.sorted + "|" + this.options.jStorageTypeValues.prefix + ".+)$"
         if (key.match(pattern)) {  // /^(playlists|lPlaylist.+)$/
-            var storageObj = this.parent._redrawContentGetCacheObject.call(this, key, action, functionName, filterOwn)
+            var storageObj = this.parent._redrawContentGetCacheObject.call(this, key, action, functionName, this.options.jStorageTypeValues == Playlists.prototype.jStorageTypeMapping.synchronized ? false : filterOwn) //not filtering own because of "upsert" sync status update
             if (!_.isUndefined(storageObj)) { //undefined means filtered by source === uid
                 var playlists = { data: this.filterJStorageBy(this.typeLocalPlaylist, this.sortLocalPlaylist) }
                 return playlists

@@ -35,3 +35,8 @@ body { height: 100%; }
 #splitViews>div>.tabs>ul>li>a>svg>* { fill: #676470; }
 #splitViews>div>.tabs>ul>li>a:hover>svg>* { fill: silver; }
 #splitViews>div>.tabs>ul>li.ui-state-active>a>svg>*, #splitViews>div>.tabs>ul>li:hover.ui-state-active>a>svg>* { fill: #4F7E9C; }
+.pti-main-text, .pti-success-text, .pti-warning-text, .pti-error-text { font-weight: normal; color: white; }
+.pti-main-text { background-color: #6796b4; }
+.pti-success-text { background-color: #3fb618; }
+.pti-warning-text { background-color: #F9961B; }
+.pti-error-text { background-color: tomato; }

@@ -58,7 +58,7 @@ define(["jquery-ui", "underscore"], function () {
     }
 
     function fetchSynch() {
-        require(["app/background/synchronization"], function (synchronization) {
+        chrome.extension.getBackgroundPage().require(["app/background/synchronization"], function (synchronization) {
             chrome.storage.sync.get(function (sync) {
                 var start = Date.now()
                 for (var key in sync) {
