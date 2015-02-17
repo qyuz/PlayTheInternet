@@ -23,6 +23,10 @@ define(["jstorage", "underscore", "pti-playlist"], function (one, two, Playlist)
             if (_.keys(upsert).length) {
                 chrome.storage.sync.set(upsert, function () {
                     chrome.runtime.lastError && (console.log(chrome.runtime.lastError) | alert(chrome.runtime.lastError.message + "\r\nOH NOES THERE WAS AN ERROR IN CHROME.SYNC.SET"))
+                    for(var key in upsert) {
+                        var dao = Playlist.prototype.DAO(key)
+                        dao.update({ source: "sync" }, false).set()
+                    }
                     console.trace("[%s] [_jStorageListenerUpsert][sync.set] [SYNCHRONIZED UPSERT TO CHROME.SYNC]", start, { upsert: upsert })
                 })
             }
@@ -42,13 +46,18 @@ define(["jstorage", "underscore", "pti-playlist"], function (one, two, Playlist)
         if (key.match(/^(synchronized|sPlaylist.*)/)) {
             var dao = Playlist.prototype.DAO(key)
             if (!sync[key]) {
-//                dao.delete()
-                console.trace("[%s] [chrome.storage.onChanged][sync.get][key.match][!sync] [REMOVED %s FROM JSTORAGE]", log, key, { sync: sync[key], dao: dao.storageObj })
-            } else if (!dao.exists() || (sync[key].device_id != device_id && sync[key].updated > dao.storageObj.updated)) {
+                if(dao.exists()) {
+                    dao.update({ source: "local" }, false).set()
+                    console.trace("[%s] [chrome.storage.onChanged][sync.get][key.match][!sync] [MARKED %s AS LOCAL IN JSTORAGE]", log, key, { sync: sync[key], dao: dao.storageObj })
+                }
+            } else if ((!dao.exists() && !_.contains(deleteKeys, key)) || (sync[key].device_id != device_id && sync[key].updated > dao.storageObj.updated)) {
                 dao.storageObj = sync[key]
                 dao.update({ source: "sync" }, false)
                 dao.set(false)
                 console.trace("[%s] [chrome.storage.onChanged][sync.get][key.match][!dao.exists() || (sync.device_id != device_id && sync.updated > dao.updated)] [SET %s TO JSTORAGE]", log, key, { sync: sync[key], device_id: device_id, dao: dao.storageObj })
+            } else if (dao.exists() && dao.storageObj.updated == sync[key].updated && dao.storageObj.source != 'sync') { //migration to 0.72
+                dao.update({ source: "sync" }, false).set()
+                console.trace("[%s] [chrome.storage.onChanged][sync.get][dao.updated==sync.updated && source != sync] [MIRGATION TO 0.72, UPDATING SOURCE AS SYNC]", log, key, { dao: dao.storageObj, sync: sync[key]})
             }
         } else if (key.match(/^(devices|dPlaylist.*)/)) { //migration to 0.67
             deleteKeys.push(key)
@@ -76,7 +85,7 @@ define(["jstorage", "underscore", "pti-playlist"], function (one, two, Playlist)
                     deleteKeys.push(dao.key)
                     console.trace("[%s] [jStorageListenKeyChange(key.match(/^((synchronized)|(sPlaylist).*)/))&&!dao.exists] [SCHEDULED %s TO DELETEKEYS, INVOKING _jStorageListenerDelete]", Date.now(), key)
                     _jStorageListenerDelete()
-                } else if (dao.storageObj.source != "sync") {
+                } else if (dao.storageObj.source != "sync" && dao.storageObj.source != "local") {
                     upsertKeys[key] = action
                     console.trace("[%s] [jStorageListenKeyChange(key.match(/^((synchronized)|(sPlaylist).*)/))&&dao.storageObj.source!=sync] [SET %s TO SYNCHRONIZEKEYS, INVOKING _jStorageListenerUpsert]", Date.now(), key)
                     _jStorageListenerUpsert()
