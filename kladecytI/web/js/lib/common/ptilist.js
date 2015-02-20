@@ -165,6 +165,12 @@ define(["underscore", "slimscroll"], function () {
         this._callbacksFire('change')
     }
 
+    Ptilist.prototype._addPtiElement = function(data) {
+        var ptiElement = new this._PtiElement(data)
+        this.$.content.append(ptiElement.$)
+        return ptiElement
+    }
+
     Ptilist.prototype._callbacksAdd = function() {
         this._callbacks = this._callbacks || {}
         for(var i in arguments) {
@@ -256,6 +262,8 @@ define(["underscore", "slimscroll"], function () {
 
     Ptilist.prototype._ptiElement = PTITemplates.prototype.PtilistElement
 
+    Ptilist.prototype._PtiElement = PtiElement
+
     Ptilist.prototype._recalculateContent = function () {
         _.defer(_.bind(this._recalculateContentImmediate, this))
     }
@@ -313,6 +321,13 @@ define(["underscore", "slimscroll"], function () {
             var resultStorageData = null
             jStorageData && ((resultStorageData = _.extend({}, jStorageData)) | (resultStorageData.data = _.stringToArray(jStorageData.data)))
             return resultStorageData
+        }
+    }
+
+    Ptilist.prototype._removePtiElements = function($) {
+        for(var i = 0; i < $.length; i++) {
+            var $ptiElement = $.eq(i), ptiElement = $ptiElement.data('pti-element')
+            ptiElement.remove()
         }
     }
 
@@ -440,5 +455,59 @@ define(["underscore", "slimscroll"], function () {
         this.options.listenId && (this._redrawContentFromCacheListenJStorage() | this._redrawContentFromCacheManual(scrollTo))
     }
 
-    return Ptilist
+    Ptilist.prototype.updateElements = function(elementsData) {
+        var $ptiElements = this.getPtiElements()
+        for(var i = 0; i < elementsData.length; i++ ) {
+            var $ptiElement = $ptiElements.eq(i), elementData = elementsData[i]
+            if($ptiElement.length) {
+                var ptiElement = $ptiElement.data('pti-element')
+            } else {
+                var ptiElement = this._addPtiElement(elementData)
+            }
+            ptiElement.update(elementData)
+        }
+
+        var toDelete = this.getIdsCount() - elementsData.length
+        toDelete && this._removePtiElements($ptiElements.slice(-toDelete))
+    }
+
+    function PtiElement(data) {
+        _.isUndefined(data) || this._constructor(data)
+    }
+
+    PtiElement.prototype._constructor = function(data) {
+        this.$ = $(PTITemplates.prototype.PtiElement(_.extend({ elementClass: 'pti-element' }, data)))
+        this.element = this.$.get(0)
+        this.$.data('ptiElement', this)
+        this.init = _.once(this.init)
+        this.fields = _.extend({}, this.fields)
+        this.lastComputed = {}
+    }
+
+    PtiElement.prototype.processFields = function(data, index) {
+        var newComputed = {}
+        for(fieldName in this.fields) {
+            var field = this.fields[fieldName]
+            field.compute = field.compute ? field.compute : _.property(fieldName)
+            var computed = field.compute(data, this.$, index, fieldName, this)
+            if(this.lastComputed[fieldName] != computed || field.always) {
+                field.update(computed, data, this.$, index, fieldName, this)
+            }
+            newComputed[fieldName] = computed
+        }
+        this.lastComputed = newComputed
+    }
+
+
+    PtiElement.prototype.remove = function() {
+        this.$.remove()
+        this.$ = null
+    }
+
+    PtiElement.prototype.update = function(data, index) {
+        this.init(data)
+        this.processFields(data, index)
+    }
+
+    return { Ptilist: Ptilist, PtiElement: PtiElement }
 })

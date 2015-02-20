@@ -1,4 +1,5 @@
-define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
+define(["common/ptilist", "pti-playlist"], function (ptilist, Playlist) {
+    var Ptilist = ptilist.Ptilist
     Playlists.prototype = new Ptilist()
     Playlists.prototype.constructor = Playlists
     Playlists.prototype.parent = Ptilist.prototype
@@ -112,36 +113,10 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
         return $ptiElement
     }
 
+    Playlists.prototype._PtiElement = PlaylistsElement
+
     Playlists.prototype._redrawContent = function(storageObject) {
-        this.parent._redrawContent.call(this, storageObject)
-        var me = this
-        console.log(me.getPtiElements())
-        me.getPtiElements().droppable({
-            accept: ".pti-element-video",
-            drop: function(event, ui) {
-                var ids = '', playlistId = this.id, uiselected
-                var ptilist = ui.draggable.parent().data('ptilist'), playlistDao = Playlist.prototype.DAO(playlistId)
-                if(ui.draggable.hasClass('ui-selected')) {
-                    ids = ptilist.getIdsUiSelected()
-                    uiselected = ptilist.getPtiElementsUiSelected()
-                } else {
-                    ids = [ui.draggable[0].id]
-                }
-                playlistDao.addVideos(ids, { source: "" }).set()
-
-
-                var remove = function() {
-                    $(this).remove();
-                }
-                ui.draggable.remove()
-                uiselected && uiselected.remove();
-                console.log('songId, playlistId: ', ids, playlistId)
-                console.log(event)
-                console.log(ui)
-                console.log(this)
-            },
-            hoverClass: "drop-hover"
-        })
+        this.updateElements(storageObject.data)
     }
 
     Playlists.prototype._redrawContentGetCacheObject = function (key, action, functionName, filterOwn) {
@@ -201,6 +176,117 @@ define(["common/ptilist", "pti-playlist"], function (Ptilist, Playlist) {
 //        sortedPlaylistIds = newKeys.concat(playlistsOrder)
 //        return sortedPlaylistIds
 //    }
+
+    var PtiElement = ptilist.PtiElement
+    PlaylistsElement.prototype = new PtiElement()
+    PlaylistsElement.prototype.constructor = PlaylistsElement
+    PlaylistsElement.prototype.parent = PtiElement.prototype
+    function PlaylistsElement(playlistData) {
+        this.parent._constructor.call(this, playlistData)
+    }
+
+    PlaylistsElement.prototype.init = function(playlistData) {
+        this.$.html(PTITemplates.prototype.PlaylistsElement(playlistData))
+        this.$.droppable({
+            accept: ".pti-element-video",
+            drop: function(event, ui) {
+                var ids = '', playlistId = this.element.id, uiselected
+                var ptilist = ui.draggable.parent().data('ptilist'), playlistDao = Playlist.prototype.DAO(playlistId)
+                if(ui.draggable.hasClass('ui-selected')) {
+                    ids = ptilist.getIdsUiSelected()
+                    uiselected = ptilist.getPtiElementsUiSelected()
+                } else {
+                    ids = [ui.draggable[0].id]
+                }
+                playlistDao.addVideos(ids, { source: "" }).set()
+                //TODO PtiElement
+                ui.draggable.remove()               //                Ptilist.prototype._removePtiElements(ui.draggable)
+                uiselected && uiselected.remove();  //                uiselected && Ptilist.prototype._removePtiElements(uiselected)
+            }.bind(this),
+            hoverClass: "drop-hover"
+        })
+    }
+
+    PlaylistsElement.prototype.fields = {
+        id: {
+            update: function(computed, data, $, i, field, playlistsElement) {
+                $.prop('id', computed)
+            }
+        },
+        length: {
+            compute: function(data, $, i, field, playlistsElement) {
+                return data.data.length
+            },
+            update: function(computed, data, $, i, field, playlistsElement) {
+                $.find('.pti-count').text(computed)
+            }
+        },
+        name: {
+            update: function(computed, data, $, i, field, playlistsElement) {
+                $.find('.pti-name').val(computed)
+            }
+        },
+        thumbnail: {
+            update: function(comuted, data, $, i, field, playlistsElement) {
+                $.find('.image-div>img').attr('src', comuted)
+            }
+        },
+        removeDialog: {
+            always: true,
+            compute: function(data, $, i, field, playlistsElement) {
+                if(playlistsElement.lastComputed.id != data.id) {
+                    return false
+                }
+                return $.find('.pti-remove-playlist-dialog').hasClass('temp-display-none-important')
+            },
+            update: function(computed, data, $) {
+                $.find('.pti-remove-playlist-dialog').toggleClass('temp-display-none-important', computed)
+                $.find('.pti-remove-playlist-yes, .pti-remove-playlist-no').toggleClass('temp-display-none-important', !computed)
+            }
+        },
+        synchronization: {
+            compute: function(data, $, i, field, playlistsElement) {
+                if(data.id.match(/^sPlaylist/)) {
+                    return data.source == 'sync' || data.source == 'local' ? data.source : 'upsert'
+                } else {
+                    return undefined
+                }
+            },
+            update: function(computed, data, $, i, field, playlistsElement) {
+                if(computed == null) {
+                    return
+                }
+                var $status = $.find('.pti-status')
+                $status.toggleClass('pti-main-text', computed == 'sync')
+                $status.toggleClass('pti-warning-text', computed == 'upsert')
+                $status.toggleClass('pti-error-text', computed == 'local')
+                if(computed == 'sync') {
+                    $status.text('S')
+                    $status.prop('title', "Last synchronized at " + new Date(data.updated).toLocaleTimeString() + " on " + new Date(data.updated).toDateString() + ".")
+                }
+                if(computed == 'upsert') {
+                    $status.text('U')
+                    $status.prop('title', "Scheduled for synchronization.")
+                }
+                if(computed == 'local') {
+                    $status.text('L')
+                    $status.prop('title', "This playlist is removed from synchronization and is available only on this PC.")
+                }
+            }
+        },
+        ui_selected: {
+            always: true,
+            compute: function(data, $, i, field, playlistsElement) {
+                if(playlistsElement.lastComputed.id != data.id) {
+                    return false
+                }
+                return $.hasClass('ui-selected')
+            },
+            update: function(computed, data, $, i, field, playlistsElement) {
+                $.toggleClass('ui-selected', computed)
+            }
+        }
+    }
 
     return Playlists
 })
