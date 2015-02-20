@@ -1,4 +1,5 @@
-define(["common/ptilist"], function (Ptilist) {
+define(["common/ptilist"], function (ptilist) {
+    var Ptilist = ptilist.Ptilist
     Playlist.prototype = new Ptilist()
     Playlist.prototype.constructor = Playlist
     Playlist.prototype.parent = Ptilist.prototype
