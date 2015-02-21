@@ -209,32 +209,32 @@ define(["common/ptilist", "pti-playlist"], function (ptilist, Playlist) {
 
     PlaylistsElement.prototype.fields = {
         id: {
-            update: function(computed, data, $, i, field, playlistsElement) {
+            update: function(computed, data, $, i, field, self) {
                 $.prop('id', computed)
             }
         },
         length: {
-            compute: function(data, $, i, field, playlistsElement) {
+            compute: function(data, $, i, field, self) {
                 return data.data.length
             },
-            update: function(computed, data, $, i, field, playlistsElement) {
+            update: function(computed, data, $, i, field, self) {
                 $.find('.pti-count').text(computed)
             }
         },
         name: {
-            update: function(computed, data, $, i, field, playlistsElement) {
+            update: function(computed, data, $, i, field, self) {
                 $.find('.pti-name').val(computed)
             }
         },
         thumbnail: {
-            update: function(comuted, data, $, i, field, playlistsElement) {
+            update: function(comuted, data, $, i, field, self) {
                 $.find('.image-div>img').attr('src', comuted)
             }
         },
         removeDialog: {
             always: true,
-            compute: function(data, $, i, field, playlistsElement) {
-                if(playlistsElement.lastComputed.id != data.id) {
+            compute: function(data, $, i, field, self) {
+                if(self.lastComputed.id != data.id) {
                     return false
                 }
                 return $.find('.pti-remove-playlist-dialog').hasClass('temp-display-none-important')
@@ -245,14 +245,14 @@ define(["common/ptilist", "pti-playlist"], function (ptilist, Playlist) {
             }
         },
         synchronization: {
-            compute: function(data, $, i, field, playlistsElement) {
+            compute: function(data, $, i, field, self) {
                 if(data.id.match(/^sPlaylist/)) {
                     return data.source == 'sync' || data.source == 'local' ? data.source : 'upsert'
                 } else {
                     return undefined
                 }
             },
-            update: function(computed, data, $, i, field, playlistsElement) {
+            update: function(computed, data, $, i, field, self) {
                 if(computed == null) {
                     return
                 }
@@ -276,13 +276,13 @@ define(["common/ptilist", "pti-playlist"], function (ptilist, Playlist) {
         },
         ui_selected: {
             always: true,
-            compute: function(data, $, i, field, playlistsElement) {
-                if(playlistsElement.lastComputed.id != data.id) {
+            compute: function(data, $, i, field, self) {
+                if(self.lastComputed.id != data.id) {
                     return false
                 }
                 return $.hasClass('ui-selected')
             },
-            update: function(computed, data, $, i, field, playlistsElement) {
+            update: function(computed, data, $, i, field, self) {
                 $.toggleClass('ui-selected', computed)
             }
         }
