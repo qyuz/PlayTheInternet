@@ -480,7 +480,6 @@ define(["underscore", "slimscroll"], function () {
         this.element = this.$.get(0)
         this.$.data('ptiElement', this)
         this.init = _.once(this.init)
-        this.fields = _.extend({}, this.fields)
         this.lastComputed = {}
     }
 
