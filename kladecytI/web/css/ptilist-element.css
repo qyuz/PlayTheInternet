@@ -1,9 +1,9 @@
 /* playlist menu */
-.pti-ptilist .pti-header>.playing-name { position: relative; top: 1px; margin: 0px 0px 0px 5px; border: transparent solid 1px; padding: 0px 5px 0px 5px; width: 177px; height: 27px; line-height: normal; font-size: inherit; color: inherit; background-color: inherit; }
+.pti-ptilist .pti-header>.playing-name { position: relative; top: 1px; margin: 0px 0px 0px 5px; border: transparent solid 1px; padding: 0px 5px 1px 5px; width: 177px; height: 27px; line-height: normal; font-size: inherit; color: inherit; background-color: inherit; }
 
-.pti-ptilist .pti-menu { text-align: center; }
+.pti-ptilist .pti-menu { margin-top: 1px; height: 92px; text-align: center; }
 .pti-ptilist .pti-menu .squaredTwo { float: left; line-height: 12px; }
-.pti-ptilist .pti-menu>.create-playlist-name { box-sizing: border-box; width: 100%; height: 30px; float: left; margin: 1px 0px 0px 0px; }
+.pti-ptilist .pti-menu>.create-playlist-name { box-sizing: border-box; width: 100%; height: 30px; float: left; margin: 1px 0px 0px 1px; }
 .pti-ptilist .pti-menu>label.squaredTwo { margin: 10px auto; }
 .pti-ptilist .pti-menu>label.squaredTwo:nth-child(2) { clear: both; margin-left: -4%; width: 23%;  }
 .pti-ptilist .pti-menu>label.squaredTwo:nth-child(3) { width: 34%; }
@@ -71,6 +71,9 @@
 
 /* COLORS */
 /* Playlist */
+/*COMMON*/
+.pti-ptilist .pti-content.pti-view-big .image-div, .pti-ptilist .pti-content.pti-view-medium .image-div { background-color: black; }
+/*DAY*/
 .pti-ptilist .pti-content.pti-view-big>* .duration-caption, .pti-ptilist .pti-content.pti-view-medium>* .duration-caption { background: #000000; color: #FFFFFF; }
 .pti-ptilist .pti-content.pti-view-list>* .duration-caption { color: #56545e; }
 .pti-ptilist .pti-content.pti-view-list>*.ui-selected .duration-caption { color: white; }
@@ -81,8 +84,20 @@
 .pti-ptilist .pti-menu>.create-playlist-name { color: #56545e; }
 .pti-ptilist .pti-menu>input[type=button] { background-color: #6796b4; color: white; }
 .pti-ptilist .pti-menu>input[type=button]:hover { background-color: #7EA6BF; }
+/*NIGHT*/
+#night .pti-ptilist .pti-header>.playing-name { background-color: #8B8896; color: white; }
+
+#night .pti-ptilist .pti-content.pti-view-list>* .duration-caption { color: white; }
+#night .pti-ptilist .pti-content>* .error-text, .pti-ptilist .pti-content>* .error-text a { color: white; }
+
+#night .pti-ptilist .pti-menu { background-color: #676470; color: white; }
+#night .pti-ptilist .pti-menu>.create-playlist-name { background-color: #8B8896; color: white; }
+#night .pti-ptilist .pti-menu>.create-playlist-name::-webkit-input-placeholder { color: silver; }
+#night .pti-ptilist .pti-menu>input[type=button] { background-color: #45434C; }
+#night .pti-ptilist .pti-menu>input[type=button]:hover { background-color: #817D8C; }
 
 /* Playlists */
+/*DAY*/
 .pti-ptilist .pti-content .pti-element.drop-hover>div { background-color: #cacaf4; }
 .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-info .pti-name:focus { border: rgb(170, 200, 255) solid 1px; }
 .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>* { background-color: #6796b4; color: #efeff5; }
@@ -91,3 +106,15 @@
 .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>*, .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-info .pti-status { background-color: #F97413; }
 .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #F9961B; }
 .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #F9961B; }
+
+/*NIGHT*/
+#night .pti-ptilist .pti-content .pti-element.drop-hover>div { background-color: #cacaf4; }
+#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-info .pti-name:focus { border: silver solid 1px; }
+#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>* { background-color: #63606C; color: white; }
+#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #676470; color: white; }
+#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #676470; color: white; }
+#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>*,
+#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-info .pti-status
+{ background-color: #141316; }
+#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #1E1D20; }
+#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #1E1D20; }
