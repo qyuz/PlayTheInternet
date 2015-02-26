@@ -29,6 +29,10 @@ body { height: 100%; }
 
 
 /* COLORS */
+/*RESET*/
+.tabs>ul>li>a:focus { background-color: inherit; }
+
+/*DAY*/
 #splitViews>div>.tabs>ul { background-color: #efeff5; }
 #splitViews>div>.tabs>ul>li>a { color: #676470; }
 #splitViews>div>.tabs>ul>li>a:hover { background-color: #efeff5; }
@@ -40,3 +44,16 @@ body { height: 100%; }
 .pti-success-text { background-color: #3fb618; }
 .pti-warning-text { background-color: #F9961B; }
 .pti-error-text { background-color: tomato; }
+
+/*NIGHT*/
+#night #splitViews>div>.tabs>ul { background-color: #676470; }
+#night #splitViews>div>.tabs>ul>li>a { color: silver; }
+#night #splitViews>div>.tabs>ul>li>a:hover { background-color: #676470; color: #efeff5; }
+#night #splitViews>div>.tabs>ul>li>a>svg>* { fill: silver; }
+#night #splitViews>div>.tabs>ul>li>a:hover>svg>* { fill: #efeff5; }
+#night #splitViews>div>.tabs>ul>li.ui-state-active>a>svg>*, #splitViews>div>.tabs>ul>li:hover.ui-state-active>a>svg>* { fill: #efeff5; }
+#night .pti-main-text, .pti-success-text, .pti-warning-text, .pti-error-text { font-weight: normal; color: white; }
+#night .pti-main-text { background-color: #63606C; }
+#night .pti-success-text { background-color: #63606C; }
+#night .pti-warning-text { background-color: #8B8896; }
+#night .pti-error-text { background-color: black; }

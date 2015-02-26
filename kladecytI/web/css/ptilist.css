@@ -2,17 +2,17 @@
 .pti-ptilist { position: relative; width: 100%; height: 100%; margin-top: 0px; }
 
 /* playlist header */
-.pti-ptilist .pti-header { height: 31px; }
-.pti-ptilist .pti-header .pti-header-button { transition: all 0.3s ease; margin-left: 1px; float: left; width: 30px; height: 100%; line-height: 30px; text-align: center; cursor: default; }
+.pti-ptilist .pti-header { height: 32px; }
+.pti-ptilist .pti-header .pti-header-button { transition: all 0.3s ease; margin-top: 1px; margin-left: 1px; float: left; width: 30px; height: 30px; line-height: 30px; text-align: center; cursor: default; }
 .pti-ptilist .pti-header .pti-header-button:hover { cursor: pointer; border-radius: 35%; }
 .pti-ptilist .pti-header .pti-header-button.selected { border-radius: 20%; }
 
 /* pti-ptilist content */
 .pti-content { cursor: crosshair; }
 .pti-ptilist .slimScrollDiv { top: 0px; }
-.pti-ptilist .pti-header+.slimScrollDiv, .pti-ptilist .pti-header+.pti-menu.temp-display-none+.slimScrollDiv { top: 32px; }
-.pti-ptilist .pti-header+.pti-menu+.slimScrollDiv { top: 125px; }
-.pti-ptilist .slimScrollDiv { background-color: #f7f7f7; position: absolute!important; bottom: 0px; width: 100%; height: auto!important; }
+.pti-ptilist .pti-header+.slimScrollDiv, .pti-ptilist .pti-header+.pti-menu.temp-display-none+.slimScrollDiv { top: 33px; }
+.pti-ptilist .pti-header+.pti-menu+.slimScrollDiv { top: 126px; }
+.pti-ptilist .slimScrollDiv { position: absolute!important; bottom: 0px; width: 100%; height: auto!important; }
 .pti-ptilist .pti-content { height: 100%; }
 
 
@@ -40,10 +40,13 @@
 .pti-ptilist .pti-content>div:only-child { position: absolute; top: 45%; bottom: 0px; }
 
 /* COLORS */
+/*DAY*/
 .pti-ptilist .pti-header { background-color: #efeff5; }
 .pti-ptilist .pti-header .pti-header-button { color: #676470; }
 .pti-ptilist .pti-header .pti-header-button:hover { background-color: silver; color: white; }
 .pti-ptilist .pti-header .pti-header-button.selected { background-color: #7EA6BF; color: white; }
+
+.pti-ptilist .slimScrollDiv { background-color: #f7f7f7; }
 
 .pti-ptilist .pti-content>.pti-element>* { background-color: #efeff5; color: #56545e; }
 .pti-ptilist .pti-content>.pti-element:hover>* { background-color: aliceblue; }
@@ -51,6 +54,21 @@
 .pti-ptilist .pti-content>.pti-element.ui-selected>div { background-color: #F9961B; color: white; } /* orange before */
 .pti-ptilist .pti-content>.pti-element.ui-selected:hover>div { background-color: #ffb122; }
 .pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: #F97413; }
+
+/*NIGHT*/
+#night .pti-ptilist .pti-header { background-color: #676470; }
+#night .pti-ptilist .pti-header .pti-header-button { color: silver; }
+#night .pti-ptilist .pti-header .pti-header-button:hover { background-color: silver; color: #676470; }
+#night .pti-ptilist .pti-header .pti-header-button.selected { background-color: #efeff5; color: #676470; }
+
+#night .pti-ptilist .slimScrollDiv { background-color: lightgray; }
+
+#night .pti-ptilist .pti-content>.pti-element>* { background-color: #817D8C; color: white; }
+#night .pti-ptilist .pti-content>.pti-element:hover>* { background-color: #777382; }
+#night .pti-ptilist .pti-content>.pti-element.selected>div, .pti-ptilist .pti-content>.pti-element.selected:hover>div { background-color: #45434C; color: white; }
+#night .pti-ptilist .pti-content>.pti-element.ui-selected>div { background-color: #28262B; color: white; }
+#night .pti-ptilist .pti-content>.pti-element.ui-selected:hover>div { background-color: #313036; }
+#night .pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: #141316; }
 
 
 /* sortable, droppable, selectable, content type */
