@@ -80,17 +80,17 @@
 .pti-action-add .pti-content.pti-view-list>*.selected:hover.ui-selected .image-div:after { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 13px solid #F97413; }
 .pti-action-add .pti-content.pti-view-list>*:hover .image-div .duration-caption { display: none; }
 
-.pti-action-play .pti-content.pti-view-big>*:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid aliceblue; }
-.pti-action-play .pti-content.pti-view-big>*.selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid #6796b4; }
-.pti-action-play .pti-content.pti-view-big>*:hover.ui-selected:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid #ffb122; }
-.pti-action-play .pti-content.pti-view-big>*.selected.ui-selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid #F97413; }
-.pti-action-play .pti-content.pti-view-medium>*:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid aliceblue; }
-.pti-action-play .pti-content.pti-view-medium>*.selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid #6796b4; }
-.pti-action-play .pti-content.pti-view-medium>*:hover.ui-selected:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid #ffb122; }
-.pti-action-play .pti-content.pti-view-medium>*.selected.ui-selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid #F97413; }
-.pti-action-play .pti-content.pti-view-list>*:hover:not(.selected) .image-div:before { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 20px solid #6796b4; }
-.pti-action-play .pti-content.pti-view-list>*.selected:hover .image-div:before, .pti-action-play .pti-content.pti-view-list>*.ui-selected:hover .image-div:before { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 20px solid aliceblue; }
-.pti-action-play .pti-content.pti-view-list>*:hover .image-div .duration-caption { display: none; }
+/*.pti-action-play .pti-content.pti-view-big>*:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid aliceblue; }*/
+/*.pti-action-play .pti-content.pti-view-big>*.selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid #6796b4; }*/
+/*.pti-action-play .pti-content.pti-view-big>*:hover.ui-selected:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid #ffb122; }*/
+/*.pti-action-play .pti-content.pti-view-big>*.selected.ui-selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 15px; opacity: 0.7; border-top: 45px solid transparent; border-bottom: 45px solid transparent; border-left: 90px solid #F97413; }*/
+/*.pti-action-play .pti-content.pti-view-medium>*:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid aliceblue; }*/
+/*.pti-action-play .pti-content.pti-view-medium>*.selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid #6796b4; }*/
+/*.pti-action-play .pti-content.pti-view-medium>*:hover.ui-selected:hover:not(.selected) .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid #ffb122; }*/
+/*.pti-action-play .pti-content.pti-view-medium>*.selected.ui-selected:hover .image-div>.pti-logo:before { content: ''; position: absolute; left: 7.5px; opacity: 0.7; border-top: 22.5px solid transparent; border-bottom: 22.5px solid transparent; border-left: 45px solid #F97413; }*/
+/*.pti-action-play .pti-content.pti-view-list>*:hover:not(.selected) .image-div:before { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 20px solid #6796b4; }*/
+/*.pti-action-play .pti-content.pti-view-list>*.selected:hover .image-div:before, .pti-action-play .pti-content.pti-view-list>*.ui-selected:hover .image-div:before { content: ''; position: absolute; left: 15px; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 20px solid aliceblue; }*/
+/*.pti-action-play .pti-content.pti-view-list>*:hover .image-div .duration-caption { display: none; }*/
 
 #howDiv .slimScrollDiv { top: 0px; }
 #howDiv #howDivContainer { position: absolute; width: 100%; height: 100%; top: -1px; background-color: #f7f7f7; }
@@ -102,7 +102,7 @@
 
 a[href="#howDiv"] { position: relative; }
 
-.pti-element .pti-logo>svg { position: absolute; width: 80%; height: 80%; top: 9px; left: 13px; opacity: 0.7; display: none; }
+.pti-element .pti-logo>svg { position: absolute; width: 100%; height: 100%; opacity: 0.7; display: none; }
 .pti-element:hover .pti-logo>svg { display: block; }
 .pti-element .pti-logo>svg>path { fill: aliceblue; }
 .pti-element.ui-selected .pti-logo>svg>path { fill: #ffb122; }
