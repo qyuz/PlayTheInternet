@@ -13,8 +13,7 @@
 
 
 /* image-div */
-.pti-ptilist .pti-content .image-div { float: left; }
-.pti-ptilist .pti-content.pti-view-big>* .image-div, .pti-ptilist .pti-content.pti-view-medium>* .image-div  { position: relative; }
+.pti-ptilist .pti-content .image-div { float: left; position: relative; }
 .pti-ptilist .pti-content.pti-view-big>* .image-div { width: 120px; height: 90px; margin-right: 3px; }
 .pti-ptilist .pti-content.pti-view-medium>* .image-div { width: 60px; height: 45px; margin-right: 3px; }
 
@@ -26,18 +25,21 @@
 .pti-ptilist .pti-content.pti-view-list>* .image-div { width: 40px; height: 20px; margin-right: 2px; }
 .pti-ptilist .pti-content.pti-view-list>* .image-div img { display: none;}
 .pti-ptilist .pti-content.pti-view-list>* .image-div .duration-caption { height: 20px;}
-.pti-ptilist .pti-content.pti-view-list>* .image-div .pti-logo { display: none;}
 
 .pti-ptilist .pti-content.pti-view-big>* .duration-caption, .pti-ptilist .pti-content.pti-view-medium>* .duration-caption { position: absolute; width: auto; height: auto; font-family: Arial, Helvetica, sans-serif; }
 .pti-ptilist .pti-content.pti-view-big>* .duration-caption { right: 5px; bottom: 3px; }
 .pti-ptilist .pti-content.pti-view-medium>* .duration-caption { right: 0px; bottom: 0px; font-size: 9px; }
 .pti-ptilist .pti-content.pti-view-list>* .duration-caption { text-align: right; }
+.pti-ptilist .pti-content.pti-view-list>*:hover .image-div .duration-caption { display: none; }
 
 /*action*/
 .pti-action-background .pti-content.pti-view-big>*:hover .image-div:before { content: ''; position: absolute; left: 0px; background-color: black; opacity: 0.7; width: 120px; height: 90px; }
 .pti-action-background .pti-content.pti-view-medium>*:hover .image-div:before { content: ''; position: absolute; left: 0px; background-color: black; opacity: 0.7; width: 60px; height: 45px; }
-.pti-ptilist .pti-content>.pti-element .pti-logo>svg { position: absolute; width: 100%; height: 100%; opacity: 0.7; display: none; }
-.pti-ptilist .pti-content>.pti-element:hover .pti-logo>svg { display: block; }
+.pti-ptilist .pti-content.pti-view-list>.pti-element .pti-action { margin-left: 6px; }
+.pti-ptilist .pti-content>.pti-element .pti-action>svg { position: absolute; width: 100%; height: 100%; opacity: 0.7; display: none; }
+.pti-ptilist.pti-action-add .pti-content>.pti-element:hover .pti-action>svg.pti-action-add { display: block; }
+.pti-ptilist.pti-action-open .pti-content>.pti-element:hover .pti-action>svg.pti-action-open { display: block; }
+.pti-ptilist.pti-action-play .pti-content>.pti-element:hover .pti-action>svg.pti-action-play { display: block; }
 
 /* videoText error-text */
 .pti-ptilist .pti-content>* .error-text { position: absolute; }
@@ -80,9 +82,9 @@
 .pti-ptilist .pti-content.pti-view-big .image-div, .pti-ptilist .pti-content.pti-view-medium .image-div { background-color: black; }
 
 /*DAY*/
-.pti-ptilist .pti-content .pti-element .pti-logo>svg>* { fill: aliceblue; }
-.pti-ptilist .pti-content .pti-element.selected .pti-logo>svg>* { fill: #6796b4; }
-.pti-ptilist .pti-content .pti-element.ui-selected .pti-logo>svg>* { fill: #ffb122; }
+.pti-ptilist .pti-content .pti-element .pti-action>svg>* { fill: aliceblue; }
+.pti-ptilist .pti-content .pti-element.selected .pti-action>svg>* { fill: #6796b4; }
+.pti-ptilist .pti-content .pti-element.ui-selected .pti-action>svg>* { fill: #ffb122; }
 
 .pti-ptilist .pti-content.pti-view-big>* .duration-caption, .pti-ptilist .pti-content.pti-view-medium>* .duration-caption { background: #000000; color: #FFFFFF; }
 .pti-ptilist .pti-content.pti-view-list>* .duration-caption { color: #56545e; }
@@ -98,9 +100,9 @@
 /*NIGHT*/
 #night .pti-ptilist .pti-header>.playing-name { background-color: #8B8896; color: white; }
 
-#night .pti-ptilist .pti-content .pti-element .pti-logo>svg>* { fill: silver; }
-#night .pti-ptilist .pti-content .pti-element.selected .pti-logo>svg>* { fill: aliceblue; }
-#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-logo>svg>* { fill: white; }
+#night .pti-ptilist .pti-content .pti-element .pti-action>svg>* { fill: silver; }
+#night .pti-ptilist .pti-content .pti-element.selected .pti-action>svg>* { fill: aliceblue; }
+#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-action>svg>* { fill: white; }
 
 #night .pti-ptilist .pti-content.pti-view-list>* .duration-caption { color: white; }
 #night .pti-ptilist .pti-content>* .error-text, .pti-ptilist .pti-content>* .error-text a { color: white; }
