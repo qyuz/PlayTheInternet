@@ -33,6 +33,11 @@
 .pti-ptilist .pti-content.pti-view-medium>* .duration-caption { right: 0px; bottom: 0px; font-size: 9px; }
 .pti-ptilist .pti-content.pti-view-list>* .duration-caption { text-align: right; }
 
+/*action*/
+.pti-action-background .pti-content.pti-view-big>*:hover .image-div:before { content: ''; position: absolute; left: 0px; background-color: black; opacity: 0.7; width: 120px; height: 90px; }
+.pti-action-background .pti-content.pti-view-medium>*:hover .image-div:before { content: ''; position: absolute; left: 0px; background-color: black; opacity: 0.7; width: 60px; height: 45px; }
+.pti-ptilist .pti-content>.pti-element .pti-logo>svg { position: absolute; width: 100%; height: 100%; opacity: 0.7; display: none; }
+.pti-ptilist .pti-content>.pti-element:hover .pti-logo>svg { display: block; }
 
 /* videoText error-text */
 .pti-ptilist .pti-content>* .error-text { position: absolute; }
@@ -73,7 +78,12 @@
 /* Playlist */
 /*COMMON*/
 .pti-ptilist .pti-content.pti-view-big .image-div, .pti-ptilist .pti-content.pti-view-medium .image-div { background-color: black; }
+
 /*DAY*/
+.pti-ptilist .pti-content .pti-element .pti-logo>svg>* { fill: aliceblue; }
+.pti-ptilist .pti-content .pti-element.selected .pti-logo>svg>* { fill: #6796b4; }
+.pti-ptilist .pti-content .pti-element.ui-selected .pti-logo>svg>* { fill: #ffb122; }
+
 .pti-ptilist .pti-content.pti-view-big>* .duration-caption, .pti-ptilist .pti-content.pti-view-medium>* .duration-caption { background: #000000; color: #FFFFFF; }
 .pti-ptilist .pti-content.pti-view-list>* .duration-caption { color: #56545e; }
 .pti-ptilist .pti-content.pti-view-list>*.ui-selected .duration-caption { color: white; }
@@ -84,8 +94,13 @@
 .pti-ptilist .pti-menu>.create-playlist-name { color: #56545e; }
 .pti-ptilist .pti-menu>input[type=button] { background-color: #6796b4; color: white; }
 .pti-ptilist .pti-menu>input[type=button]:hover { background-color: #7EA6BF; }
+
 /*NIGHT*/
 #night .pti-ptilist .pti-header>.playing-name { background-color: #8B8896; color: white; }
+
+#night .pti-ptilist .pti-content .pti-element .pti-logo>svg>* { fill: silver; }
+#night .pti-ptilist .pti-content .pti-element.selected .pti-logo>svg>* { fill: aliceblue; }
+#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-logo>svg>* { fill: white; }
 
 #night .pti-ptilist .pti-content.pti-view-list>* .duration-caption { color: white; }
 #night .pti-ptilist .pti-content>* .error-text, .pti-ptilist .pti-content>* .error-text a { color: white; }
