@@ -186,7 +186,6 @@ define(["common/ptilist"], function (ptilist) {
     Playlist.prototype.addAction = function () {
         Playlist.prototype.setActionBackground.call(this)
         this.$.container.addClass('pti-action-add')
-        this.$.container.addClass('pti-action-play')
         var me = this
         this.$.content.on('click', '.pti-element', function (event) {
             if ($(event.target).prop('tagName').match(/^[aA]$/) == null) {

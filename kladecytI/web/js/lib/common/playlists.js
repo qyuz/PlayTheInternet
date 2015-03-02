@@ -28,6 +28,7 @@ define(["common/ptilist", "pti-playlist"], function (ptilist, Playlist) {
 
         //$.container
         me.$.container.addClass("pti-action-background")
+        me.$.container.addClass("pti-action-open")
 
         //playlist
         me.$.playlist = $('<div></div>').appendTo(me.$.container.parent())
