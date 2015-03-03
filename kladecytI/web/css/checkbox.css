@@ -106,6 +106,24 @@
     -o-animation: spinner-3-right 1s infinite linear;
     animation: spinner-3-right 1s infinite linear;
 }
+#night .spinner-3 .spinner:before {
+    left: 0;
+    background-color: #141316;
+    -webkit-animation: spinner-3-left 1s infinite linear;
+    -moz-animation: spinner-3-left 1s infinite linear;
+    -ms-animation: spinner-3-left 1s infinite linear;
+    -o-animation: spinner-3-left 1s infinite linear;
+    animation: spinner-3-left 1s infinite linear;
+}
+#night .spinner-3 .spinner:after {
+    right: 0;
+    background-color: #efeff5;
+    -webkit-animation: spinner-3-right 1s infinite linear;
+    -moz-animation: spinner-3-right 1s infinite linear;
+    -ms-animation: spinner-3-right 1s infinite linear;
+    -o-animation: spinner-3-right 1s infinite linear;
+    animation: spinner-3-right 1s infinite linear;
+}
 
 /* left ball */
 @-webkit-keyframes spinner-3-left {

@@ -3,4 +3,4 @@
 /*#night #splitViews>* { background-color: darkgray; }*/
 /*#night #splitViews>*>* { background-color: darkgray; }*/
 /*#night #splitViews>div>div>* { background-color: darkgray; }*/
-#night #tabs>div, #night #secondViewTabs>div { background-color: lightgray; }
+#night #tabs>div, #night #secondViewTabs>div { background-color: #8C8896; }
