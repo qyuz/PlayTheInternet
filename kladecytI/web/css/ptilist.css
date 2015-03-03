@@ -65,7 +65,7 @@
 
 #night .pti-ptilist .pti-content>.pti-element>* { background-color: #817D8C; color: white; }
 #night .pti-ptilist .pti-content>.pti-element:hover>* { background-color: #777382; }
-#night .pti-ptilist .pti-content>.pti-element.selected>div, .pti-ptilist .pti-content>.pti-element.selected:hover>div { background-color: #45434C; color: white; }
+#night .pti-ptilist .pti-content>.pti-element.selected>div, #night .pti-ptilist .pti-content>.pti-element.selected:hover>div { background-color: #45434C; color: white; }
 #night .pti-ptilist .pti-content>.pti-element.ui-selected>div { background-color: #28262B; color: white; }
 #night .pti-ptilist .pti-content>.pti-element.ui-selected:hover>div { background-color: #313036; }
 #night .pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: #141316; }

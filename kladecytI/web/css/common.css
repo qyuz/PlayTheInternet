@@ -51,8 +51,8 @@ body { height: 100%; }
 #night #splitViews>div>.tabs>ul>li>a:hover { background-color: #676470; color: #efeff5; }
 #night #splitViews>div>.tabs>ul>li>a>svg>* { fill: silver; }
 #night #splitViews>div>.tabs>ul>li>a:hover>svg>* { fill: #efeff5; }
-#night #splitViews>div>.tabs>ul>li.ui-state-active>a>svg>*, #splitViews>div>.tabs>ul>li:hover.ui-state-active>a>svg>* { fill: #efeff5; }
-#night .pti-main-text, .pti-success-text, .pti-warning-text, .pti-error-text { font-weight: normal; color: white; }
+#night #splitViews>div>.tabs>ul>li.ui-state-active>a>svg>*, #night #splitViews>div>.tabs>ul>li:hover.ui-state-active>a>svg>* { fill: #efeff5; }
+#night .pti-main-text, #night .pti-success-text, #night .pti-warning-text, #night .pti-error-text { font-weight: normal; color: white; }
 #night .pti-main-text { background-color: #63606C; }
 #night .pti-success-text { background-color: #63606C; }
 #night .pti-warning-text { background-color: #8B8896; }
