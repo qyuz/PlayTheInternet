@@ -3,8 +3,11 @@
     width: 100%;
     height: 34px;
     margin-bottom: 1px;
-    background-color: #6796b4;
 }
+/*day*/
+.playerWidget { background-color: #6796b4; }
+/*night*/
+#night .playerWidget { background-color: #676470; }
 
 /* CONTROLS START */
 .playerWidget .control {
@@ -14,16 +17,40 @@
     width: 34px;
     height: 34px;
 }
-
 .playerWidget .control:hover {
-    background-color: #7EA6BF;
     cursor: pointer;
 }
-.playerWidget .control.mouseDown, .playerWidget .control.mouseDown:hover {
-    background-color: gray!important;
+.playerWidget .control.prev {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.playerWidget .control.volume {
+    -webkit-appearance: none;
+    position: relative;
+    top: 3px;
+    width: 68px;
+    height:20px;
+}
+.playerWidget .control.volume::-webkit-slider-thumb {
+    transition: all 0.3s ease-in-out;
+    -webkit-appearance: none;
+    opacity: 0.5;
+    width: 10px;
+    height: 26px;
+}
+.playerWidget .control.recycle {
+    margin: 0px 5px 0px 9px;
+}
+.playerWidget .control.recycle svg {
+    transition: fill 0.5s ease-in-out;
 }
 
-
+/*day*/
+.playerWidget .control:hover { background-color: #7EA6BF; }
+.playerWidget .control.mouseDown, .playerWidget .control.mouseDown:hover { background-color: gray!important; }
 .playerWidget .control.play:before {
     content: '';
     position: absolute;
@@ -33,7 +60,6 @@
     border-bottom: 14px solid transparent;
     border-left: 28px solid aliceblue;
 }
-
 .playerWidget .control.pause:before {
     content: '';
     position: absolute;
@@ -56,7 +82,6 @@
     border-left: 2px solid aliceblue;
     border-right: 2px solid aliceblue;
 }
-
 .playerWidget .control.next:before, .playerWidget .control.prev:before {
     content: '';
     position: absolute;
@@ -78,56 +103,27 @@
     border-left: 2px solid aliceblue;
     border-right: 2px solid aliceblue;
 }
+.playerWidget .control.volume { background-color: #efeff5; }
+.playerWidget .control.volume:hover { background-color: aliceblue; }
+.playerWidget .control.volume::-webkit-slider-thumb { background-color: #666; }
+.playerWidget .control.volume:hover::-webkit-slider-thumb { background-color: #7EA6BF; }
+.playerWidget .control.recycle.confirm svg { fill: salmon; }
+.playerWidget .control.recycle.confirmed svg { fill: greenyellow; }
 
-.playerWidget .control.prev {
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    transform: rotate(180deg);
-}
-.playerWidget .control.volume {
-    -webkit-appearance: none;
-    background-color: #efeff5;
-    position: relative;
-    top: 3px;
-    width: 68px;
-    height:20px;
-}
-.playerWidget .control.volume:hover {
-    background-color: aliceblue;
-}
-
-.playerWidget .control.volume::-webkit-slider-thumb {
-    transition: all 0.3s ease-in-out;
-    -webkit-appearance: none;
-    background-color: #666;
-    opacity: 0.5;
-    width: 10px;
-    height: 26px;
-}
-.playerWidget .control.volume:hover::-webkit-slider-thumb {
-    background-color: #7EA6BF;
-}
-
-.playerWidget .control.recycle {
-    margin: 0px 5px 0px 9px;
-}
-.playerWidget .control.recycle svg {
-    transition: fill 0.5s ease-in-out;
-}
-.playerWidget .control.recycle.confirm svg {
-    fill: salmon;
-}
-.playerWidget .control.recycle.confirmed svg {
-    fill: greenyellow;
-}
+/*night*/
+#night .playerWidget .control:hover { background-color: #777382; }
+#night .playerWidget .control.mouseDown, #night .playerWidget .control.mouseDown:hover { background-color: gray!important; }
+#night .playerWidget .control.volume { background-color: #efeff5; }
+#night .playerWidget .control.volume:hover { background-color: aliceblue; }
+#night .playerWidget .control.volume::-webkit-slider-thumb { background-color: #666; }
+#night .playerWidget .control.volume:hover::-webkit-slider-thumb { background-color: #8C8896; }
+#night .playerWidget .control.recycle.confirm svg { fill: black; }
+#night .playerWidget .control.recycle.confirmed svg { fill: #8C8896; }
 /* CONTROLS END */
 
 /* PROGRESS BAR START */
 .playerWidget .progressBarContainer {
     position: absolute;
-    background: #efeff5;
     left: 1px;
     top: 1px;
     right: 223px;
@@ -135,40 +131,29 @@
     height: 22px;
     overflow: hidden;
 }
-
 .playerWidget .progressBarContainer:hover {
-    background: aliceblue;
     cursor: pointer;
 }
 .playerWidget .progressBarContainer:hover .progressBar {
-    background: #7EA6BF;
     cursor: pointer;
 }
-
 .playerWidget .progressBar {
     position: relative;
-    background: #6796b4;
     width: 0%;
     height: 20px;
     left: 1px;
     top: 1px;
 }
-
 .playerWidget .progressBar .progressBarCurrentTime {
     position: absolute;
-    color: aliceblue;
     overflow: hidden;
     z-index: 1;
 }
 .playerWidget .progressBar .progressBarBackgroundCurrentTime {
-    color: #6796b4;
     left: 1px;
 }
-
-
 .playerWidget .progressBar .progressBarTrackLength {
     position: absolute;
-    color: aliceblue;
     top: 0px;
     right: 1px;
     z-index: 1;
@@ -179,33 +164,20 @@
     float: right;
     height: 100%;
     top: -20px;
-    color: #6796b4;
     line-height: 22px;
 }
-
-.playerWidget .progressBarContainer:hover .progressBarBackgroundTrackLength, .playerWidget .progressBarContainer:hover .progressBarBackgroundCurrentTime {
-    color: #7EA6BF;
-}
-
 .playerWidget .progressBarContainer, .playerWidget .progressBarContainer .progressBar, .playerWidget .progressBarContainer .progressBarBackgroundTrackLength, .playerWidget .progressBarContainer .progressBarBackgroundCurrentTime {
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
-
 .playerWidget .progressBar .progressBarCurrentTime, .playerWidget .progressBar .progressBarBackgroundCurrentTime, .playerWidget .progressBarTrackLength, .playerWidget .progressBarBackgroundTrackLength, .playerWidget .progressBarCursorTime {
     pointer-events: none;
 }
-
-
 .playerWidget .progressBarCursorTime {
     transition: height 0.075s 0.025s ease-in-out, opacity 0.075s 0.025s ease-in-out, left 0.05s ease;
     position: absolute;
-    color: aliceblue;
-    background-color: #7EA6BF;
     z-index: 999;
     top: 23px;
-    border: 1px solid #6796b4;
 }
-
 .playerWidget .progressBarContainer+.progressBarCursorTime {
     height: 0px;
     opacity: 0;
@@ -214,4 +186,28 @@
     height: 20px;
     opacity: 1;
 }
+
+/*day*/
+.playerWidget .progressBarContainer { background: #efeff5; } 
+.playerWidget .progressBarContainer:hover { background: aliceblue; }
+.playerWidget .progressBarContainer:hover .progressBar { background: #7EA6BF; }
+.playerWidget .progressBar { background: #6796b4; } 
+.playerWidget .progressBar .progressBarCurrentTime { color: aliceblue; }
+.playerWidget .progressBar .progressBarBackgroundCurrentTime { color: #6796b4; }
+.playerWidget .progressBar .progressBarTrackLength { color: aliceblue; }
+.playerWidget .progressBarContainer .progressBarBackgroundTrackLength { color: #6796b4; }
+.playerWidget .progressBarContainer:hover .progressBarBackgroundTrackLength, .playerWidget .progressBarContainer:hover .progressBarBackgroundCurrentTime { color: #7EA6BF; }
+.playerWidget .progressBarCursorTime { color: aliceblue; background-color: #7EA6BF; border: 1px solid #6796b4; } 
+
+/*night*/
+#night .playerWidget .progressBarContainer { background: #efeff5; }
+#night .playerWidget .progressBarContainer:hover { background: aliceblue; }
+#night .playerWidget .progressBarContainer:hover .progressBar { background: #8C8896; }
+#night .playerWidget .progressBar { background: #676470; }
+#night .playerWidget .progressBar .progressBarCurrentTime { color: aliceblue; }
+#night .playerWidget .progressBar .progressBarBackgroundCurrentTime { color: #45434C; }
+#night .playerWidget .progressBar .progressBarTrackLength { color: aliceblue; }
+#night .playerWidget .progressBarContainer .progressBarBackgroundTrackLength { color: #45434C; }
+#night .playerWidget .progressBarContainer:hover .progressBarBackgroundTrackLength, #night .playerWidget .progressBarContainer:hover .progressBarBackgroundCurrentTime { color: #45434C; }
+#night .playerWidget .progressBarCursorTime { color: aliceblue; background-color: #45434C; border: 1px solid #45434C; }
 /* PROGRESSBAR END */
