@@ -61,7 +61,7 @@
 #night .pti-ptilist .pti-header .pti-header-button:hover { background-color: silver; color: #676470; }
 #night .pti-ptilist .pti-header .pti-header-button.selected { background-color: #efeff5; color: #676470; }
 
-#night .pti-ptilist .slimScrollDiv { background-color: lightgray; }
+#night .pti-ptilist .slimScrollDiv { background-color: #8C8896; }
 
 #night .pti-ptilist .pti-content>.pti-element>* { background-color: #817D8C; color: white; }
 #night .pti-ptilist .pti-content>.pti-element:hover>* { background-color: #777382; }

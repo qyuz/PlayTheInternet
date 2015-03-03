@@ -24,9 +24,12 @@ body { height: 100%; }
 /* Players Container */
 /*#playersContainer { height: 100%;}*/
 .tabs-player-container { position: absolute; width: 100%; top: 41px; bottom: 0px; }
-#spinner-container { position: relative; z-index: 999; height: 100%; background-color: gainsboro; }
+#spinner-container { position: relative; z-index: 999; height: 100%; }
 #players { position: absolute; top: 0px; width: 100%; bottom: 0px; }
-
+/*day*/
+#spinner-container { background-color: gainsboro; }
+/*night*/
+#night #spinner-container { background-color: #8C8896; }
 
 /* COLORS */
 /*RESET*/
@@ -46,6 +49,7 @@ body { height: 100%; }
 .pti-error-text { background-color: tomato; }
 
 /*NIGHT*/
+#night ::-webkit-input-placeholder { color: silver; }
 #night #splitViews>div>.tabs>ul { background-color: #676470; }
 #night #splitViews>div>.tabs>ul>li>a { color: silver; }
 #night #splitViews>div>.tabs>ul>li>a:hover { background-color: #676470; color: #efeff5; }
@@ -57,3 +61,4 @@ body { height: 100%; }
 #night .pti-success-text { background-color: #63606C; }
 #night .pti-warning-text { background-color: #8B8896; }
 #night .pti-error-text { background-color: black; }
+#night .taArea { background-color: #8B8896; color: white; }

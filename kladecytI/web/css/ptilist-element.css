@@ -109,7 +109,6 @@
 
 #night .pti-ptilist .pti-menu { background-color: #676470; color: white; }
 #night .pti-ptilist .pti-menu>.create-playlist-name { background-color: #8B8896; color: white; }
-#night .pti-ptilist .pti-menu>.create-playlist-name::-webkit-input-placeholder { color: silver; }
 #night .pti-ptilist .pti-menu>input[type=button] { background-color: #45434C; }
 #night .pti-ptilist .pti-menu>input[type=button]:hover { background-color: #817D8C; }
 
