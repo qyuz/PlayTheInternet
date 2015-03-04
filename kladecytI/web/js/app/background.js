@@ -24,4 +24,6 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
             synchronization.init()
         })
     })
+
+    chrome.browserAction.setBadgeText({ text: 'D' })
 })
