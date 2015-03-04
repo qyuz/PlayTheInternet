@@ -1,8 +1,7 @@
 {
-    "key": "asdf",
-    "name":"PlayTheInternet",
-    "version":"0.710.773",
-    "description":"Add YouTube, SoundCloud, Vimeo music from any web page to playlist. Listen, aggregate, synchronize between PCs and share.",
+    "name":"PTIDARK",
+    "version":"0.1",
+    "description":"PTI DARK",
     "icons":{
         "128":"favicon.ico"
     },
