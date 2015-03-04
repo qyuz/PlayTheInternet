@@ -124,7 +124,7 @@
 .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #F9961B; }
 
 /*NIGHT*/
-#night .pti-ptilist .pti-content .pti-element.drop-hover>div { background-color: #cacaf4; }
+#night .pti-ptilist .pti-content .pti-element.drop-hover>div { background-color: silver; }
 #night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-info .pti-name:focus { border: silver solid 1px; }
 #night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>* { background-color: #63606C; color: white; }
 #night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #676470; color: white; }
