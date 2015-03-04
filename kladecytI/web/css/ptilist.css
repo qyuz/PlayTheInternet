@@ -67,6 +67,7 @@
 .pti-ptilist .slimScrollBar { background-color: white!important; }
 .pti-ptilist .slimScrollRail { background-color: silver!important; }
 
+#night .pti-ptilist .pti-content>div.pti-make-last-droppable-work { color: white; }
 #night .pti-ptilist .pti-content>.pti-element>* { background-color: #817D8C; color: white; }
 #night .pti-ptilist .pti-content>.pti-element:hover>* { background-color: #777382; }
 #night .pti-ptilist .pti-content>.pti-element.selected>div, #night .pti-ptilist .pti-content>.pti-element.selected:hover>div { background-color: #45434C; color: white; }
