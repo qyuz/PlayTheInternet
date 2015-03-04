@@ -339,9 +339,7 @@ define(["underscore", "slimscroll"], function () {
     Ptilist.prototype._setSlimScroll = function (element, height) {
         $(element).slimScroll({
             height: height,
-            color: '#56545e',
             railVisible: true,
-            railColor: '#000000',
             disableFadeOut: true
         });
     }
