@@ -87,6 +87,15 @@
 .temp-webkit-grabbing * { cursor: move!important; cursor: -webkit-grabbing!important; cursor: -moz-grabbing!important; }
 .temp-crosshair * { cursor: crosshair!important; }
 
+/*OPTIONS*/
+.temp-panel>*:nth-child(1n+2) { font-size: 13px; font-weight: bold; }
+.temp-options-tooltip { float: left; margin: 5px 5% 5px 0px; width: 45%; height: 11px; text-align: center; }
+.temp-options-tooltip>*:nth-child(1) { float: left; margin: 0px; width: 100%; font-size: 13px; font-weight: bold; line-height: 12px; }
+/*day*/
+.temp-panel>*:nth-child(1n+2) { color: #007fff; }
+/*night*/
+#night .temp-panel>.temp-options-tooltip:nth-child(1n+2) { color: white; }
+
 /*HELP*/
 #howDiv .slimScrollDiv { top: 0px; }
 #howDiv #howDivContainer { position: absolute; width: 100%; height: 100%; top: -1px; }

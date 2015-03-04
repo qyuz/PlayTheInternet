@@ -253,6 +253,15 @@ define(["jquery-ui", "underscore"], function () {
     var selectSecondSynchronizedPlaylists = playlistsFactory($('a[href="#sSynchronized"]'), $("#ulSecondSynchronized"), "synchronized", "lConfigSecondPlaylistsPlaylistHeader", window.tabs.second, firstGetPlaylist, sPlaylistsNotice)
 
 //second playlists end
+    $('#nightTheme').prop('checked', localStorage.getItem('theme') == 'night' ? true : false)
+    $('#nightTheme').click(function(item) {
+        var currTheme = $(item.target).prop('checked') ? 'night' : 'day'
+        localStorage.setItem('theme', currTheme)
+        $('html').attr('id', currTheme)
+    })
+//second options start
+
+//second options end
 //SECOND CREATE TABS END
 
     //convenience stuff after tab initialization
