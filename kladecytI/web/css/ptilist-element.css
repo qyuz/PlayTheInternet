@@ -98,19 +98,19 @@
 .pti-ptilist .pti-menu>input[type=button]:hover { background-color: #7EA6BF; }
 
 /*NIGHT*/
-#night .pti-ptilist .pti-header>.playing-name { background-color: #8B8896; color: white; }
+#night .pti-ptilist .pti-header>.playing-name { background-color: #585858; color: white; }
 
 #night .pti-ptilist .pti-content .pti-element .pti-action>svg>* { fill: silver; }
-#night .pti-ptilist .pti-content .pti-element.selected .pti-action>svg>* { fill: aliceblue; }
+#night .pti-ptilist .pti-content .pti-element.selected .pti-action>svg>* { fill: #d7d7d7; }
 #night .pti-ptilist .pti-content .pti-element.ui-selected .pti-action>svg>* { fill: white; }
 
 #night .pti-ptilist .pti-content.pti-view-list>* .duration-caption { color: white; }
 #night .pti-ptilist .pti-content>* .error-text, .pti-ptilist .pti-content>* .error-text a { color: white; }
 
-#night .pti-ptilist .pti-menu { background-color: #676470; color: white; }
-#night .pti-ptilist .pti-menu>.create-playlist-name { background-color: #8B8896; color: white; }
-#night .pti-ptilist .pti-menu>input[type=button] { background-color: #45434C; }
-#night .pti-ptilist .pti-menu>input[type=button]:hover { background-color: #817D8C; }
+#night .pti-ptilist .pti-menu { background-color: #363636; color: white; }
+#night .pti-ptilist .pti-menu>.create-playlist-name { background-color: #585858; color: white; }
+#night .pti-ptilist .pti-menu>input[type=button] { background-color: #585858; }
+#night .pti-ptilist .pti-menu>input[type=button]:hover { background-color: #696969; }
 
 /* Playlists */
 /*DAY*/
@@ -124,13 +124,13 @@
 .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #F9961B; }
 
 /*NIGHT*/
-#night .pti-ptilist .pti-content .pti-element.drop-hover>div { background-color: silver; }
+#night .pti-ptilist .pti-content .pti-element.drop-hover>div { background-color: #696969; }
 #night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-info .pti-name:focus { border: silver solid 1px; }
-#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>* { background-color: #63606C; color: white; }
-#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #676470; color: white; }
-#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #676470; color: white; }
+#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>* { background-color: #2d2d2d; color: white; }
+#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #363636; color: white; }
+#night .pti-ptilist .pti-content .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #363636; color: white; }
 #night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>*,
 #night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-info .pti-status
-{ background-color: #141316; }
-#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #1E1D20; }
-#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #1E1D20; }
+{ background-color: #2d2d2d; }
+#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>*:hover:not(.pti-remove-playlist) { background-color: #4f4f4f; }
+#night .pti-ptilist .pti-content .pti-element.ui-selected .pti-playlists-content .pti-playlists-buttons>.pti-remove-playlist>*:hover { background-color: #4f4f4f; }

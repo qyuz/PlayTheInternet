@@ -58,22 +58,22 @@
 .pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: #F97413; }
 
 /*NIGHT*/
-#night .pti-ptilist .pti-header { background-color: #676470; }
+#night .pti-ptilist .pti-header { background-color: #2d2d2d; }
 #night .pti-ptilist .pti-header .pti-header-button { color: silver; }
 #night .pti-ptilist .pti-header .pti-header-button:hover { background-color: silver; color: #676470; }
 #night .pti-ptilist .pti-header .pti-header-button.selected { background-color: #efeff5; color: #676470; }
 
-#night .pti-ptilist .slimScrollDiv { background-color: #8C8896; }
+#night .pti-ptilist .slimScrollDiv { background-color: #474747; }
 .pti-ptilist .slimScrollBar { background-color: white!important; }
 .pti-ptilist .slimScrollRail { background-color: silver!important; }
 
 #night .pti-ptilist .pti-content>div.pti-make-last-droppable-work { color: white; }
-#night .pti-ptilist .pti-content>.pti-element>* { background-color: #817D8C; color: white; }
-#night .pti-ptilist .pti-content>.pti-element:hover>* { background-color: #777382; }
-#night .pti-ptilist .pti-content>.pti-element.selected>div, #night .pti-ptilist .pti-content>.pti-element.selected:hover>div { background-color: #45434C; color: white; }
-#night .pti-ptilist .pti-content>.pti-element.ui-selected>div { background-color: #28262B; color: white; }
-#night .pti-ptilist .pti-content>.pti-element.ui-selected:hover>div { background-color: #313036; }
-#night .pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: #141316; }
+#night .pti-ptilist .pti-content>.pti-element>* { background-color: #3e3e3e; color: white; }
+#night .pti-ptilist .pti-content>.pti-element:hover>* { background-color: #474747; }
+#night .pti-ptilist .pti-content>.pti-element.selected>div, #night .pti-ptilist .pti-content>.pti-element.selected:hover>div { background-color: #1c1c1c; color: white; }
+#night .pti-ptilist .pti-content>.pti-element.ui-selected>div { background-color: #585858; color: white; }
+#night .pti-ptilist .pti-content>.pti-element.ui-selected:hover>div { background-color: #606060; }
+#night .pti-ptilist .pti-content>.pti-element.ui-selected.selected>div { background-color: #7a7a7a; }
 
 
 /* sortable, droppable, selectable, content type */
@@ -89,8 +89,10 @@
 
 .pti-ptilist .pti-content.pti-view-list>.pti-sortable-placeholder { height: 21px;}
 
-
+/*day*/
 .ui-selectable-helper { position: absolute; z-index: 100; border:1px dotted black; }
+/*night*/
+#night .ui-selectable-helper { position: absolute; z-index: 100; border:1px dotted white; }
 .ui-sortable-helper { pointer-events: none; }
 
 

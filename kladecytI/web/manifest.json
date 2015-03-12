@@ -1,6 +1,7 @@
 {
+    "key": "asdf",
     "name":"PTIDARK",
-    "version":"0.2",
+    "version":"0.3",
     "description":"PTI DARK",
     "icons":{
         "128":"favicon.ico"
