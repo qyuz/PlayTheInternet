@@ -25,7 +25,7 @@ body { height: 100%; }
 #splitViews>div>.tabs>ul>li.ui-state-active>a>div { left: -51px; }
 /*day*/
 /*night*/
-#night #tabs>div, #night #secondViewTabs>div { background-color: #8C8896; }
+#night #tabs>div, #night #secondViewTabs>div { background-color: #474747; }
 
 /* Players Container */
 /*#playersContainer { height: 100%;}*/
@@ -35,7 +35,7 @@ body { height: 100%; }
 /*day*/
 #spinner-container { background-color: gainsboro; }
 /*night*/
-#night #spinner-container { background-color: #8C8896; }
+#night #spinner-container { background-color: #474747; }
 
 /* COLORS */
 /*RESET*/
@@ -55,16 +55,20 @@ body { height: 100%; }
 .pti-error-text { background-color: tomato; }
 
 /*NIGHT*/
+#night textarea:focus,
+#night input:focus
+{ border-color: rgba(239, 239, 245, 0.8); box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(239, 239, 245, 1); }
 #night ::-webkit-input-placeholder { color: silver; }
-#night #splitViews>div>.tabs>ul { background-color: #676470; }
+#night #splitViews>div>.tabs>ul { background-color: #2d2d2d; }
 #night #splitViews>div>.tabs>ul>li>a { color: silver; }
-#night #splitViews>div>.tabs>ul>li>a:hover { background-color: #676470; color: #efeff5; }
+#night #splitViews>div>.tabs>ul>li>a:hover { background-color: inherit; color: #efeff5; }
 #night #splitViews>div>.tabs>ul>li>a>svg>* { fill: silver; }
 #night #splitViews>div>.tabs>ul>li>a:hover>svg>* { fill: #efeff5; }
 #night #splitViews>div>.tabs>ul>li.ui-state-active>a>svg>*, #night #splitViews>div>.tabs>ul>li:hover.ui-state-active>a>svg>* { fill: #efeff5; }
 #night .pti-main-text, #night .pti-success-text, #night .pti-warning-text, #night .pti-error-text { font-weight: normal; color: white; }
-#night .pti-main-text { background-color: #63606C; }
-#night .pti-success-text { background-color: #63606C; }
-#night .pti-warning-text { background-color: #8B8896; }
-#night .pti-error-text { background-color: black; }
-#night .taArea { background-color: #8B8896; color: white; }
+#night .pti-main-text { background-color: #2d2d2d; }
+#night .pti-success-text { background-color: #2d2d2d; }
+#night .pti-warning-text { background-color: #1c1c1c; }
+#night .pti-error-text { background-color: #0b0b0b; }
+#night .taArea { background-color: #585858; color: white; }
+#night .squaredTwo label { background-color: lightgrey; }

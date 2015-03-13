@@ -7,7 +7,7 @@
 /*day*/
 .playerWidget { background-color: #6796b4; }
 /*night*/
-#night .playerWidget { background-color: #676470; }
+#night .playerWidget { background-color: #2d2d2d; }
 
 /* CONTROLS START */
 .playerWidget .control {
@@ -111,14 +111,14 @@
 .playerWidget .control.recycle.confirmed svg { fill: greenyellow; }
 
 /*night*/
-#night .playerWidget .control:hover { background-color: #777382; }
+#night .playerWidget .control:hover { background-color: #474747; }
 #night .playerWidget .control.mouseDown, #night .playerWidget .control.mouseDown:hover { background-color: gray!important; }
 #night .playerWidget .control.volume { background-color: #efeff5; }
 #night .playerWidget .control.volume:hover { background-color: aliceblue; }
-#night .playerWidget .control.volume::-webkit-slider-thumb { background-color: #666; }
-#night .playerWidget .control.volume:hover::-webkit-slider-thumb { background-color: #8C8896; }
+#night .playerWidget .control.volume::-webkit-slider-thumb { background-color: #030303; }
+#night .playerWidget .control.volume:hover::-webkit-slider-thumb { background-color: #2d2d2d; }
 #night .playerWidget .control.recycle.confirm svg { fill: black; }
-#night .playerWidget .control.recycle.confirmed svg { fill: #8C8896; }
+#night .playerWidget .control.recycle.confirmed svg { fill: #828282; }
 /* CONTROLS END */
 
 /* PROGRESS BAR START */
@@ -202,12 +202,12 @@
 /*night*/
 #night .playerWidget .progressBarContainer { background: #efeff5; }
 #night .playerWidget .progressBarContainer:hover { background: aliceblue; }
-#night .playerWidget .progressBarContainer:hover .progressBar { background: #8C8896; }
-#night .playerWidget .progressBar { background: #676470; }
+#night .playerWidget .progressBarContainer:hover .progressBar { background: #585858; }
+#night .playerWidget .progressBar { background: #2d2d2d; }
 #night .playerWidget .progressBar .progressBarCurrentTime { color: aliceblue; }
 #night .playerWidget .progressBar .progressBarBackgroundCurrentTime { color: #45434C; }
 #night .playerWidget .progressBar .progressBarTrackLength { color: aliceblue; }
 #night .playerWidget .progressBarContainer .progressBarBackgroundTrackLength { color: #45434C; }
 #night .playerWidget .progressBarContainer:hover .progressBarBackgroundTrackLength, #night .playerWidget .progressBarContainer:hover .progressBarBackgroundCurrentTime { color: #45434C; }
-#night .playerWidget .progressBarCursorTime { color: aliceblue; background-color: #45434C; border: 1px solid #45434C; }
+#night .playerWidget .progressBarCursorTime { color: aliceblue; background-color: #585858; border: 1px solid #585858; }
 /* PROGRESSBAR END */
