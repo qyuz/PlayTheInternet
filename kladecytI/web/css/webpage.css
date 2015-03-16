@@ -15,16 +15,36 @@ html { width: 100%; height: 100%; overflow: hidden; }
 #installDiv .title-text { width: 100%; text-align: center; margin-top: 50px; font-size: 17px; }
 #installDiv .title-text-wonder-why { width: 86%; margin: 30px 7% 25px 7%; font-size: 16px; }
 #installDiv .install-container { display: table; margin-left: auto; margin-right: auto; margin-top: 11px; }
-#installDiv .install-button { display: block; float: left; position: relative; color: white; border: none; padding: 10px 50px; }
-#installWeb { background-color: royalblue; color: white; text-decoration: none; }
-#installChrome { background-color: tomato; left: 1px; }
+#installDiv .install-button { display: block; float: left; position: relative; border: none; padding: 10px 50px; }
+#installWeb { text-decoration: none; }
+#installChrome { left: 1px; }
 #installDiv .feature-block { float: left; width: 45%; margin-top: 15px; min-width: 180px; }
 #installDiv .feature-block:nth-child(4), #installDiv .feature-block:nth-child(5) { margin-top: 20px; } /* bigger margin for first feature elements */
 #installDiv .feature-block:nth-child(2n) { clear: both; }
 #installDiv .feature-block:nth-child(2n), #installDiv .feature-block:nth-child(2n+1) { margin-left: 5%; }
-#installDiv .title-features-text { float: left; color: darkslategrey; font-size: 15px; }
-#installDiv .title-feature-platform { float: left; color: white; border-radius: 50%; padding: 0px 5px; margin-left: 3px; }
+#installDiv .title-features-text { float: left; font-size: 15px; }
+#installDiv .title-feature-platform { float: left; border-radius: 50%; padding: 0px 5px; margin-left: 3px; }
+#installDiv .content-features-text { clear: both; margin-top: 5px; margin-left: 5px; margin-right: 10%; font-size: 14px; }
+#installDiv .know-more { clear: both; position: relative; top: 25px; text-align: center; }
+
+/*day*/
+#installDiv .install-button { color: white; }
+#installWeb { background-color: royalblue; color: white; }
+#installChrome { background-color: tomato; }
+#installDiv .higlight { background-color: yellow; color: #555; }
+#installDiv .title-features-text { color: darkslategrey; }
+#installDiv .title-feature-platform { color: white; }
 #installDiv .web { background-color: royalblue; }
 #installDiv .chrome { background-color: tomato; }
-#installDiv .content-features-text { clear: both; margin-top: 5px; color: dimgrey; margin-left: 5px; margin-right: 10%; font-size: 14px; }
-#installDiv .know-more { clear: both; position: relative; top: 25px; text-align: center; }
+#installDiv .content-features-text { color: dimgrey; }
+/*night*/
+#night #installDiv { color: white; }
+#night #installWeb { background-color: darkslateblue; }
+#night #installChrome { background-color: darkgrey; }
+#night #installDiv .higlight { background-color: yellow; color: #555; }
+#night #installDiv .title-features-text { color: white; }
+#night #installDiv .title-feature-platform { color: white; }
+#night #installDiv .web { background-color: darkslateblue; }
+#night #installDiv .chrome { background-color: darkgrey; }
+#night #installDiv .content-features-text { color: aliceblue; }
+#night #installDiv .know-more a { color: steelblue; }
