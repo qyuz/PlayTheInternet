@@ -2,19 +2,17 @@ define(["parse"], function (a) {
     function installHint(selector, text) {
         $(document).on({
             mouseenter: function () {
-                $installText.css('background-color', 'yellow');
-                $installText.css('color', '#555');
+                $installText.addClass('higlight')
                 $installText.text(text)
             },
             mouseleave: function () {
-                $installText.css('background', 'none');
-                $installText.css('color', defaultColor);
+                $installText.removeClass('higlight')
                 $installText.text(defaultText);
             }
         }, selector);
     }
 
-    var $installText = $('#installText'), defaultText = $installText.text(), defaultColor = $installText.css('color')
+    var $installText = $('#installText'), defaultText = $installText.text()
     installHint('#installWeb', 'Drag this to your bookmark toolbar, to install Web version.')
     installHint('#installChrome', 'Click to install Chrome extension.')
 
