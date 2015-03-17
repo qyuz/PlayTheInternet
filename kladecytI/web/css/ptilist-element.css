@@ -87,6 +87,10 @@
 .pti-ptilist .pti-content .pti-element.ui-selected .pti-action>svg>* { fill: #ffb122; }
 
 .pti-ptilist .pti-content.pti-view-big>* .duration-caption, .pti-ptilist .pti-content.pti-view-medium>* .duration-caption { background: #000000; color: #FFFFFF; }
+.pti-ptilist .pti-content.pti-view-list>.pti-element .pti-action>svg>* { fill: #6796b4; }
+.pti-ptilist .pti-content.pti-view-list>.pti-element.selected .pti-action>svg>*,
+.pti-ptilist .pti-content.pti-view-list>.pti-element.ui-selected .pti-action>svg>*
+{ fill: white; }
 .pti-ptilist .pti-content.pti-view-list>* .duration-caption { color: #56545e; }
 .pti-ptilist .pti-content.pti-view-list>*.ui-selected .duration-caption { color: white; }
 .pti-ptilist .pti-content>* .error-text, .pti-ptilist .pti-content>* .error-text a { color: #6796b4; }
