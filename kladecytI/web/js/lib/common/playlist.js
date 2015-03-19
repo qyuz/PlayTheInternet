@@ -50,7 +50,7 @@ define(["common/ptilist"], function (ptilist) {
             $menu.addClass('temp-display-none')
             $input.prop('disabled', false)
             $input.val('')
-            $input.css('color', "")
+//            $input.css('color', "")
         }
 
         var createPlaylistHandler = _.throttle(function(play) {
@@ -63,7 +63,7 @@ define(["common/ptilist"], function (ptilist) {
             me.createPlaylist(id, name, play)
 
             $input.val('Playlist created')
-            $input.css('color', 'green')
+//            $input.css('color', 'green')
             createPlaylistCloseTimeout = setTimeout(function() {
                 closeCreatePlaylistDialog()
             }, 2000)
