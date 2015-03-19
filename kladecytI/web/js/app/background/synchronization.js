@@ -23,6 +23,7 @@ define(["jstorage", "underscore", "pti-playlist"], function (one, two, Playlist)
             if (_.keys(upsert).length) {
                 chrome.storage.sync.set(upsert, function () {
                     chrome.runtime.lastError && (console.log(chrome.runtime.lastError) | alert(chrome.runtime.lastError.message + "\r\nOH NOES THERE WAS AN ERROR IN CHROME.SYNC.SET"))
+                    //todo IMPROVE NOTIFICATIONS IN CASE OF AN ERROR
                     for(var key in upsert) {
                         var dao = Playlist.prototype.DAO(key)
                         dao.update({ source: "sync" }, false).set()

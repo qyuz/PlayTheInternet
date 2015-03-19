@@ -473,6 +473,7 @@ define(["underscore", "slimscroll"], function () {
         _.isUndefined(data) || this._constructor(data)
     }
 
+    //todo WHAT WILL HAPPEN IF NO DATA CAME
     PtiElement.prototype._constructor = function(data) {
         this.$ = $(PTITemplates.prototype.PtiElement(_.extend({ elementClass: 'pti-element' }, data)))
         this.element = this.$.get(0)
