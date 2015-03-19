@@ -117,6 +117,7 @@ define(["common/ptilist", "pti-playlist"], function (ptilist, Playlist) {
     Playlists.prototype._PtiElement = PlaylistsElement
 
     Playlists.prototype._redrawContent = function(storageObject) {
+        //TODO check for data property presence in local playlists and such
         this.updateElements(storageObject.data)
     }
 
