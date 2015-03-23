@@ -89,7 +89,7 @@ define(["common/ptilist"], function (ptilist) {
         $menu.append(createRadio('Synchronized', group, (window.chrome && window.chrome.extension) ? "checked" : null))
         var $create = $('<input type="button" value="Create"/>').appendTo($menu).click(_.partial(createPlaylistHandler, false))
         $menu.append('<label>and start</label>')
-        var $andPlay = $('<input type="button" value="Playng"/>').appendTo($menu).click(_.partial(createPlaylistHandler, true))
+        var $andPlay = $('<input type="button" value="Playing"/>').appendTo($menu).click(_.partial(createPlaylistHandler, true))
 
         return $header.add($menu)
     }
