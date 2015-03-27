@@ -75,6 +75,11 @@ define(["jquery-ui", "underscore"], function () {
         activate: function (event, ui) {
             var newTab = $(ui.newTab);
             var newTabText = newTab.text().trim();
+            if (newTabText == "Playing") {
+                require(["app/common/hash-qr", "pti-playlist"], function (hashqr, Playlist) {
+                    window.tabs.first.playlist = initPlaying(hashqr.redraw, Playlist, "lConfigPanelPlaylistHeader")
+                })
+            }
             if (newTabText == "Share") {
                 require(["app/common/hash-qr"], function (hashqr) {
                     hashqr.redraw()
@@ -167,7 +172,7 @@ define(["jquery-ui", "underscore"], function () {
             var newTabText = newTab.text().trim();
             if (newTabText == "Playing") {
                 require(["app/common/hash-qr", "pti-playlist"], function (hashqr, Playlist) {
-                    window.tabs.second.playlist = initPlaying(hashqr.redraw, Playlist)
+                    window.tabs.second.playlist = initPlaying(hashqr.redraw, Playlist, "lConfigPlaylistHeader")
                 })
             }
             if (newTabText == "Playlists") {
@@ -198,7 +203,7 @@ define(["jquery-ui", "underscore"], function () {
     })
 
 //second playing start
-    var initPlaying = _.once(function (redrawHashAndQRCode, Playlist) {
+    var initPlaying = _.once(function (redrawHashAndQRCode, Playlist, headerConfigKey) {
         if(window.chrome && window.chrome.extension) {
             var playingId = $.jStorage.get("playingId"), selected = $.jStorage.get("selected_" + playingId), index = selected && selected.index >= 0 && selected.index
             var playingOptions = {
@@ -223,7 +228,7 @@ define(["jquery-ui", "underscore"], function () {
         window.tabs.second.playing = new Playlist("#ulSecond", _.extend({
                 notice: "This is your playlist. Drop songs in here and listen.",
                 connectWith: "connected-playlist",
-                headerConfigKey: "lConfigPlaylistHeader"
+                headerConfigKey: headerConfigKey
             }, playingOptions)
         )
         window.playlist = window.tabs.second.playing //can remove this
