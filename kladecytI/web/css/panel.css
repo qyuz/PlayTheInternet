@@ -34,3 +34,6 @@ body {
 .playerWidget>.control:before, .playerWidget>.control:after {
     top: auto;
 }
+
+#splitViews { top: 58px; right: 0px; bottom: 0px; left: 0px; }
+#firstView { width: 100%; }

@@ -1,4 +1,5 @@
-define(["player/player-widget", "underscore"], function(PlayerWidget) {
+define(["player/player-widget", "underscore", "app/common/tabs"], function(PlayerWidget, b, tabs) {
+    tabs.$firstTabs.tabs("option", 'active', 1)
     var setWindowTitle = _.setWindowTitle.bind(window)
     chrome.windows.getAll(function (windows) {
         if(_.findWhere(windows, { type: 'panel' })) {
