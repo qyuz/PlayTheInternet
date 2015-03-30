@@ -18,6 +18,12 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
             }
             $window.resize(_.debounce(resizePlayer, 50))
             resizePlayer()
+
+            $('#tabs a[href="#player"]').one('click', function() {
+                require(["app/chrome/extensionUtils"], function(extUtils) {
+                    extUtils.startPopupPlayer()
+                })
+            })
         } else {
             window.resizeTo(410, 136)
             $('body').on('click', 'a', function() {
