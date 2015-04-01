@@ -9,7 +9,7 @@ define(["underscore"], function (a) {
                 location += playlistHash
             }
             $.ajax({
-                url: 'https://www.googleapis.com/urlshortener/v1/url',
+                url: 'https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyAiX6mvD7nSnqcW0vXwapLMd9UCXwa4mis',
                 type: 'post',
                 contentType: 'application/json',
                 data: '{"longUrl":"' + location + '"}',
