@@ -1,26 +1,32 @@
-define(function() {
-    var extension = {
-        startPopupPlayer: startPopupPlayer
-    }
+"use strict";
+define(function () {
+    var extensionUtils;
 
-    return extension
+    extensionUtils = {
+        startPopupPlayer: startPopupPlayer
+    };
+
+    return extensionUtils;
 
     function startPopupPlayer() {
-        window.addEventListener("unload", function (event) {
-            window.chrome.extension.getBackgroundPage().ptiManager.startBackgroundPlayer()
+        var backgroundWindow, $spinner;
+
+        backgroundWindow = window.chrome.extension.getBackgroundPage();
+
+        window.addEventListener("unload", function () {
+            backgroundWindow.ptiManager.startBackgroundPlayer();
         }, true);
         require(["player/iframe-observer"], function (observer) {
-            window.observer = observer //maybe remove this
+            window.observer = observer; //maybe remove this
             observer.init().then(function () {
-                window.pti = observer.pti
-                window.playerWidget.data.listenObject = window.pti
+                window.pti = observer.pti;
+                window.playerWidget.data.listenObject = window.pti;
 
-                var backgroundWindow = chrome.extension.getBackgroundPage()
-                backgroundWindow.ptiManager.playingWindow(window)
+                backgroundWindow.ptiManager.playingWindow(window);
 
-                var $spinner = $('#spinner-container')
-                $spinner.animate({ opacity: 0 }, { duration: 1500, complete: $spinner.remove.bind($spinner) })
+                $spinner = $('#spinner-container');
+                $spinner.animate({ opacity: 0 }, { duration: 1500, complete: $spinner.remove.bind($spinner) });
             })
         })
     }
-})
+});
