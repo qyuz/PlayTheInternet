@@ -14,7 +14,7 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
             }, 300)
             function resizePlayer() {
                 window.playerWidget.jProgressBarContainer.width($window.width() - 4)
-                window.playerWidget.jVolume.width($window.width() - 154)
+                window.playerWidget.jVolume.width($window.width() - 225)
             }
             $window.resize(_.debounce(resizePlayer, 50))
             resizePlayer()
@@ -23,6 +23,42 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
                 require(["app/chrome/extensionUtils"], function(extUtils) {
                     extUtils.startPopupPlayer()
                 })
+            })
+
+            $('.playerWidget .stretch-video-view.control').click(function() {
+                var $body
+
+                $body = $('body')
+
+                $('#tabs a[href="#player"]').click()
+                $body.addClass('stretch-video-view')
+                window.resizeTo(600, 404)
+                tabViewIsOpen = true
+            })
+
+            var tabViewIsOpen
+            $('.playerWidget .tab-view.control').click(function() {
+                var $window
+
+                $window = $(window)
+
+                tabViewIsOpen ? window.resizeTo($window.width(), 100) : window.resizeTo($window.width(), 800)
+                tabViewIsOpen = !tabViewIsOpen
+            })
+
+            $('#stretch-video-control>.stretch-close>svg').click(function() {
+                var $body
+
+                $body = $('body')
+                $body.removeClass('stretch-video-view')
+            })
+            $('#stretch-video-control>.playing-on-top>svg').click(function() {
+                var $body, playingIsOnTop
+
+                $body = $('body')
+                playingIsOnTop = $body.hasClass('playing-on-top')
+
+                $body.toggleClass('playing-on-top', !playingIsOnTop)
             })
         } else {
             window.resizeTo(410, 136)

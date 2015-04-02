@@ -37,3 +37,16 @@ body {
 
 #splitViews { top: 58px; right: 0px; bottom: 0px; left: 0px; }
 #firstView { width: 100%; }
+
+.stretch-video-view #splitViews { top: 0px; }
+.stretch-video-view #playerWidgetContainer { display: none; }
+.stretch-video-view #tabs .nav { display: none; }
+.stretch-video-view #playersContainer { top: 0px; }
+
+#stretch-video-control { opacity: 0; position: absolute; width: 50%; height: 30px; top: 0px; right: 82px; }
+.stretch-video-view #stretch-video-control:hover { opacity: 1; }
+#stretch-video-control>* { opacity: 0.9; cursor: pointer; background-color: black; position: absolute; width: 26px; height: 30px; }
+#stretch-video-control>.playing-on-top { right: 0px; margin-right: 4px; }
+#stretch-video-control>.stretch-close { right: 26px; padding-right: 10px; }
+
+.stretch-video-view.playing-on-top #sPlaying { display: block!important; width: 33%; top: 30px; right: 0px; z-index: 99; -webkit-transform: initial; opacity: 0.95; } /* reset shlop */
