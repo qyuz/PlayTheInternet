@@ -20,8 +20,8 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
             resizePlayer()
 
             $('#tabs a[href="#player"]').one('click', function() {
-                require(["app/chrome/extensionUtils"], function(extUtils) {
-                    extUtils.startPopupPlayer()
+                require(["player/iframe-observer"], function(observer) {
+                    observer.startPlayer();
                 })
             })
 
