@@ -12,8 +12,8 @@ define(["player/player-widget", "app/common/tabs", "underscore"], function (Play
         tabs.$secondTabs.tabs("option", "active", 0)
 
         $('#tabs a[href="#player"]').one('click', function() {
-            require(["app/chrome/extensionUtils"], function(extUtils) {
-                extUtils.startPopupPlayer()
+            require(["player/iframe-observer"], function(observer) {
+                observer.startPlayer()
             })
         })
 
