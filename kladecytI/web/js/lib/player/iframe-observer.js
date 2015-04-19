@@ -11,7 +11,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     initAndListenThrottle = _.throttle(initAndListen, initTimeout, { trailing: false })
 
     iframeObserver = {
-        destroy: removeIframe,
+        destroy: destroy,
         init: init,
         pti: pti,
         reinit: reinit,
@@ -19,6 +19,19 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     };
 
     return iframeObserver;
+
+    function _events() {
+        $('#playersContainer').on('click', '#parsedError', function() {
+            _state('playing');
+            lazyLoadVideo();
+        })
+    }
+
+    function _state(state) {
+        $('#playersContainer').toggleClass('destroyed', state == 'destroyed');
+        $('#playersContainer').toggleClass('playing', state == 'playing');
+        $('#playersContainer').toggleClass('loading', state == 'loading');
+    }
 
     function appendIframe() {
         var playerIframe
@@ -30,6 +43,14 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         playerIframe = iframeContainer.find('iframe').get(0).contentWindow
 
         return playerIframe
+    }
+
+    function destroy() {
+        observerReady = new $.Deferred();
+        lastReady = 0;
+
+        _state('destroyed');
+        removeIframe();
     }
 
     function initAndListen() {
@@ -153,6 +174,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
     function init() {
         if(observerReady.state() == "pending") {
+			_events();
             appendIframe()
             iw = initIframeWrapper()
             initAndListenThrottle()
@@ -203,7 +225,10 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             backgroundWindow.ptiManager.playingWindow(window);
 
             $spinner = $('#spinner-container');
-            $spinner.animate({ opacity: 0 }, { duration: 1500, complete: $spinner.remove.bind($spinner) });
+            $spinner.animate({ opacity: 0 }, { duration: 1500, complete: function() {
+                _state('playing');
+                $spinner.remove();
+            }});
         })
     }
 })

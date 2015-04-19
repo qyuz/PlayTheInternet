@@ -32,6 +32,12 @@ body { height: 100%; }
 .tabs-player-container { position: absolute; width: 100%; top: 41px; bottom: 0px; }
 #spinner-container { position: relative; z-index: 999; height: 100%; }
 #players { position: absolute; top: 0px; width: 100%; bottom: 0px; }
+#playersContainer>* { display: none; }
+#playersContainer>#parsedError { pointer-events: all; }
+#playersContainer>#parsedError a:hover { cursor: pointer; }
+#playersContainer.destroyed>#parsedError { display: block; }
+#playersContainer.playing>#players { display: block; }
+#playersContainer.loading>#spinner-container { display: block; }
 /*day*/
 #spinner-container { background-color: gainsboro; }
 /*night*/
