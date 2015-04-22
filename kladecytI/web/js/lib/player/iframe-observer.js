@@ -180,11 +180,6 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         }, initTimeout + 500)
         $.when(youtubeReady, soundcloudReady).then(function () {
             clearTimeout(initFailTimeout)
-            pti.playing(pti.playing())
-            var volume = $.jStorage.get('volume')
-            pti.volume(volume)
-            var loadVideo = pti.loadVideo()
-            iw.postMessage('pti', 'loadVideo', loadVideo[0], loadVideo[1], loadVideo[2])
             lastReady = Date.now()
             observerReady.resolve()
         })
@@ -206,8 +201,6 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             playerIframe = _appendIframe();
             iw = _defineIframeWrapper(playerIframe);
             initAndListenThrottle()
-        } else {
-            reinit()
         }
 
         return observerReady

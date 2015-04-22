@@ -36,14 +36,19 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
             return collectState(currentWindow.playlist, currentWindow.pti)
         }
         this.startBackgroundPlayer = function() {
-            this.playingWindow(window)
+            var state;
+
+            state = collectState(currentWindow.playlist, currentWindow.pti);
+            window.observer.init().then(function () {
+                this.playingWindow(window, state)
+            }.bind(this))
         }
-        this.playingWindow = function(_window) {
+        this.playingWindow = function(_window, _state) {
             if(arguments.length) {
                 var currentState, prevWindow
 
                 prevWindow = currentWindow
-                currentState = collectState(prevWindow.playlist, prevWindow.pti)
+                currentState = _state || collectState(prevWindow.playlist, prevWindow.pti)
                 prevWindow.playlist.playerType(false)
                 try { prevWindow.pti.pauseVideo() } catch(e) {} //will throw exception when background isn't initialized
 
