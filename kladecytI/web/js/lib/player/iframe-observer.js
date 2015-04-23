@@ -3,9 +3,11 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     var host = "0-71.playtheinternet.appspot.com"
 //        var host = "playtheinternet.appspot.com"
 //        var host = "web.playtheinter.net"
-    var lastReady = 0, reinitInterval = 120 * 60000, initTimeout = 30000
-    var observerReady = new $.Deferred(), youtubeReady, soundcloudReady
+    var observerReady, youtubeReady, soundcloudReady, lastReady, reinitInterval, initTimeout;
 
+    lastReady = 0;
+    reinitInterval = 120 * 60000;
+    initTimeout = 30000;
     iframeContainer = $('#players')
     pti = _definePTI()
     initAndListenThrottle = _.throttle(initAndListen, initTimeout, { trailing: false })
@@ -23,8 +25,9 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     function _appendIframe() {
         var playerIframe
 
-        youtubeReady = new $.Deferred()
-        soundcloudReady = new $.Deferred()
+        observerReady = $.Deferred();
+        youtubeReady = $.Deferred();
+        soundcloudReady = $.Deferred();
         iframeContainer.html('<iframe class="leftFull temp-border-none temp-width-hundred-percent" src="http://' + host + '/iframe-player.html?origin=' + window.location.href + '"></iframe>')
         playerIframe = iframeContainer.find('iframe').get(0).contentWindow
 
@@ -130,7 +133,6 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             }
         }, true);
         $('#playersContainer').on('click', '#parsedError', function() {
-            _state('playing');
             startPlayer();
         })
     }
@@ -156,6 +158,9 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function _removeIframe() {
+        observerReady.reject();
+        youtubeReady.reject();
+        soundcloudReady.reject();
         iframeContainer.find('iframe').attr('src', null)
         iframeContainer.empty()
         iw.iframe = null
@@ -163,13 +168,10 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
 
     function destroy() {
-        observerReady = new $.Deferred();
-        youtubeReady.reject();
-        soundcloudReady.reject();
         lastReady = 0;
 
-        _state('destroyed');
         _removeIframe();
+        _state('destroyed');
     }
 
     function initAndListen() {
@@ -182,6 +184,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             clearTimeout(initFailTimeout)
             lastReady = Date.now()
             observerReady.resolve()
+            state('playing');
         })
     }
 
@@ -196,10 +199,14 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     function init() {
         var playerIframe;
 
-        if(_state() == undefined) {
-			_events();
+        if(_state() == undefined || _state() == 'destroyed') {
             playerIframe = _appendIframe();
-            iw = _defineIframeWrapper(playerIframe);
+            if(_state() == undefined) {
+			    _events();
+                iw = _defineIframeWrapper(playerIframe);
+            } else {
+                iw.iframe = playerIframe;
+            }
             initAndListenThrottle()
         }
 
