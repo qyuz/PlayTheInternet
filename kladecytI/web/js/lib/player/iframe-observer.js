@@ -1,22 +1,22 @@
+'use strict';
+
 define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", "jstorage"], function (PTI, IframeWrapper, c, d, e) {
-    var iframeContainer, iframeObserver, initAndListenThrottle, iw, pti, state;
+    var iframeContainer, iframeObserver, initAndListenThrottle, iw, pti, state, options;
     var host = "0-71.playtheinternet.appspot.com"
 //        var host = "playtheinternet.appspot.com"
 //        var host = "web.playtheinter.net"
-    var observerReady, youtubeReady, soundcloudReady, lastReady, reinitInterval, initTimeout;
+    var observerReady, youtubeReady, soundcloudReady;
 
-    lastReady = 0;
-    reinitInterval = 120 * 60000;
-    initTimeout = 30000;
     iframeContainer = $('#players')
+    options = {};
     pti = _definePTI()
-    initAndListenThrottle = _.throttle(initAndListen, initTimeout, { trailing: false })
 
     iframeObserver = {
         destroy: destroy,
         init: init,
+        options: options,
         pti: pti,
-        reinit: reinit,
+        reload: reload,
         startPlayer: startPlayer
     };
 
@@ -128,7 +128,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
     function _events() {
         window.addEventListener("unload", function () {
-            if(_state() == 'loading' || _state() == 'playing') {
+            if(_state() == 'loading' || _state() == 'playing') { // TODO determine if window has players loaded and is playing
                 window.chrome.extension.getBackgroundPage().ptiManager.startBackgroundPlayer();
             }
         }, true);
@@ -168,57 +168,53 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
 
     function destroy() {
-        lastReady = 0;
-
         _removeIframe();
         _state('destroyed');
     }
 
-    function initAndListen() {
-        clearTimeout(initFailTimeout)
-        var initFailTimeout = setTimeout(function () {
-            console.log('failed to init players in observer, retrying')
-            initAndListenThrottle()
-        }, initTimeout + 500)
-        $.when(youtubeReady, soundcloudReady).then(function () {
-            clearTimeout(initFailTimeout)
-            lastReady = Date.now()
-            observerReady.resolve()
-            state('playing');
-        })
-    }
-
     function lazyLoadVideo(thistype, thisoperation, type, videoId, playerState) {
-        if (Date.now() - lastReady >= reinitInterval) {
-            initAndListenThrottle()
+        if (Date.now() - Date.now() >= 120 * 60000) { //lastReady
+            startPlayer()
         } else {
             iw.postMessage(thistype, thisoperation, type, videoId, playerState)
         }
     }
 
-    function init() {
-        var playerIframe;
+    function init(options) {
+        var playerIframe, timeout, temp;
 
-        if(_state() == undefined || _state() == 'destroyed') {
+        if(_state() == undefined) {
+            _state('loading');
+            temp = parseFloat(options && options.timeout);
+            iframeObserver.options.timeout = _.isNaN(temp) ? 30000 : temp * 1000;
+            _events();
             playerIframe = _appendIframe();
-            if(_state() == undefined) {
-			    _events();
-                iw = _defineIframeWrapper(playerIframe);
-            } else {
-                iw.iframe = playerIframe;
-            }
-            initAndListenThrottle()
+            iw = _defineIframeWrapper(playerIframe);
+            $.when(youtubeReady, soundcloudReady).then(function () {
+                observerReady.resolve()
+                _state('playing');
+            });
+            setTimeout(_.bind(observerReady.reject, observerReady), iframeObserver.options.timeout);
         }
 
         return observerReady
     }
 
-    function reinit() {
-        var playerIframe
+    function reload() {
+        var playerIframe;
 
-        _removeIframe()
-        playerIframe = _appendIframe()
-        iw.iframe = playerIframe
+        _state('loading');
+        _removeIframe();
+        playerIframe = _appendIframe();
+        iw.iframe = playerIframe;
+
+        $.when(youtubeReady, soundcloudReady).then(function () {
+            observerReady.resolve();
+            _state('playing');
+        });
+        setTimeout(_.bind(observerReady.reject, observerReady), iframeObserver.options.timeout);
+
+        return observerReady;
     }
 
     function startPlayer() {
@@ -228,8 +224,6 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             window.playerWidget.data.listenObject = window.pti;
 
             window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
-            _state('playing');
         })
-        _state('loading');
     }
 })
