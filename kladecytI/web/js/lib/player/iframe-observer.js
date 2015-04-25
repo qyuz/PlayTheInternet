@@ -6,6 +6,11 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 //        var host = "playtheinternet.appspot.com"
 //        var host = "web.playtheinter.net"
     var observerReady, youtubeReady, soundcloudReady;
+    var FAIL_REASON = {
+        DESTROY: 'destroy',
+        RELOAD: 'reload',
+        TIMEOUT: 'timeout'
+    }
 
     iframeContainer = $('#players')
     options = {};
@@ -157,10 +162,10 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         return state;
     }
 
-    function _removeIframe() {
-        observerReady.reject();
-        youtubeReady.reject();
-        soundcloudReady.reject();
+    function _removeIframe(reason) {
+        observerReady.reject(reason);
+        youtubeReady.reject(reason);
+        soundcloudReady.reject(reason);
         iframeContainer.find('iframe').attr('src', null)
         iframeContainer.empty()
         iw.iframe = null
@@ -168,7 +173,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
 
     function destroy() {
-        _removeIframe();
+        _removeIframe(FAIL_REASON.DESTROY);
         _state('destroyed');
     }
 
@@ -181,7 +186,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function init(options) {
-        var playerIframe, timeout, temp;
+        var playerIframe, temp;
 
         if(_state() == undefined) {
             _state('loading');
@@ -194,7 +199,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
                 observerReady.resolve()
                 _state('playing');
             });
-            setTimeout(_.bind(observerReady.reject, observerReady), iframeObserver.options.timeout);
+            setTimeout(_.bind(observerReady.reject, observerReady, FAIL_REASON.TIMEOUT), iframeObserver.options.timeout);
         }
 
         return observerReady
@@ -204,7 +209,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         var playerIframe;
 
         _state('loading');
-        _removeIframe();
+        _removeIframe(FAIL_REASON.RELOAD);
         playerIframe = _appendIframe();
         iw.iframe = playerIframe;
 
@@ -212,7 +217,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             observerReady.resolve();
             _state('playing');
         });
-        setTimeout(_.bind(observerReady.reject, observerReady), iframeObserver.options.timeout);
+        setTimeout(_.bind(observerReady.reject, observerReady, FAIL_REASON.TIMEOUT), iframeObserver.options.timeout);
 
         return observerReady;
     }
