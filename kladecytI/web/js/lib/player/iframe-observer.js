@@ -21,8 +21,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         init: init,
         options: options,
         pti: pti,
-        reload: reload,
-        startPlayer: startPlayer
+        reload: reload
     };
 
     return iframeObserver;
@@ -132,13 +131,8 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function _events() {
-        window.addEventListener("unload", function () {
-            if(_state() == 'loading' || _state() == 'playing') { // TODO determine if window has players loaded and is playing
-                window.chrome.extension.getBackgroundPage().ptiManager.startBackgroundPlayer();
-            }
-        }, true);
         $('#playersContainer').on('click', '#parsedError', function() {
-            startPlayer();
+            window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
         })
     }
 
@@ -179,7 +173,9 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
     function lazyLoadVideo(thistype, thisoperation, type, videoId, playerState) {
         if (Date.now() - Date.now() >= 120 * 60000) { //lastReady
-            startPlayer()
+            window.observer = iframeObserver;
+            window.pti = pti;
+            window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window)
         } else {
             iw.postMessage(thistype, thisoperation, type, videoId, playerState)
         }
@@ -220,15 +216,5 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         setTimeout(_.bind(observerReady.reject, observerReady, FAIL_REASON.TIMEOUT), iframeObserver.options.timeout);
 
         return observerReady;
-    }
-
-    function startPlayer() {
-        window.observer = iframeObserver; //maybe remove this
-        iframeObserver.init().then(function () {
-            window.pti = pti;
-            window.playerWidget.data.listenObject = window.pti;
-
-            window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
-        })
     }
 })
