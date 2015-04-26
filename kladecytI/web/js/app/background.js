@@ -29,32 +29,47 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
     });
 
     function PtiManager() {
-        var currentWindow;
+        var ptiManager, currentWindow;
 
-        currentWindow = window;
+        ptiManager = this;
 
         this.currentState = function() {
-            return collectState(currentWindow.playlist, currentWindow.pti)
+            if(currentWindow) {
+                return collectState(currentWindow.playlist, currentWindow.pti);
+            } else {
+                return collectState(window.playlist, null);
+            }
+            
         };
         this.startBackgroundPlayer = function() {
-            var state;
-
-            state = this.currentState();
-            window.observer.init().then(function () {
-                this.playingWindow(window, state);
-            }.bind(this));
+            this.playingWindow(window);
         };
-        this.playingWindow = function(_window, _state) {
+        this.playingWindow = function(_window) {
             if(arguments.length) {
-                var currentState, prevWindow;
+                var currentState, prevWindow, loadPlayer;
 
                 prevWindow = currentWindow;
-                currentState = _state || this.currentState();
-                prevWindow.playlist.playerType(false);
-                try { prevWindow.pti.pauseVideo() } catch(e) {} //will throw exception when background isn't initialized
+                currentState = this.currentState();
+                if(prevWindow) {
+                    prevWindow.playlist.playerType(false);
+                    try { prevWindow.pti.pauseVideo() } catch(e) {} //will throw exception when background isn't initialized
+                }
 
                 currentWindow = _window;
-                startPlayer(currentWindow, currentState);
+                loadPlayer = currentWindow.observer.init();
+                loadPlayer.then(function() {
+                    prevWindow && prevWindow != currentWindow && prevWindow.observer && prevWindow.observer.destroy();
+                    currentWindow.addEventListener("unload", function () {
+                        ptiManager.startBackgroundPlayer();
+                    }, true);
+                    startPlayer(currentWindow, currentState);
+                    currentWindow.playerWidget.data.listenObject = currentWindow.pti;
+                });
+                loadPlayer.fail(function(reason) {
+                    if(reason != currentWindow.observer.FAIL_REASON.DESTROY) {
+                        loadPlayer.reload();
+                    }
+                });
             }
             return currentWindow;
         };

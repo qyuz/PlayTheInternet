@@ -13,7 +13,9 @@ define(["player/player-widget", "app/common/tabs", "underscore"], function (Play
 
         $('#tabs a[href="#player"]').one('click', function() {
             require(["player/iframe-observer"], function(observer) {
-                observer.startPlayer()
+                window.observer = observer;
+                window.pti = observer.pti;
+                window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
             })
         })
 
