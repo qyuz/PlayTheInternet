@@ -132,7 +132,9 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
     function _events() {
         $('#playersContainer').on('click', '#parsedError', function() {
-            window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
+            reload().then(function() {
+                window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
+            })
         })
     }
 
