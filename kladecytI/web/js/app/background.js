@@ -29,10 +29,10 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
     });
 
     function PtiManager() {
-        var ptiManager, currentWindow;
+        var ptiManager, currentWindow, backgroundWindow;
 
         ptiManager = this;
-        currentWindow = window;
+        currentWindow = backgroundWindow = window;
 
         ptiManager.currentState = function() {
             return collectState(currentWindow.playlist, currentWindow.pti);
@@ -43,12 +43,12 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
             ptiManager.playingWindow(window);
         };
         ptiManager.playingWindow = function(_window) {
-            if(arguments.length) {
+            if (arguments.length) {
                 var currentState, prevWindow, loadPlayer, then;
 
                 prevWindow = currentWindow;
                 currentState = ptiManager.currentState();
-                if(prevWindow) {
+                if (prevWindow) {
                     prevWindow.playlist.playerType(false);
                     try { prevWindow.pti.pauseVideo() } catch(e) {} //will throw exception when background isn't initialized
                 }
@@ -56,22 +56,24 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
                 currentWindow = _window;
                 loadPlayer = currentWindow.observer.init();
                 then = function() {
-                    if(prevWindow != window) {
+                    if (prevWindow != backgroundWindow) {
                         prevWindow && prevWindow != currentWindow && prevWindow.observer && prevWindow.observer.destroy();
-                        prevWindow.removeEventListener(function(){}); //unload
+                        prevWindow.removeEventListener("unload", ptiManager.startBackgroundPlayer, true); //unload
                     }
-                    currentWindow != window && currentWindow.addEventListener("unload", function () {
-                        ptiManager.startBackgroundPlayer();
-                    }, true);
+                    currentWindow != backgroundWindow && currentWindow.addEventListener("unload", ptiManager.startBackgroundPlayer, true);
                     startPlayer(currentWindow, currentState);
                     currentWindow.playerWidget.data.listenObject = currentWindow.pti;
                 };
-                loadPlayer.state() == 'resolved' ? then() : loadPlayer.then(then);
-                loadPlayer.fail(function(reason) {
-                    if(reason != currentWindow.observer.FAIL_REASON.DESTROY) {
-                        currentWindow.observer.reload();
-                    }
-                });
+                if (loadPlayer.state() == 'resolved') {
+                   then();
+                } else {
+                    loadPlayer.then(then);
+                    loadPlayer.fail(function(reason) {
+                        if (reason != currentWindow.observer.FAIL_REASON.DESTROY) {
+                            currentWindow.observer.reload();
+                        }
+                    });
+                }
             }
             return currentWindow;
         };
