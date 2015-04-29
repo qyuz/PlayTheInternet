@@ -68,11 +68,11 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
                    then();
                 } else {
                     loadPlayer.then(then);
-                    loadPlayer.fail(function(reason) {
-                        if (reason != currentWindow.observer.FAIL_REASON.DESTROY) {
-                            currentWindow.observer.reload();
-                        }
-                    });
+//                    loadPlayer.fail(function(reason) {
+//                        if (reason != currentWindow.observer.FAIL_REASON.DESTROY) {
+//                            currentWindow.observer.reload();
+//                        }
+//                    });
                 }
             }
             return currentWindow;

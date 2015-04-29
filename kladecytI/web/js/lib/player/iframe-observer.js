@@ -29,13 +29,15 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     function _appendIframe() {
         var playerIframe
 
-        observerReady = $.Deferred();
         youtubeReady = $.Deferred();
         soundcloudReady = $.Deferred();
         iframeContainer.html('<iframe class="leftFull temp-border-none temp-width-hundred-percent" src="http://' + host + '/iframe-player.html?origin=' + window.location.href + '"></iframe>')
         playerIframe = iframeContainer.find('iframe').get(0).contentWindow
-
-        return playerIframe
+        if (iw == null) {
+            iw = _defineIframeWrapper(playerIframe);
+        } else {
+            iw.iframe = playerIframe;
+        }
     }
 
     function _definePTI() {
@@ -130,6 +132,15 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         return pti
     }
 
+    function _defineIframeWrapper(playerIframe) {
+        var iw
+
+        iw = new IframeWrapper(playerIframe, ["http://" + host])
+        iw.listenAllEvents(pti.players)
+
+        return iw;
+    }
+
     function _events() {
         $('#playersContainer').on('click', '#parsedError', function() {
             reload().then(function() {
@@ -138,13 +149,21 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         })
     }
 
-    function _defineIframeWrapper(playerIframe) {
-        var iw
+    function _loadPlayer() {
+        var failTimeout;
 
-        iw = new IframeWrapper(playerIframe, ["http://" + host])
-        iw.listenAllEvents(pti.players)
-
-        return iw;
+        _state('loading');
+        _appendIframe();
+        $.when(youtubeReady, soundcloudReady).then(function() {
+            clearTimeout(failTimeout);
+            observerReady.resolve();
+            _state('playing');
+        });
+        failTimeout = setTimeout(function() {
+            _removeIframe();
+            _loadPlayer();
+        }, iframeObserver.options.timeout);
+        $.when(youtubeReady, soundcloudReady).fail(_.partial(clearTimeout, failTimeout));
     }
 
     function _state(_state) {
@@ -158,10 +177,9 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         return state;
     }
 
-    function _removeIframe(reason) {
-        observerReady.reject(reason);
-        youtubeReady.reject(reason);
-        soundcloudReady.reject(reason);
+    function _removeIframe() {
+        youtubeReady.reject();
+        soundcloudReady.reject();
         iframeContainer.find('iframe').attr('src', null)
         iframeContainer.empty()
         iw.iframe = null
@@ -169,7 +187,8 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
 
     function destroy() {
-        _removeIframe(FAIL_REASON.DESTROY);
+        observerReady.reject(FAIL_REASON.DESTROY);
+        _removeIframe();
         _state('destroyed');
     }
 
@@ -184,38 +203,24 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function init(options) {
-        var playerIframe, temp;
+        var parseTimeout;
 
         if(_state() == undefined) {
-            _state('loading');
-            temp = parseFloat(options && options.timeout);
-            iframeObserver.options.timeout = _.isNaN(temp) ? 30000 : temp * 1000;
+            observerReady = $.Deferred();
+            parseTimeout = parseFloat(options && options.timeout);
+            iframeObserver.options.timeout = _.isNaN(parseTimeout) ? 30000 : parseTimeout * 1000;
             _events();
-            playerIframe = _appendIframe();
-            iw = _defineIframeWrapper(playerIframe);
-            $.when(youtubeReady, soundcloudReady).then(function () {
-                observerReady.resolve()
-                _state('playing');
-            });
-            setTimeout(_.bind(observerReady.reject, observerReady, FAIL_REASON.TIMEOUT), iframeObserver.options.timeout);
+            _loadPlayer();
         }
 
         return observerReady
     }
 
     function reload() {
-        var playerIframe;
-
-        _state('loading');
-        _removeIframe(FAIL_REASON.RELOAD);
-        playerIframe = _appendIframe();
-        iw.iframe = playerIframe;
-
-        $.when(youtubeReady, soundcloudReady).then(function () {
-            observerReady.resolve();
-            _state('playing');
-        });
-        setTimeout(_.bind(observerReady.reject, observerReady, FAIL_REASON.TIMEOUT), iframeObserver.options.timeout);
+        observerReady.reject(FAIL_REASON.RELOAD)
+        observerReady = $.Deferred();
+        _removeIframe();
+        _loadPlayer();
 
         return observerReady;
     }
