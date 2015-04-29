@@ -40,6 +40,15 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         }
     }
 
+    function _defineIframeWrapper(playerIframe) {
+        var iw
+
+        iw = new IframeWrapper(playerIframe, ["http://" + host])
+        iw.listenAllEvents(pti.players)
+
+        return iw;
+    }
+
     function _definePTI() {
         var pti = new PTI({
             onLoadVideo: function (type, videoId, playerState) {
@@ -132,15 +141,6 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         return pti
     }
 
-    function _defineIframeWrapper(playerIframe) {
-        var iw
-
-        iw = new IframeWrapper(playerIframe, ["http://" + host])
-        iw.listenAllEvents(pti.players)
-
-        return iw;
-    }
-
     function _events() {
         $('#playersContainer').on('click', '#parsedError', function() {
             reload().then(function() {
@@ -166,6 +166,14 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         $.when(youtubeReady, soundcloudReady).fail(_.partial(clearTimeout, failTimeout));
     }
 
+    function _removeIframe() {
+        youtubeReady.reject();
+        soundcloudReady.reject();
+        iframeContainer.find('iframe').attr('src', null)
+        iframeContainer.empty()
+        iw.iframe = null
+    }
+
     function _state(_state) {
         if(arguments.length) {
             state = _state;
@@ -177,29 +185,10 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         return state;
     }
 
-    function _removeIframe() {
-        youtubeReady.reject();
-        soundcloudReady.reject();
-        iframeContainer.find('iframe').attr('src', null)
-        iframeContainer.empty()
-        iw.iframe = null
-    }
-
-
     function destroy() {
         observerReady.reject(FAIL_REASON.DESTROY);
         _removeIframe();
         _state('destroyed');
-    }
-
-    function lazyLoadVideo(thistype, thisoperation, type, videoId, playerState) {
-        if (Date.now() - Date.now() >= 120 * 60000) { //lastReady
-            window.observer = iframeObserver;
-            window.pti = pti;
-            window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window)
-        } else {
-            iw.postMessage(thistype, thisoperation, type, videoId, playerState)
-        }
     }
 
     function init(options) {
@@ -214,6 +203,16 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         }
 
         return observerReady
+    }
+
+    function lazyLoadVideo(thistype, thisoperation, type, videoId, playerState) {
+        if (Date.now() - Date.now() >= 120 * 60000) { //lastReady
+            window.observer = iframeObserver;
+            window.pti = pti;
+            window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window)
+        } else {
+            iw.postMessage(thistype, thisoperation, type, videoId, playerState)
+        }
     }
 
     function reload() {
