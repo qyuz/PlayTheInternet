@@ -38,16 +38,14 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
             return collectState(currentWindow.playlist, currentWindow.pti);
         };
         ptiManager.startBackgroundPlayer = function() {
-            var currentState;
-
             ptiManager.playingWindow(window);
         };
         ptiManager.playingWindow = function(_window) {
             if (arguments.length) {
                 var currentState, prevWindow, loadPlayer, then;
 
-                prevWindow = currentWindow;
                 currentState = ptiManager.currentState();
+                prevWindow = currentWindow;
                 if (prevWindow) {
                     prevWindow.playlist.playerType(false);
                     try { prevWindow.pti.pauseVideo() } catch(e) {} //will throw exception when background isn't initialized
@@ -60,7 +58,9 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
                         prevWindow && prevWindow != currentWindow && prevWindow.observer && prevWindow.observer.destroy();
                         prevWindow.removeEventListener("unload", ptiManager.startBackgroundPlayer, true); //unload
                     }
-                    currentWindow != backgroundWindow && currentWindow.addEventListener("unload", ptiManager.startBackgroundPlayer, true);
+                    if (currentWindow != backgroundWindow) {
+                        currentWindow.addEventListener("unload", ptiManager.startBackgroundPlayer, true);
+                    }
                     startPlayer(currentWindow, currentState);
                     currentWindow.playerWidget.data.listenObject = currentWindow.pti;
                 };
@@ -68,11 +68,6 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
                    then();
                 } else {
                     loadPlayer.then(then);
-//                    loadPlayer.fail(function(reason) {
-//                        if (reason != currentWindow.observer.FAIL_REASON.DESTROY) {
-//                            currentWindow.observer.reload();
-//                        }
-//                    });
                 }
             }
             return currentWindow;
