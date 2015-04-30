@@ -5,20 +5,22 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     var host = "0-71.playtheinternet.appspot.com"
 //        var host = "playtheinternet.appspot.com"
 //        var host = "web.playtheinter.net"
-    var observerReady, youtubeReady, soundcloudReady;
+    var observerReady, youtubeReady, soundcloudReady, callbacks;
     var FAIL_REASON = {
         DESTROY: 'destroy',
         RELOAD: 'reload',
         TIMEOUT: 'timeout'
-    }
+    };
 
-    iframeContainer = $('#players')
+    iframeContainer = $('#players');
     options = {};
-    pti = _definePTI()
+    pti = _definePTI();
+    callbacks = $.Callbacks();
 
     iframeObserver = {
         destroy: destroy,
         init: init,
+        listen: _.bind(callbacks.add, callbacks),
         options: options,
         pti: pti,
         reload: reload
@@ -27,12 +29,12 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     return iframeObserver;
 
     function _appendIframe() {
-        var playerIframe
+        var playerIframe;
 
         youtubeReady = $.Deferred();
         soundcloudReady = $.Deferred();
-        iframeContainer.html('<iframe class="leftFull temp-border-none temp-width-hundred-percent" src="http://' + host + '/iframe-player.html?origin=' + window.location.href + '"></iframe>')
-        playerIframe = iframeContainer.find('iframe').get(0).contentWindow
+        iframeContainer.html('<iframe class="leftFull temp-border-none temp-width-hundred-percent" src="http://' + host + '/iframe-player.html?origin=' + window.location.href + '"></iframe>');
+        playerIframe = iframeContainer.find('iframe').get(0).contentWindow;
         if (iw == null) {
             iw = _defineIframeWrapper(playerIframe);
         } else {
@@ -41,10 +43,10 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function _defineIframeWrapper(playerIframe) {
-        var iw
+        var iw;
 
-        iw = new IframeWrapper(playerIframe, ["http://" + host])
-        iw.listenAllEvents(pti.players)
+        iw = new IframeWrapper(playerIframe, ["http://" + host]);
+        iw.listenAllEvents(pti.players);
 
         return iw;
     }
@@ -52,64 +54,64 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     function _definePTI() {
         var pti = new PTI({
             onLoadVideo: function (type, videoId, playerState) {
-                !_.isUndefined(type) && !_.isUndefined(videoId) && lazyLoadVideo(this.type, this.operation, type, videoId, playerState)
+                !_.isUndefined(type) && !_.isUndefined(videoId) && lazyLoadVideo(this.type, this.operation, type, videoId, playerState);
             },
             onPlaying: function (boolean) {
                 if (boolean && this.scope.data.playing == null) {
-                    this.scope.data.playing = true
+                    this.scope.data.playing = true;
                     var _state = {
                         selectedVideoIndex: window.playlist.getSelectedVideoIndex(),
                         playing: true,
                         volume: $.jStorage.get('volume')
-                    }
-                    _state.selectedVideoIndex = _state.selectedVideoIndex >= 0 ? _state.selectedVideoIndex : 0
-                    window.playlist.playVideo({ index: _state.selectedVideoIndex }, _state.playerState)
-                    this.scope.volume(_state.volume)
+                    };
+                    _state.selectedVideoIndex = _state.selectedVideoIndex >= 0 ? _state.selectedVideoIndex : 0;
+                    window.playlist.playVideo({ index: _state.selectedVideoIndex }, _state.playerState);
+                    this.scope.volume(_state.volume);
                 } else {
-                    arguments[3] !== 'iframe-wrapper' && iw && iw.postMessage(this.type, this.operation, boolean)
+                    arguments[3] !== 'iframe-wrapper' && iw && iw.postMessage(this.type, this.operation, boolean);
                 }
             },
             onPlayVideo: function () {
-                iw.postMessage(this.type, this.operation)
+                iw.postMessage(this.type, this.operation);
             },
             onPauseVideo: function () {
-                iw.postMessage(this.type, this.operation)
+                iw.postMessage(this.type, this.operation);
             },
             onSeekTo: function (seekTo) {
-                iw.postMessage(this.type, this.operation, seekTo)
+                iw.postMessage(this.type, this.operation, seekTo);
             },
             onVolume: function (volume) {
-                iw.postMessage(this.type, this.operation, volume)
+                iw.postMessage(this.type, this.operation, volume);
             },
             onError: function () {
-                SiteHandlerManager.prototype.stateChange('ERROR')
+                SiteHandlerManager.prototype.stateChange('ERROR');
             }
         })
 
         new pti.Player('y', {
             onLoadVideo: function (videoObject) {
-                iw.postMessage(this.type, this.operation, videoObject)
+                iw.postMessage(this.type, this.operation, videoObject);
             },
             onStopVideo: function () {
-                iw.postMessage(this.type, this.operation)
+                iw.postMessage(this.type, this.operation);
             },
             onCurrentTime: function (time) {
             },
             onPlayerState: function (state) {
                 if (state == 0) {
-                    SiteHandlerManager.prototype.stateChange('NEXT')
+                    SiteHandlerManager.prototype.stateChange('NEXT');
                 }
             },
             onPlayerReady: function (playerState) {
-                youtubeReady.resolve()
+                youtubeReady.resolve();
             }
         })
         new pti.Player('s', {
             onLoadVideo: function (videoId) {
-                iw.postMessage(this.type, this.operation, videoId)
+                iw.postMessage(this.type, this.operation, videoId);
             },
             onInitializePlayer: function () {
-                iw.postMessage(this.type, this.operation)
+                iw.postMessage(this.type, this.operation);
             },
             onCurrentTime: function (time) {
 //        console.log('from main')
@@ -117,16 +119,16 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             },
             onPlayerState: function (state) {
                 if (state == 0) {
-                    SiteHandlerManager.prototype.stateChange('NEXT')
+                    SiteHandlerManager.prototype.stateChange('NEXT');
                 }
             },
             onPlayerReady: function (playerState) {
-                soundcloudReady.resolve()
+                soundcloudReady.resolve();
             }
         })
         new pti.Player('v', {
             onLoadVideo: function (videoId) {
-                iw.postMessage(this.type, this.operation, videoId)
+                iw.postMessage(this.type, this.operation, videoId);
             },
             onCurrentTime: function (time) {
 //        console.log('from main')
@@ -134,19 +136,15 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             },
             onPlayerState: function (state) {
                 if (state == 0) {
-                    SiteHandlerManager.prototype.stateChange('NEXT')
+                    SiteHandlerManager.prototype.stateChange('NEXT');
                 }
             }
         })
-        return pti
+        return pti;
     }
 
     function _events() {
-        $('#playersContainer').on('click', '#parsedError', function() {
-            reload().then(function() {
-                window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
-            })
-        })
+        $('#playersContainer').on('click', '#parsedError', reload);
     }
 
     function _loadPlayer() {
@@ -170,8 +168,8 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         youtubeReady.reject();
         soundcloudReady.reject();
         iframeContainer.find('iframe').attr('src', null)
-        iframeContainer.empty()
-        iw.iframe = null
+        iframeContainer.empty();
+        iw.iframe = null;
     }
 
     function _state(_state) {
@@ -180,6 +178,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             $('#playersContainer').toggleClass('destroyed', _state == 'destroyed');
             $('#playersContainer').toggleClass('playing', _state == 'playing');
             $('#playersContainer').toggleClass('loading', _state == 'loading');
+            callbacks.fire(_state);
         }
 
         return state;
@@ -202,21 +201,21 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             _loadPlayer();
         }
 
-        return observerReady
+        return observerReady;
     }
 
     function lazyLoadVideo(thistype, thisoperation, type, videoId, playerState) {
         if (Date.now() - Date.now() >= 120 * 60000) { //lastReady
             window.observer = iframeObserver;
             window.pti = pti;
-            window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window)
+            window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
         } else {
-            iw.postMessage(thistype, thisoperation, type, videoId, playerState)
+            iw.postMessage(thistype, thisoperation, type, videoId, playerState);
         }
     }
 
     function reload() {
-        observerReady.reject(FAIL_REASON.RELOAD)
+        observerReady.reject(FAIL_REASON.RELOAD);
         observerReady = $.Deferred();
         _removeIframe();
         _loadPlayer();

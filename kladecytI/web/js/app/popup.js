@@ -1,5 +1,7 @@
 define(["player/player-widget", "app/common/tabs", "underscore"], function (PlayerWidget, tabs) {
-    var backgroundWindow = chrome.extension.getBackgroundPage()
+    var backgroundWindow, destroyedPlayer;
+
+    backgroundWindow = chrome.extension.getBackgroundPage()
     window.playerWidget = new PlayerWidget('#playerWidgetContainer', true)
     window.playerWidget.data.listenObject = backgroundWindow.pti
 
@@ -15,7 +17,14 @@ define(["player/player-widget", "app/common/tabs", "underscore"], function (Play
             require(["player/iframe-observer"], function(observer) {
                 window.observer = observer;
                 window.pti = observer.pti;
-                window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
+                backgroundWindow.ptiManager.playingWindow(window);
+                observer.listen(function(action) {
+                    if (action == "destroyed") {
+                        destroyedPlayer = true;
+                    } else if (action == "playing" && destroyedPlayer) {
+                        backgroundWindow.ptiManager.playingWindow(window);
+                    }
+                });
             })
         })
 
