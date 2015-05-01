@@ -144,7 +144,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function _events() {
-        $('#playersContainer').on('click', '#parsedError', reload);
+        $('#playersContainer').on('click', '#parsedError a', reload);
     }
 
     function _loadPlayer() {
