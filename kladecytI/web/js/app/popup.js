@@ -1,9 +1,9 @@
 define(["player/player-widget", "app/common/tabs", "underscore"], function (PlayerWidget, tabs) {
-    var backgroundWindow, destroyedPlayer;
+    var backgroundWindow, destroyedPlayer, STATE;
 
     backgroundWindow = chrome.extension.getBackgroundPage()
     window.playerWidget = new PlayerWidget('#playerWidgetContainer', true)
-    window.playerWidget.data.listenObject = backgroundWindow.pti
+    window.playerWidget.data.listenObject = backgroundWindow.ptiManager.pti
 
     require(["app/popup/parse-content"], function () {
         window.tabs.first.playlist = parsedPlaylist //TODO move it to tabs
@@ -15,13 +15,14 @@ define(["player/player-widget", "app/common/tabs", "underscore"], function (Play
 
         $('#tabs a[href="#player"]').one('click', function() {
             require(["player/iframe-observer"], function(observer) {
+                STATE = observer.STATE;
                 window.observer = observer;
                 window.pti = observer.pti;
                 backgroundWindow.ptiManager.playingWindow(window);
                 observer.listen(function(action) {
-                    if (action == "destroyed") {
+                    if (action == STATE.DESTROY) {
                         destroyedPlayer = true;
-                    } else if (action == "playing" && destroyedPlayer) {
+                    } else if (action == STATE.PLAY && destroyedPlayer) {
                         backgroundWindow.ptiManager.playingWindow(window);
                     }
                 });
