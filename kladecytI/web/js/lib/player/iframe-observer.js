@@ -6,8 +6,10 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 //        var host = "playtheinternet.appspot.com"
 //        var host = "web.playtheinter.net"
     var observerReady, youtubeReady, soundcloudReady, callbacks;
-    var FAIL_REASON = {
+    var STATE = {
         DESTROY: 'destroy',
+        LOAD: 'load',
+        PLAY: 'play',
         RELOAD: 'reload',
         TIMEOUT: 'timeout'
     };
@@ -23,7 +25,8 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         listen: _.bind(callbacks.add, callbacks),
         options: options,
         pti: pti,
-        reload: reload
+        reload: reload,
+        STATE: STATE
     };
 
     return iframeObserver;
@@ -150,12 +153,12 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     function _loadPlayer() {
         var failTimeout;
 
-        _state('loading');
+        _state(STATE.LOAD);
         _appendIframe();
         $.when(youtubeReady, soundcloudReady).then(function() {
             clearTimeout(failTimeout);
             observerReady.resolve();
-            _state('playing');
+            _state(STATE.PLAY);
         });
         failTimeout = setTimeout(function() {
             _removeIframe();
@@ -175,9 +178,9 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     function _state(_state) {
         if(arguments.length) {
             state = _state;
-            $('#playersContainer').toggleClass('destroyed', _state == 'destroyed');
-            $('#playersContainer').toggleClass('playing', _state == 'playing');
-            $('#playersContainer').toggleClass('loading', _state == 'loading');
+            $('#playersContainer').toggleClass('destroyed', _state == STATE.DESTROY);
+            $('#playersContainer').toggleClass('playing', _state == STATE.PLAY);
+            $('#playersContainer').toggleClass('loading', _state == STATE.LOAD);
             callbacks.fire(_state);
         }
 
@@ -185,9 +188,9 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function destroy() {
-        observerReady.reject(FAIL_REASON.DESTROY);
+        observerReady.reject(STATE.DESTROY);
         _removeIframe();
-        _state('destroyed');
+        _state(STATE.DESTROY);
     }
 
     function init(options) {
@@ -215,7 +218,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function reload() {
-        observerReady.reject(FAIL_REASON.RELOAD);
+        observerReady.reject(STATE.RELOAD);
         observerReady = $.Deferred();
         _removeIframe();
         _loadPlayer();

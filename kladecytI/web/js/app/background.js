@@ -32,17 +32,18 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
         var ptiManager, currentWindow, backgroundWindow;
 
         ptiManager = this;
+        ptiManager.pti = window.pti;
         currentWindow = backgroundWindow = window;
 
         ptiManager.currentState = function() {
-            return collectState(currentWindow.playlist, currentWindow.pti);
+            return collectState(currentWindow.playlist, ptiManager.pti);
         };
         ptiManager.startBackgroundPlayer = function() {
             ptiManager.playingWindow(window);
         };
         ptiManager.playingWindow = function(_window) {
             if (arguments.length) {
-                var currentState, prevWindow, loadPlayer, then;
+                var currentState, prevWindow, loadPlayer, then, popupPtiWindows;
 
                 currentState = ptiManager.currentState();
                 prevWindow = currentWindow;
@@ -62,7 +63,11 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
                         currentWindow.addEventListener("unload", ptiManager.startBackgroundPlayer, true);
                     }
                     startPlayer(currentWindow, currentState);
-                    currentWindow.playerWidget.data.listenObject = currentWindow.pti;
+                    popupPtiWindows = _.reject(window.chrome.extension.getViews(), backgroundWindow);
+                    _.forEach(popupPtiWindows, function(wnd) {
+                        wnd.playerWidget.data.listenObject = currentWindow.pti;
+                    });
+                    ptiManager.pti = currentWindow.pti;
                 };
                 if (loadPlayer.state() == 'resolved') {
                    then();
