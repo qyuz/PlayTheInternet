@@ -15,7 +15,10 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     };
 
     iframeContainer = $('#players');
-    options = {};
+    options = {
+        reload: 120 * 60000,
+        timeout: 30000
+    };
     pti = _definePTI();
     callbacks = $.Callbacks();
 
@@ -56,9 +59,45 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
     function _definePTI() {
         var pti = new PTI({
-            onLoadVideo: function (type, videoId, playerState) {
-                !_.isUndefined(type) && !_.isUndefined(videoId) && lazyLoadVideo(this.type, this.operation, type, videoId, playerState);
-            },
+            onLoadVideo: (function () {
+                var _type, _videoId, _playerState, lastReady;
+
+                return function (type, videoId, playerState) {
+                    if (_type && _videoId) {
+                        _type = type;
+                        _videoId = videoId;
+                        _playerState = playerState;
+                    } else if (lastReady == null) {
+                        iframeObserver.init().then(function() {
+                            iw.postMessage('pti', 'playing', pti.playing());
+                            iw.postMessage('pti', 'volume', pti.volume());
+                            iw.postMessage('pti', 'loadVideo', _type, _videoId, _playerState);
+                            _type = null;
+                            _videoId = null;
+                            _playerState = null;
+                            lastReady = Date.now();
+                        });
+                        _type = type;
+                        _videoId = videoId;
+                        _playerState = playerState;
+                    } else if (Date.now() - lastReady >= iframeObserver.options.reload) {
+                        iframeObserver.reload().then(function() {
+                            iw.postMessage('pti', 'playing', pti.playing());
+                            iw.postMessage('pti', 'volume', pti.volume());
+                            iw.postMessage('pti', 'loadVideo', _type, _videoId, _playerState);
+                            _type = null;
+                            _videoId = null;
+                            _playerState = null;
+                            lastReady = Date.now();
+                        });
+                        _type = type;
+                        _videoId = videoId;
+                        _playerState = playerState;
+                    } else {
+                        iw.postMessage('pti', 'loadVideo', type, videoId, playerState);
+                    }
+                }
+            })(),
             onPlaying: function (boolean) {
                 if (boolean && this.scope.data.playing == null) {
                     this.scope.data.playing = true;
@@ -194,27 +233,19 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function init(options) {
-        var parseTimeout;
+        var parseReload, parseTimeout;
 
         if(_state() == undefined) {
             observerReady = $.Deferred();
             parseTimeout = parseFloat(options && options.timeout);
-            iframeObserver.options.timeout = _.isNaN(parseTimeout) ? 30000 : parseTimeout * 1000;
+            iframeObserver.options.timeout = _.isNaN(parseTimeout) ? iframeObserver.options.timeout : parseTimeout * 1000;
+            parseReload = parseFloat(options && options.reload);
+            iframeObserver.options.reload = _.isNaN(parseReload) ? iframeObserver.options.reload : parseReload * 60000;
             _events();
             _loadPlayer();
         }
 
         return observerReady;
-    }
-
-    function lazyLoadVideo(thistype, thisoperation, type, videoId, playerState) {
-        if (Date.now() - Date.now() >= 120 * 60000) { //lastReady
-            window.observer = iframeObserver;
-            window.pti = pti;
-            window.chrome.extension.getBackgroundPage().ptiManager.playingWindow(window);
-        } else {
-            iw.postMessage(thistype, thisoperation, type, videoId, playerState);
-        }
     }
 
     function reload() {
