@@ -1,19 +1,18 @@
 'use strict';
 
 define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", "jstorage"], function (PTI, IframeWrapper, c, d, e) {
-    var iframeContainer, iframeObserver, initAndListenThrottle, iw, pti, state, options;
-    var host = "0-71.playtheinternet.appspot.com"
-//        var host = "playtheinternet.appspot.com"
-//        var host = "web.playtheinter.net"
-    var observerReady, youtubeReady, soundcloudReady, callbacks;
-    var STATE = {
+    var host, STATE, iframeContainer, iframeObserver, iw, pti, state, options, observerReady, youtubeReady, soundcloudReady, callbacks;
+
+    host = "0-71.playtheinternet.appspot.com";
+//        host = "playtheinternet.appspot.com";
+//        host = "web.playtheinter.net";
+    STATE = {
         DESTROY: 'destroy',
         LOAD: 'load',
         PLAY: 'play',
         RELOAD: 'reload',
         TIMEOUT: 'timeout'
     };
-
     iframeContainer = $('#players');
     options = {
         reload: 120 * 60000,
@@ -21,7 +20,6 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     };
     pti = _definePTI();
     callbacks = $.Callbacks();
-
     iframeObserver = {
         destroy: destroy,
         init: init,
@@ -94,16 +92,14 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
                 }
             })(),
             onPlaying: function (boolean) {
+                var selectedVideoIndex, volume;
+
                 if (boolean && this.scope.data.playing == null) {
-                    this.scope.data.playing = true;
-                    var _state = {
-                        selectedVideoIndex: window.playlist.getSelectedVideoIndex(),
-                        playing: true,
-                        volume: $.jStorage.get('volume')
-                    };
-                    _state.selectedVideoIndex = _state.selectedVideoIndex >= 0 ? _state.selectedVideoIndex : 0;
-                    window.playlist.playVideo({ index: _state.selectedVideoIndex }, _state.playerState);
-                    this.scope.volume(_state.volume);
+                    volume = $.jStorage.get('volume');
+                    selectedVideoIndex = window.playlist.getSelectedVideoIndex();
+                    pti.data.playing = true;
+                    pti.data.volume = volume;
+                    window.playlist.playVideo({ index: selectedVideoIndex >= 0 ? selectedVideoIndex : 0 });
                 } else {
                     arguments[3] !== 'iframe-wrapper' && iw && iw.postMessage(this.type, this.operation, boolean);
                 }
