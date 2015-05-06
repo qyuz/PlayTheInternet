@@ -63,39 +63,34 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
                 var _type, _videoId, _playerState, lastReady;
 
                 return function (type, videoId, playerState) {
+                    var reload;
+
+                    reload = Date.now() - lastReady >= iframeObserver.options.reload;
+
                     if (_type && _videoId) {
                         _type = type;
                         _videoId = videoId;
                         _playerState = playerState;
-                    } else if (lastReady == null) {
-                        iframeObserver.init().then(function() {
-                            iw.postMessage('pti', 'playing', pti.playing());
-                            iw.postMessage('pti', 'volume', pti.volume());
-                            iw.postMessage('pti', 'loadVideo', _type, _videoId, _playerState);
-                            _type = null;
-                            _videoId = null;
-                            _playerState = null;
-                            lastReady = Date.now();
-                        });
+                    } else if (lastReady == null || reload) {
                         _type = type;
                         _videoId = videoId;
                         _playerState = playerState;
-                    } else if (Date.now() - lastReady >= iframeObserver.options.reload) {
-                        iframeObserver.reload().then(function() {
-                            iw.postMessage('pti', 'playing', pti.playing());
-                            iw.postMessage('pti', 'volume', pti.volume());
-                            iw.postMessage('pti', 'loadVideo', _type, _videoId, _playerState);
-                            _type = null;
-                            _videoId = null;
-                            _playerState = null;
-                            lastReady = Date.now();
-                        });
-                        _type = type;
-                        _videoId = videoId;
-                        _playerState = playerState;
+                        if (lastReady == null) {
+                            iframeObserver.init().then(alignObservable);
+                        } else if (reload) {
+                            iframeObserver.reload().then(alignObservable)
+                        }
                     } else {
                         iw.postMessage('pti', 'loadVideo', type, videoId, playerState);
                     }
+                }
+
+                function alignObservable() {
+                    iw.postMessage('pti', 'playing', pti.playing());
+                    iw.postMessage('pti', 'volume', pti.volume());
+                    iw.postMessage('pti', 'loadVideo', _type, _videoId, _playerState);
+                    _type = _videoId = _playerState = null;
+                    lastReady = Date.now();
                 }
             })(),
             onPlaying: function (boolean) {
