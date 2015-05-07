@@ -43,38 +43,37 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
         };
         ptiManager.playingWindow = function(_window) {
             if (arguments.length) {
-                var currentState, prevWindow, loadPlayer, then, popupPtiWindows;
+                var currentState, prevWindow, loadPlayer, then, popupWindows;
 
-                currentState = ptiManager.currentState();
                 prevWindow = currentWindow;
-                if (prevWindow) {
-                    prevWindow.playlist.playerType(false);
-                    try { prevWindow.pti.pauseVideo() } catch(e) {} //will throw exception when background isn't initialized
-                }
-
                 currentWindow = _window;
+
+                if (currentWindow == backgroundWindow) {
+                    currentState = collectState(prevWindow.playlist, prevWindow.pti);
+                }
                 loadPlayer = currentWindow.observer.init();
                 then = function() {
-                    if (prevWindow != backgroundWindow) {
-                        prevWindow && prevWindow != currentWindow && prevWindow.observer && prevWindow.observer.destroy();
-                        prevWindow.removeEventListener("unload", ptiManager.startBackgroundPlayer, true); //unload
-                    }
                     if (currentWindow != backgroundWindow) {
+                        currentState = collectState(prevWindow.playlist, prevWindow.pti);
                         currentWindow.addEventListener("unload", ptiManager.startBackgroundPlayer, true);
                     }
+                    prevWindow.playlist.playerType(false);
+                    try { prevWindow.pti.pauseVideo() } catch(e) {} //will throw exception when background isn't initialized
+                    if (prevWindow != backgroundWindow) {
+                        prevWindow.observer && prevWindow.observer.destroy();
+                        prevWindow.removeEventListener("unload", ptiManager.startBackgroundPlayer, true); //unload
+                    }
                     startPlayer(currentWindow, currentState);
-                    popupPtiWindows = _.reject(window.chrome.extension.getViews(), backgroundWindow);
-                    _.forEach(popupPtiWindows, function(wnd) {
+                    popupWindows = _.reject(window.chrome.extension.getViews(), backgroundWindow);
+                    _.forEach(popupWindows, function(wnd) {
                         wnd.playerWidget.data.listenObject = currentWindow.pti;
                     });
                     ptiManager.pti = currentWindow.pti;
+                    prevWindow = null;
                 };
-                if (loadPlayer.state() == 'resolved') {
-                   then();
-                } else {
-                    loadPlayer.then(then);
-                }
+                loadPlayer.state() == 'resolved' ? then() : loadPlayer.then(then);
             }
+
             return currentWindow;
         };
     }
