@@ -2,8 +2,6 @@ body {
     overflow: hidden;
 }
 
-#parsedError a { pointer-events: all; color: white; }
-
 .playerWidget {
     height: 57px;
 }
@@ -42,8 +40,9 @@ body {
 .stretch-video-view #playerWidgetContainer { display: none; }
 .stretch-video-view #tabs .nav { display: none; }
 .stretch-video-view #playersContainer { top: 0px; }
+.stretch-video-view #stretch-video-control { display: block; }
 
-#stretch-video-control { opacity: 0; position: absolute; width: 50%; height: 30px; top: 0px; right: 82px; }
+#stretch-video-control { display: none; opacity: 0; position: absolute; width: 50%; height: 30px; top: 0px; right: 82px; }
 .stretch-video-view #stretch-video-control:hover { opacity: 1; }
 #stretch-video-control>* { opacity: 0.9; cursor: pointer; background-color: black; position: absolute; width: 26px; height: 30px; }
 #stretch-video-control>.playing-on-top { right: 0px; margin-right: 4px; }

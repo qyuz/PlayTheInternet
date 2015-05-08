@@ -194,7 +194,10 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             _removeIframe();
             _loadPlayer();
         }, iframeObserver.options.timeout);
-        $.when(youtubeReady, soundcloudReady).fail(_.partial(clearTimeout, failTimeout));
+        $.when(youtubeReady, soundcloudReady).fail(function() {
+            clearTimeout(failTimeout);
+            observerReady.reject();
+        });
     }
 
     function _removeIframe() {

@@ -43,7 +43,7 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
         };
         ptiManager.playingWindow = function(_window) {
             if (arguments.length) {
-                var currentState, prevWindow, loadPlayer, then, popupWindows;
+                var currentState, prevWindow, loadPlayer, then;
 
                 prevWindow = currentWindow;
                 currentWindow = _window;
@@ -57,16 +57,16 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
                         currentState = collectState(prevWindow.playlist, prevWindow.pti);
                         currentWindow.addEventListener("unload", ptiManager.startBackgroundPlayer, true);
                     }
-                    prevWindow.playlist.playerType(false);
-                    try { prevWindow.pti.pauseVideo() } catch(e) {} //will throw exception when background isn't initialized
-                    if (prevWindow != backgroundWindow) {
-                        prevWindow.observer && prevWindow.observer.destroy();
-                        prevWindow.removeEventListener("unload", ptiManager.startBackgroundPlayer, true); //unload
-                    }
                     startPlayer(currentWindow, currentState);
-                    popupWindows = _.reject(window.chrome.extension.getViews(), backgroundWindow);
-                    _.forEach(popupWindows, function(wnd) {
-                        wnd.playerWidget.data.listenObject = currentWindow.pti;
+                    _.forEach(window.chrome.extension.getViews(), function(wnd) {
+                        wnd.playerWidget && (wnd.playerWidget.data.listenObject = currentWindow.pti);
+                        if (wnd != currentWindow) {
+                            stopPlayer(wnd);
+                            if (wnd != backgroundWindow) {
+                                wnd.observer && wnd.observer.destroy();
+                                wnd.removeEventListener("unload", ptiManager.startBackgroundPlayer, true);
+                            }
+                        }
                     });
                     ptiManager.pti = currentWindow.pti;
                     prevWindow = null;
@@ -100,9 +100,20 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
     }
 
     function startPlayer(_window, _state) {
-        _window.playlist.playerType(true);
-        _window.playlist.playVideo({ index: _state.selectedVideoIndex }, _state.playerState);
-        _window.pti.playing(_state.playing);
-        _window.pti.volume(_state.volume);
+        try {
+            _window.playlist.playerType(true);
+            _window.playlist.playVideo({ index: _state.selectedVideoIndex }, _state.playerState);
+            _window.pti.playing(_state.playing);
+            _window.pti.volume(_state.volume);
+        } catch (e) {
+        }
+    }
+
+    function stopPlayer(_window) {
+        try {
+            _window.playlist.playerType(false);
+            _window.pti.pauseVideo();
+        } catch(e) {
+        }
     }
 });
