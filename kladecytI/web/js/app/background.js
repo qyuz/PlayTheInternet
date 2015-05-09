@@ -36,31 +36,33 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
         currentWindow = backgroundWindow = window;
 
         ptiManager.currentState = function() {
-            return collectState(currentWindow.playlist, ptiManager.pti);
+            return collectState(backgroundWindow.playlist, ptiManager.pti);
         };
         ptiManager.startBackgroundPlayer = function() {
             ptiManager.playingWindow(window);
         };
         ptiManager.playingWindow = function(_window) {
             if (arguments.length) {
-                var currentState, prevWindow, loadPlayer, then;
+                var currentState, loadPlayer, then, concurrentWindows;
 
-                prevWindow = currentWindow;
-                currentWindow = _window;
+                concurrentWindows = _.reject(window.chrome.extension.getViews(), _.partial(_.any, [currentWindow, _window, backgroundWindow]));
+                _.forEach(concurrentWindows, function(wnd) {
+                    wnd.observer && wnd.observer.destroy();
+                });
 
-                if (currentWindow == backgroundWindow) {
-                    currentState = collectState(prevWindow.playlist, prevWindow.pti);
+                if (_window == backgroundWindow) {
+                    currentState = ptiManager.currentState();
                 }
-                loadPlayer = currentWindow.observer.init();
+                loadPlayer = _window.observer.init();
                 then = function() {
-                    if (currentWindow != backgroundWindow) {
-                        currentState = collectState(prevWindow.playlist, prevWindow.pti);
-                        currentWindow.addEventListener("unload", ptiManager.startBackgroundPlayer, true);
+                    if (_window != backgroundWindow) {
+                        currentState = ptiManager.currentState();
+                        _window.addEventListener("unload", ptiManager.startBackgroundPlayer, true);
                     }
-                    startPlayer(currentWindow, currentState);
+                    startPlayer(_window, currentState);
                     _.forEach(window.chrome.extension.getViews(), function(wnd) {
-                        wnd.playerWidget && (wnd.playerWidget.data.listenObject = currentWindow.pti);
-                        if (wnd != currentWindow) {
+                        wnd.playerWidget && (wnd.playerWidget.data.listenObject = _window.pti);
+                        if (wnd != _window) {
                             stopPlayer(wnd);
                             if (wnd != backgroundWindow) {
                                 wnd.observer && wnd.observer.destroy();
@@ -68,8 +70,8 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
                             }
                         }
                     });
-                    ptiManager.pti = currentWindow.pti;
-                    prevWindow = null;
+                    ptiManager.pti = _window.pti;
+                    currentWindow = _window;
                 };
                 loadPlayer.state() == 'resolved' ? then() : loadPlayer.then(then);
             }
