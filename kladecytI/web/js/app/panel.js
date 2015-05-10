@@ -27,6 +27,7 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
                     observer.listen(function(action) {
                         if (action == STATE.DESTROY) {
                             destroyedPlayer = true;
+                            state('stretch-close');
                         } else if (action == STATE.PLAY && destroyedPlayer) {
                             backgroundWindow.ptiManager.playingWindow(window);
                         }
@@ -55,12 +56,7 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
                 tabViewIsOpen = !tabViewIsOpen;
             });
 
-            $('#stretch-video-control>.stretch-close>svg').click(function() {
-                var $body;
-
-                $body = $('body');
-                $body.removeClass('stretch-video-view');
-            });
+            $('#stretch-video-control>.stretch-close>svg').click(_.partial(state, 'stretch-close'));
             $('#stretch-video-control>.playing-on-top>svg').click(function() {
                 var $body, playingIsOnTop;
 
@@ -85,5 +81,12 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
     function resizePlayer() {
         window.playerWidget.jProgressBarContainer.width($window.width() - 4);
         window.playerWidget.jVolume.width($window.width() - 225);
+    }
+
+    function state(state) {
+        var $body;
+
+        $body = $('body');
+        $body.removeClass('stretch-video-view', state == 'stretch-close');
     }
 });

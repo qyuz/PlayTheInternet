@@ -45,9 +45,9 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
             if (arguments.length) {
                 var currentState, loadPlayer, then, concurrentWindows;
 
-                concurrentWindows = _.reject(window.chrome.extension.getViews(), _.partial(_.any, [currentWindow, _window, backgroundWindow]));
-                _.forEach(concurrentWindows, function(wnd) {
-                    wnd.observer && wnd.observer.destroy();
+                concurrentWindows = _.without(window.chrome.extension.getViews(), currentWindow, _window, backgroundWindow);
+                _.forEach(concurrentWindows, function(__window) {
+                    __window.observer && __window.observer.destroy();
                 });
 
                 if (_window == backgroundWindow) {
@@ -60,13 +60,13 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
                         _window.addEventListener("unload", ptiManager.startBackgroundPlayer, true);
                     }
                     startPlayer(_window, currentState);
-                    _.forEach(window.chrome.extension.getViews(), function(wnd) {
-                        wnd.playerWidget && (wnd.playerWidget.data.listenObject = _window.pti);
-                        if (wnd != _window) {
-                            stopPlayer(wnd);
-                            if (wnd != backgroundWindow) {
-                                wnd.observer && wnd.observer.destroy();
-                                wnd.removeEventListener("unload", ptiManager.startBackgroundPlayer, true);
+                    _.forEach(window.chrome.extension.getViews(), function(__window) {
+                        __window.playerWidget && (__window.playerWidget.data.listenObject = _window.pti);
+                        if (__window != _window) {
+                            stopPlayer(__window);
+                            if (__window != backgroundWindow) {
+                                __window.observer && __window.observer.destroy();
+                                __window.removeEventListener("unload", ptiManager.startBackgroundPlayer, true);
                             }
                         }
                     });

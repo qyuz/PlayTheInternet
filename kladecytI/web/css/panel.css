@@ -48,4 +48,4 @@ body {
 #stretch-video-control>.playing-on-top { right: 0px; margin-right: 4px; }
 #stretch-video-control>.stretch-close { right: 26px; padding-right: 10px; }
 
-.stretch-video-view.playing-on-top #sPlaying { display: block!important; width: 33%; top: 30px; right: 0px; z-index: 99; -webkit-transform: initial; opacity: 0.95; } /* reset shlop */
+.stretch-video-view.playing-on-top #sPlaying { display: block!important; width: 45%; top: 30px; right: 0px; z-index: 99; -webkit-transform: initial; opacity: 0.95; } /* reset shlop */

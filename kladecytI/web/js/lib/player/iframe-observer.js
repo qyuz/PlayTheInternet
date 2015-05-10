@@ -196,7 +196,6 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         }, iframeObserver.options.timeout);
         $.when(youtubeReady, soundcloudReady).fail(function() {
             clearTimeout(failTimeout);
-            observerReady.reject();
         });
     }
 
