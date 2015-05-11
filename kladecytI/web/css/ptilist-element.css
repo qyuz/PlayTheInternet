@@ -109,7 +109,8 @@
 #night .pti-ptilist .pti-content .pti-element.ui-selected .pti-action>svg>* { fill: white; }
 
 #night .pti-ptilist .pti-content.pti-view-list>* .duration-caption { color: white; }
-#night .pti-ptilist .pti-content>* .error-text, .pti-ptilist .pti-content>* .error-text a { color: white; }
+#night .pti-ptilist .pti-content>* .error-text,
+#night .pti-ptilist .pti-content>* .error-text a { color: white; }
 
 #night .pti-ptilist .pti-menu { background-color: #363636; color: white; }
 #night .pti-ptilist .pti-menu>.create-playlist-name { background-color: #585858; color: white; }
