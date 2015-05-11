@@ -81,7 +81,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
                     } else {
                         iw.postMessage('pti', 'loadVideo', type, videoId, playerState);
                     }
-                }
+                };
 
                 function alignObservable() {
                     iw.postMessage('pti', 'playing', pti.playing());
@@ -119,7 +119,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             onError: function () {
                 SiteHandlerManager.prototype.stateChange('ERROR');
             }
-        })
+        });
 
         new pti.Player('y', {
             onLoadVideo: function (videoObject) {
@@ -138,7 +138,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             onPlayerReady: function (playerState) {
                 youtubeReady.resolve();
             }
-        })
+        });
         new pti.Player('s', {
             onLoadVideo: function (videoId) {
                 iw.postMessage(this.type, this.operation, videoId);
@@ -158,7 +158,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
             onPlayerReady: function (playerState) {
                 soundcloudReady.resolve();
             }
-        })
+        });
         new pti.Player('v', {
             onLoadVideo: function (videoId) {
                 iw.postMessage(this.type, this.operation, videoId);
@@ -172,7 +172,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
                     SiteHandlerManager.prototype.stateChange('NEXT');
                 }
             }
-        })
+        });
         return pti;
     }
 
@@ -202,7 +202,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     function _removeIframe() {
         youtubeReady.reject();
         soundcloudReady.reject();
-        iframeContainer.find('iframe').attr('src', null)
+        iframeContainer.find('iframe').attr('src', null);
         iframeContainer.empty();
         iw.iframe = null;
     }
@@ -249,4 +249,4 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
         return observerReady;
     }
-})
+});

@@ -33,4 +33,4 @@ define(["player/player-widget", "app/common/tabs", "underscore"], function (Play
         $('html, body').css('height', '600px')
     })
 
-})
+});
