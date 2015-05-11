@@ -122,13 +122,19 @@ function YoutubeHandler() {
     YoutubeHandler.prototype.completeTemplate = PTITemplates.prototype.YoutubeCompleteTemplate
     YoutubeHandler.prototype.errorTemplate = PTITemplates.prototype.YoutubeErrorTemplate
     YoutubeHandler.prototype.data = function(data) {
-        this.id = data.id
-        this.type = YoutubeHandler.prototype.prefix
-        this.duration = data.duration
-        this.durationCaption = _.formatDuration(data.duration)
-        this.title = data.title
-        this.uploader = data.uploader
-        this.thumbnail = data.thumbnail.sqDefault
+        var videoData, contentDetails, snippet;
+
+        videoData = data.items[0];
+        contentDetails = videoData.contentDetails;
+        snippet = videoData.snippet;
+
+        this.id = videoData.id;
+        this.type = YoutubeHandler.prototype.prefix;
+        this.duration = contentDetails.duration;
+        this.durationCaption = YoutubeHandler.prototype.formatDuration(contentDetails.duration);
+        this.title = snippet.title;
+        this.uploader = snippet.channelTitle;
+        this.thumbnail = snippet.thumbnails.default.url;
     }
     YoutubeHandler.prototype.defaultThumbnail = "/css/resources/youtube.jpg"
     YoutubeHandler.prototype.fullURL = function(id) { return "https://www.youtube.com/watch?v=" + id }
@@ -136,18 +142,35 @@ function YoutubeHandler() {
     //TODO https://www.youtube.com/embed/?listType=playlist&amp;list=PLhBgTdAWkxeBX09BokINT1ICC5IZ4C0ju&amp;showinfo=1
     YoutubeHandler.prototype.regex = /(youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>\r\n]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11})/
     YoutubeHandler.prototype.regexGroup = 11
+    YoutubeHandler.prototype.formatDuration = function(duration) {
+        var regex, match, hours, minutes, seconds, formattedDuration;
+
+        regex = /PT((\d+)H)?((\d+)M)?((\d+)S)?/;
+        match = duration.match(regex);
+        hours = match[2] ? parseInt(match[2]) : 0;
+        minutes = match[4] ? parseInt(match[4]) : 0;
+        seconds = match[6] ? parseInt(match[6]) : 0;
+        formattedDuration = _.formatDuration(hours * 3600 + minutes * 60 + seconds);
+        
+        return formattedDuration;
+    }
     YoutubeHandler.prototype.loadVideoDataQueue = new Array()
     YoutubeHandler.prototype.loadVideoDataQueueConcurrent = 0
     YoutubeHandler.prototype.loadVideoDataQueueConcurrentMax = 25
     YoutubeHandler.prototype.loadVideoDataQueueExecute = function(typeId, $ptiElement) {
         YoutubeHandler.prototype.loadVideoDataQueueConcurrent++
         $.ajax({
-            url: "http://gdata.youtube.com/feeds/api/videos/" + typeId.id + "?v=2&alt=jsonc",
+            url: "https://www.googleapis.com/youtube/v3/videos?id=" + typeId.id + "&key=AIzaSyCceMUlTNTcTXTzdXJyndGuzscXZl1W5Og&part=contentDetails,snippet",
             success: function (data) {
                 YoutubeHandler.prototype.loadVideoDataQueueConcurrent--
                 try {
-                    var videoData = new YoutubeHandler.prototype.data(data.data)
-                    SiteHandlerManager.prototype.updatePtiElement(videoData, $ptiElement, "completeTemplate")
+                    if (data.items.length) {
+                        var videoData = new YoutubeHandler.prototype.data(data)
+                        SiteHandlerManager.prototype.updatePtiElement(videoData, $ptiElement, "completeTemplate")
+                    } else {
+                        typeId.error = "Video not found";
+                        SiteHandlerManager.prototype.updatePtiElement(typeId, $ptiElement, "errorTemplate")
+                    }
                 } finally {
                     YoutubeHandler.prototype.loadVideoDataQueueNext()
                 }
@@ -155,25 +178,8 @@ function YoutubeHandler() {
             error: function (data) {
                 try {
                     YoutubeHandler.prototype.loadVideoDataQueueConcurrent--
-//                console.log(data.responseText)
-                    try {
-                        typeId.error = $.parseJSON(data.responseText).error.message
-                    } catch (e) {
-                        typeId.error = data.responseText.replace(/[\r\n]/g, '').replace(/.*((<code>)|(TITLE>))([\w\s]+)((<)|(<\/code>)).*/, "$4")
-                    }
+                    typeId.error = '' + data.status + ' ' + data.statusText;
                     SiteHandlerManager.prototype.updatePtiElement(typeId, $ptiElement, "errorTemplate")
-                    if (data.responseText.match(/too_many_recent_calls/)) {
-                        setTimeout(function () {
-                            YoutubeHandler.prototype.loadVideoData(typeId, $ptiElement)
-                            console.log("retrying video")
-                            if ($ptiElement.parent().length > 0) {
-                            } else {
-                                console.log('playlist was emptied, wont continue loading info for this video')
-                            }
-                        }, 35000)
-                    } else {
-                        typeof linkContext != "undefined" && typeof linkContext.loadVideoFeedCallback == "function" && linkContext.loadVideoFeedCallback()
-                    }
                 } finally {
                     YoutubeHandler.prototype.loadVideoDataQueueNext()
                 }
