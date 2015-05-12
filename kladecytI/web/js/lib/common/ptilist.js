@@ -385,13 +385,13 @@ define(["underscore", "slimscroll"], function () {
 				})
 			}
             _drawSlice(firstSlice)
-            _.reduce(slices, function (def, slice) {
-                deferred = $.Deferred()
+            deferred = _.reduce(slices, function (def, slice) {
+                var _deferred = $.Deferred()
                 def.then(_.defer(function () {
                     _drawSlice(slice)
-                    deferred.resolve()
+                    _deferred.resolve()
                 }))
-                return deferred
+                return _deferred
             }, deferred)
 		}
 
