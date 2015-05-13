@@ -57,7 +57,8 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
             });
 
             $('#stretch-video-control>.stretch-close>svg').click(_.partial(state, 'stretch-close'));
-            $('#stretch-video-control>.playing-on-top>svg').click(function() {
+            $('#stretch-video-control>.player-widget-toggle>svg').click(_.partial(state, 'player-widget-toggle'));
+            $('#stretch-video-control>.playing-on-top-toggle>svg').click(function() {
                 var $body, playingIsOnTop;
 
                 $body = $('body');
@@ -87,6 +88,7 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
         var $body;
 
         $body = $('body');
-        $body.removeClass('stretch-video-view', state == 'stretch-close');
+        state == 'stretch-close' && $body.removeClass('stretch-video-view', state == 'stretch-close');
+        state == 'player-widget-toggle' && $body.toggleClass('player-widget');
     }
 });
