@@ -80,8 +80,8 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
     });
 
     function resizePlayer() {
-        window.playerWidget.jProgressBarContainer.width($window.width() - 4);
-        window.playerWidget.jVolume.width($window.width() - 225);
+//        window.playerWidget.jProgressBarContainer.width($window.width() - 4);
+//        window.playerWidget.jVolume.width($window.width() - 225);
     }
 
     function state(state) {
