@@ -2,36 +2,46 @@ body {
     overflow: hidden;
 }
 
-.playerWidget {
-    height: 57px;
+#playerWidgetContainer { top: 0px; right: 0px; left: 0px; }
+
+.playerWidget .control.progress-bar {
+    left: 0px;
+    right: 40%;
+}
+.playerWidget .control.volume {
+    left: 60%;
 }
 
-.playerWidget>.progressBarContainer {
-    position: relative;
-    float: left;
-    width: 100%;
-}
+/*.playerWidget {*/
+    /*height: 57px;*/
+/*}*/
 
-.playerWidget>.progressBarContainer:after {
-    content: '';
-    display: block;
-    clear: both;
-}
+/*.playerWidget>.progressBarContainer {*/
+    /*position: relative;*/
+    /*float: left;*/
+    /*width: 100%;*/
+/*}*/
 
-.playerWidget>.control {
-    float: left;
-    position: relative;
-    top: 1px;
-}
+/*.playerWidget>.progressBarContainer:after {*/
+    /*content: '';*/
+    /*display: block;*/
+    /*clear: both;*/
+/*}*/
 
-.playerWidget>.volume.control {
-    top: 8px;
-    left: 1px;
-}
+/*.playerWidget>.control {*/
+    /*float: left;*/
+    /*position: relative;*/
+    /*top: 1px;*/
+/*}*/
 
-.playerWidget>.control:before, .playerWidget>.control:after {
-    top: auto;
-}
+/*.playerWidget>.volume.control {*/
+    /*top: 8px;*/
+    /*left: 1px;*/
+/*}*/
+
+/*.playerWidget>.control:before, .playerWidget>.control:after {*/
+    /*top: auto;*/
+/*}*/
 
 #splitViews { top: 58px; right: 0px; bottom: 0px; left: 0px; }
 #firstView { width: 100%; }
