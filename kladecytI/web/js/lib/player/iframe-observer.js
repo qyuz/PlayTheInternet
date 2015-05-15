@@ -3,7 +3,7 @@
 define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", "jstorage"], function (PTI, IframeWrapper, c, d, e) {
     var host, STATE, iframeContainer, iframeObserver, iw, pti, state, options, observerReady, youtubeReady, soundcloudReady, callbacks;
 
-    host = "0-71.playtheinternet.appspot.com";
+    host = "0-72.playtheinternet.appspot.com";
 //        host = "playtheinternet.appspot.com";
 //        host = "web.playtheinter.net";
     STATE = {
