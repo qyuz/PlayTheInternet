@@ -11,7 +11,7 @@ PTITemplates.prototype.SoundCloudPlayerTemplate = _.template('<iframe id="sc-wid
 
 PTITemplates.prototype.VimeoRawTemplate = _.template('<div><div class="image-div pti-sortable-handler"><img src="/css/resources/vimeo.jpg"><div class="pti-action"><%=PTITemplates.prototype.AddAction()%><%=PTITemplates.prototype.PlayAction()%></div></div><span class="videoText"><b><%= id %></b></span></div>')
 PTITemplates.prototype.VimeoCompleteTemplate = _.template('<div><div class="image-div pti-sortable-handler"><img src="<%= thumbnail %>"><div class="duration-caption"><%= durationCaption %></div><div class="pti-action"><%=PTITemplates.prototype.AddAction()%><%=PTITemplates.prototype.PlayAction()%></div></div><span class="videoText"><b><%= title %></b><br>by <%= uploader %></span></div>')
-PTITemplates.prototype.VimeoPlayerTemplate = _.template('<iframe id="vimeo" src="http://player.vimeo.com/video/<%= id %>?api=1&player_id=vimeo" width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>')
+PTITemplates.prototype.VimeoPlayerTemplate = _.template('<iframe id="vimeo" src="https://player.vimeo.com/video/<%= id %>?api=1&player_id=vimeo" width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>')
 
 PTITemplates.prototype.PlaylistGroupHeaderTemplate = _.template('<label class="pti-droppable-target"><%=name%></label>')
 
