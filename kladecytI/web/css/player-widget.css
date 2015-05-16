@@ -9,53 +9,52 @@
 /*night*/
 #night .playerWidget { background-color: #2d2d2d; }
 
+/* CONTAINERS START */
+.playerWidget .container {
+    position: absolute;
+    top: 0px;
+}
+.playerWidget .container.progress-bar {
+    left: 0px;
+    right: 216px;
+    width: auto;
+}
+.playerWidget .container.volume {
+    right: 148px;
+    width: 68px;
+}
+.playerWidget .container.recycle {
+    right: 108px;
+}
+.playerWidget .container.prev {
+    right: 68px;
+}
+.playerWidget .container.play,
+.playerWidget .container.pause {
+    right: 34px;
+}
+.playerWidget .container.next {
+    right: 0px;
+}
+/* CONTAINERS END */
+
 /* CONTROLS START */
 .playerWidget .control {
     transition: background-color 0.3s ease-in-out;
-    position: absolute;
-    top: 0px;
     width: 34px;
     height: 34px;
 }
 .playerWidget .control:hover {
     cursor: pointer;
 }
-.playerWidget .control.progress-bar {
-    left: 0px;
-    right: 216px;
-    width: auto;
-}
 .playerWidget .control.volume {
-    right: 148px;
-    width: 68px;
-}
-.playerWidget .control.recycle {
-    right: 108px;
-}
-.playerWidget .control.prev {
-    right: 68px;
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    -o-transform: rotate(180deg);
-    transform: rotate(180deg);
-}
-.playerWidget .control.play,
-.playerWidget .control.pause {
-    right: 34px;
-}
-.playerWidget .control.next {
-    right: 0px;
-}
-
-.playerWidget .volume.range {
     -webkit-appearance: none;
     position: relative;
     margin-top: 3px;
     width: 100%;
     height: 20px;
 }
-.playerWidget .volume.range::-webkit-slider-thumb {
+.playerWidget .control.volume::-webkit-slider-thumb {
     transition: all 0.3s ease-in-out;
     -webkit-appearance: none;
     opacity: 0.5;
@@ -65,10 +64,18 @@
 .playerWidget .control.recycle svg {
     transition: fill 0.5s ease-in-out;
 }
+.playerWidget .control.prev {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
 
 /*day*/
 .playerWidget .control:hover { background-color: #7EA6BF; }
-.playerWidget .control.mouseDown, .playerWidget .control.mouseDown:hover { background-color: gray!important; }
+.playerWidget .control.mouseDown,
+.playerWidget .control.mouseDown:hover { background-color: gray!important; }
 .playerWidget .control.play:before {
     content: '';
     position: absolute;
@@ -121,20 +128,20 @@
     border-left: 2px solid aliceblue;
     border-right: 2px solid aliceblue;
 }
-.playerWidget .volume.range { background-color: #efeff5; }
-.playerWidget .volume.range:hover { background-color: aliceblue; }
-.playerWidget .volume.range::-webkit-slider-thumb { background-color: #666; }
-.playerWidget .volume.range:hover::-webkit-slider-thumb { background-color: #7EA6BF; }
+.playerWidget .control.volume { background-color: #efeff5; }
+.playerWidget .control.volume:hover { background-color: aliceblue; }
+.playerWidget .control.volume::-webkit-slider-thumb { background-color: #666; }
+.playerWidget .control.volume:hover::-webkit-slider-thumb { background-color: #7EA6BF; }
 .playerWidget .control.recycle.confirm svg { fill: salmon; }
 .playerWidget .control.recycle.confirmed svg { fill: greenyellow; }
 
 /*night*/
 #night .playerWidget .control:hover { background-color: #474747; }
 #night .playerWidget .control.mouseDown, #night .playerWidget .control.mouseDown:hover { background-color: gray!important; }
-#night .playerWidget .volume.range { background-color: #efeff5; }
-#night .playerWidget .volume.range:hover { background-color: aliceblue; }
-#night .playerWidget .volume.range::-webkit-slider-thumb { background-color: #030303; }
-#night .playerWidget .volume.range:hover::-webkit-slider-thumb { background-color: #2d2d2d; }
+#night .playerWidget .control.volume { background-color: #efeff5; }
+#night .playerWidget .control.volume:hover { background-color: aliceblue; }
+#night .playerWidget .control.volume::-webkit-slider-thumb { background-color: #030303; }
+#night .playerWidget .control.volume:hover::-webkit-slider-thumb { background-color: #2d2d2d; }
 #night .playerWidget .control.recycle.confirm svg { fill: black; }
 #night .playerWidget .control.recycle.confirmed svg { fill: #828282; }
 /* CONTROLS END */
