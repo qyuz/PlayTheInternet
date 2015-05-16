@@ -2,46 +2,77 @@ body {
     overflow: hidden;
 }
 
-#playerWidgetContainer { top: 0px; right: 0px; left: 0px; height: 57px; }
+#playerWidgetContainer { top: 0px; right: 0px; left: 0px; height: 35px; }
+#splitViews { top: 35px; right: 0px; bottom: 0px; left: 0px; }
+#firstView { width: 100%; }
 
-.playerWidget {
-    height: inherit;
-}
-
-.playerWidget .container.progress-bar {
-    right: 0px;
-}
-.playerWidget .container:not(.progress-bar) {
-    top: 23px;
-}
+/* ADD EXTRA BUTTONS START(STRETCH-VIDEO-VIEW, MINIMIZE) */
 .playerWidget .container.stretch-video-view {
     left: 0px;
 }
 .playerWidget .container.tab-view {
     left: 34px;
 }
-.playerWidget .container.volume {
+.playerWidget .container.progress-bar {
     left: 68px;
-    margin-top: 4px;
-    width: auto;
 }
+/* ADD EXTRA BUTTONS END */
 
-#splitViews { top: 58px; right: 0px; bottom: 0px; left: 0px; }
-#firstView { width: 100%; }
-
+/* STRETCH VIDEO MODE START */
 .stretch-video-view #splitViews { top: 0px; }
 .stretch-video-view #playerWidgetContainer { display: none; }
 .stretch-video-view #tabs .nav { display: none; }
 .stretch-video-view #playersContainer { top: 0px; }
 .stretch-video-view #stretch-video-control { display: block; }
-
-#stretch-video-control { display: none; opacity: 0; position: absolute; width: 50%; height: 30px; top: 0px; right: 82px; }
 .stretch-video-view #stretch-video-control:hover { opacity: 1; }
+
+/* with player widget */
+.stretch-video-view.player-widget #playerWidgetContainer { display: block; top: 0px; }
+.stretch-video-view.player-widget .container.stretch-video-view,
+.stretch-video-view.player-widget .container.tab-view { display: none; }
+.stretch-video-view.player-widget .container.progress-bar { left: 0px; }
+.stretch-video-view.player-widget #splitViews { top: 34px; }
+
+/* with Playing playlist */
+.stretch-video-view.playing-on-top #sPlaying { display: block!important; width: 45%; top: 30px; right: 0px; z-index: 99; -webkit-transform: initial; opacity: 0.95; } /* reset shlop */
+
+/* controls */
+#stretch-video-control { display: none; opacity: 0; position: absolute; width: 50%; height: 30px; top: 0px; right: 82px; }
 #stretch-video-control>* { opacity: 0.9; cursor: pointer; background-color: black; position: absolute; width: 26px; height: 30px; }
 #stretch-video-control>.playing-on-top-toggle { right: 0px; margin-right: 4px; }
 #stretch-video-control>.player-widget-toggle { right: 26px; margin-right: 4px; }
 #stretch-video-control>.stretch-close { right: 52px; padding-right: 10px; }
+/* STRETCH VIDEO MODE END */
 
-.stretch-video-view.player-widget #playerWidgetContainer { display: block; top: -23px; }
-.stretch-video-view.player-widget #splitViews { top: 35px; }
-.stretch-video-view.playing-on-top #sPlaying { display: block!important; width: 45%; top: 30px; right: 0px; z-index: 99; -webkit-transform: initial; opacity: 0.95; } /* reset shlop */
+/* PLAYER WIDGET OCCUPIES 2 ROWS ON SMALL WINDOW SIZE START */
+@media screen and (max-width: 460px){
+    #playerWidgetContainer {
+        height: 58px;
+    }
+    .playerWidget {
+        height: 57px;
+    }
+    #splitViews {
+        top: 58px;
+    }
+    .playerWidget .container.progress-bar {
+        left: 0px;
+        right: 0px;
+    }
+    .playerWidget .container:not(.progress-bar) {
+        top: 23px;
+    }
+    .playerWidget .container.volume {
+        left: 68px;
+        margin-top: 4px;
+        width: auto;
+    }
+    /* hide extra buttons and player-widget bottom margin */
+    .stretch-video-view.player-widget #splitViews {
+        top: 57px;
+    }
+    .stretch-video-view.player-widget .container.volume {
+        left: 0px;
+    }
+}
+/* PLAYER WIDGET OCCUPIES 2 ROWS ON SMALL WINDOW SIZE END */
