@@ -4,11 +4,11 @@ body {
 
 #playerWidgetContainer { top: 0px; right: 0px; left: 0px; }
 
-.playerWidget .control.progress-bar {
+.playerWidget .container.progress-bar {
     left: 0px;
     right: 40%;
 }
-.playerWidget .control.volume {
+.playerWidget .container.volume {
     left: 60%;
 }
 
