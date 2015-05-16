@@ -42,7 +42,7 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
 
                 $('#tabs a[href="#player"]').click();
                 $body.addClass('stretch-video-view');
-                window.resizeTo(600, 404);
+                window.resizeTo(463, 384);
                 tabViewIsOpen = true;
             });
 
