@@ -2,46 +2,29 @@ body {
     overflow: hidden;
 }
 
-#playerWidgetContainer { top: 0px; right: 0px; left: 0px; }
+#playerWidgetContainer { top: 0px; right: 0px; left: 0px; height: 57px; }
+
+.playerWidget {
+    height: inherit;
+}
 
 .playerWidget .container.progress-bar {
+    right: 0px;
+}
+.playerWidget .container:not(.progress-bar) {
+    top: 23px;
+}
+.playerWidget .container.stretch-video-view {
     left: 0px;
-    right: 40%;
+}
+.playerWidget .container.tab-view {
+    left: 34px;
 }
 .playerWidget .container.volume {
-    left: 60%;
+    left: 68px;
+    margin-top: 4px;
+    width: auto;
 }
-
-/*.playerWidget {*/
-    /*height: 57px;*/
-/*}*/
-
-/*.playerWidget>.progressBarContainer {*/
-    /*position: relative;*/
-    /*float: left;*/
-    /*width: 100%;*/
-/*}*/
-
-/*.playerWidget>.progressBarContainer:after {*/
-    /*content: '';*/
-    /*display: block;*/
-    /*clear: both;*/
-/*}*/
-
-/*.playerWidget>.control {*/
-    /*float: left;*/
-    /*position: relative;*/
-    /*top: 1px;*/
-/*}*/
-
-/*.playerWidget>.volume.control {*/
-    /*top: 8px;*/
-    /*left: 1px;*/
-/*}*/
-
-/*.playerWidget>.control:before, .playerWidget>.control:after {*/
-    /*top: auto;*/
-/*}*/
 
 #splitViews { top: 58px; right: 0px; bottom: 0px; left: 0px; }
 #firstView { width: 100%; }

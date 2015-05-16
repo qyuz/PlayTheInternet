@@ -18,7 +18,7 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
         this.jPlay = this.jPlayerWidget.find('.play')
         this.jPrev = this.jPlayerWidget.find('.prev')
         this.jNext = this.jPlayerWidget.find('.next')
-        this.jVolume = this.jPlayerWidget.find('.volume')
+        this.jVolume = this.jPlayerWidget.find('.volume.control')
         this.jCurrentTime = $('<div class="progressBarCurrentTime"></div>').appendTo(this.jProgressBar)
         this.jBackgroundCurrentTime = $('<div class="progressBarBackgroundCurrentTime"></div>').appendTo(this.jProgressBar)
         this.jTrackLength = $('<div class="progressBarTrackLength"></div>').appendTo(this.jProgressBar)
@@ -97,11 +97,11 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
             })
         })
 
-        this.jPlayerWidget.on('change', '.volume', function () {
+        this.jPlayerWidget.on('change', '.volume.control', function () {
             var volume = Number($(this).val())
             debounceVolume(volume)
         })
-        this.jPlayerWidget.on('mousewheel', '.volume', function(event) {
+        this.jPlayerWidget.on('mousewheel', '.volume.control', function(event) {
             var $range = $(this), range = Number($range.val())
             $range.focus() //set focus on mousewheel so you can control slider using arrow keys. consider moving focus to .onhover
             $range.val(range = event.originalEvent.wheelDelta > 0 ? range + 5 : range - 5 )
@@ -116,11 +116,11 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
             self.data.listenObject.seekTo(seconds)
         })
 
-        this.jPlayerWidget.on('mousedown', '.control:not(.volume)', function () {
+        this.jPlayerWidget.on('mousedown', '.control:not(.volume.control)', function () {
             var jElement = $(this)
             jElement.addClass('mouseDown')
         })
-        this.jPlayerWidget.on('mouseup', '.control:not(.volume)', function () {
+        this.jPlayerWidget.on('mouseup', '.control:not(.volume.control)', function () {
             var jElement = $(this)
             jElement.removeClass('mouseDown')
         })
