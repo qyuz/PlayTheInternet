@@ -15,8 +15,6 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
             window.playlist.on('selected', setWindowTitle);
             window.addEventListener("unload", _.bind(window.playlist._callbacksRemove, window.playlist, 'selected', setWindowTitle), true);
             window.playerWidget.data.listenObject = backgroundWindow.ptiManager.pti;
-            $window.resize(_.debounce(resizePlayer, 50));
-            resizePlayer();
 
             $('#tabs a[href="#player"]').one('click', function() {
                 require(["player/iframe-observer"], function(observer) {
@@ -78,11 +76,6 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
             $('body').html('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-error"><b>Panel is an experimental feature which should be<br>enabled first.</b><br><a href="chrome://flags/#enable-panels" target="_blank">Follow this link to enable panels and then click<br>"Relaunch Now" to restart Chrome.</a></div> </div> </div> </div>');
         }
     });
-
-    function resizePlayer() {
-//        window.playerWidget.jProgressBarContainer.width($window.width() - 4);
-//        window.playerWidget.jVolume.width($window.width() - 225);
-    }
 
     function state(state) {
         var $body;
