@@ -56,6 +56,12 @@
         },
         "panel": {
             "description": "Player panel"
+        },
+        "skipForward": {
+            "description": "Skip forward 3 minutes"
+        },
+        "skipBackward": {
+            "description": "Skip backward 3 minutes"
         }
     },
 
