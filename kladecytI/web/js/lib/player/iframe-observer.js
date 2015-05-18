@@ -1,7 +1,7 @@
 'use strict';
 
 define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", "jstorage"], function (PTI, IframeWrapper, c, d, e) {
-    var host, STATE, iframeContainer, iframeObserver, iw, pti, state, options, observerReady, youtubeReady, soundcloudReady, callbacks;
+    var host, STATE, iframeContainer, iframeObserver, iw, pti, _state, options, observerReady, youtubeReady, soundcloudReady, callbacks;
 
     host = "0-72.playtheinternet.appspot.com";
 //        host = "playtheinternet.appspot.com";
@@ -18,7 +18,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         reload: 120 * 60000,
         timeout: 30000
     };
-    pti = _definePTI();
+    pti = definePTI();
     callbacks = $.Callbacks();
     iframeObserver = {
         destroy: destroy,
@@ -32,7 +32,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
 
     return iframeObserver;
 
-    function _appendIframe() {
+    function appendIframe() {
         var playerIframe;
 
         youtubeReady = $.Deferred();
@@ -40,13 +40,13 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         iframeContainer.html('<iframe class="leftFull temp-border-none temp-width-hundred-percent" src="http://' + host + '/iframe-player.html?origin=' + window.location.href + '"></iframe>');
         playerIframe = iframeContainer.find('iframe').get(0).contentWindow;
         if (iw == null) {
-            iw = _defineIframeWrapper(playerIframe);
+            iw = defineIframeWrapper(playerIframe);
         } else {
             iw.iframe = playerIframe;
         }
     }
 
-    function _defineIframeWrapper(playerIframe) {
+    function defineIframeWrapper(playerIframe) {
         var iw;
 
         iw = new IframeWrapper(playerIframe, ["http://" + host]);
@@ -55,7 +55,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         return iw;
     }
 
-    function _definePTI() {
+    function definePTI() {
         var pti = new PTI({
             onLoadVideo: (function () {
                 var _type, _videoId, _playerState, lastReady;
@@ -176,30 +176,52 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         return pti;
     }
 
-    function _events() {
+    function destroy() {
+        observerReady.reject(STATE.DESTROY);
+        removeIframe();
+        state(STATE.DESTROY);
+    }
+
+    function events() {
         $('#playersContainer').on('click', '#parsedError a', reload);
     }
 
-    function _loadPlayer() {
+    function init(options) {
+        var parseReload, parseTimeout;
+
+        if(state() == undefined) {
+            observerReady = $.Deferred();
+            parseTimeout = parseFloat(options && options.timeout);
+            iframeObserver.options.timeout = _.isNaN(parseTimeout) ? iframeObserver.options.timeout : parseTimeout * 1000;
+            parseReload = parseFloat(options && options.reload);
+            iframeObserver.options.reload = _.isNaN(parseReload) ? iframeObserver.options.reload : parseReload * 60000;
+            events();
+            loadPlayer();
+        }
+
+        return observerReady;
+    }
+
+    function loadPlayer() {
         var failTimeout;
 
-        _state(STATE.LOAD);
-        _appendIframe();
+        state(STATE.LOAD);
+        appendIframe();
         $.when(youtubeReady, soundcloudReady).then(function() {
             clearTimeout(failTimeout);
             observerReady.resolve();
-            _state(STATE.PLAY);
+            state(STATE.PLAY);
         });
         failTimeout = setTimeout(function() {
-            _removeIframe();
-            _loadPlayer();
+            removeIframe();
+            loadPlayer();
         }, iframeObserver.options.timeout);
         $.when(youtubeReady, soundcloudReady).fail(function() {
             clearTimeout(failTimeout);
         });
     }
 
-    function _removeIframe() {
+    function removeIframe() {
         youtubeReady.reject();
         soundcloudReady.reject();
         iframeContainer.find('iframe').attr('src', null);
@@ -207,45 +229,23 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
         iw.iframe = null;
     }
 
-    function _state(_state) {
+    function state(state) {
         if(arguments.length) {
-            state = _state;
-            $('#playersContainer').toggleClass('destroyed', _state == STATE.DESTROY);
-            $('#playersContainer').toggleClass('playing', _state == STATE.PLAY);
-            $('#playersContainer').toggleClass('loading', _state == STATE.LOAD);
-            callbacks.fire(_state);
+            _state = state;
+            $('#playersContainer').toggleClass('destroyed', state == STATE.DESTROY);
+            $('#playersContainer').toggleClass('playing', state == STATE.PLAY);
+            $('#playersContainer').toggleClass('loading', state == STATE.LOAD);
+            callbacks.fire(state);
         }
 
-        return state;
-    }
-
-    function destroy() {
-        observerReady.reject(STATE.DESTROY);
-        _removeIframe();
-        _state(STATE.DESTROY);
-    }
-
-    function init(options) {
-        var parseReload, parseTimeout;
-
-        if(_state() == undefined) {
-            observerReady = $.Deferred();
-            parseTimeout = parseFloat(options && options.timeout);
-            iframeObserver.options.timeout = _.isNaN(parseTimeout) ? iframeObserver.options.timeout : parseTimeout * 1000;
-            parseReload = parseFloat(options && options.reload);
-            iframeObserver.options.reload = _.isNaN(parseReload) ? iframeObserver.options.reload : parseReload * 60000;
-            _events();
-            _loadPlayer();
-        }
-
-        return observerReady;
+        return _state;
     }
 
     function reload() {
         observerReady.reject(STATE.RELOAD);
         observerReady = $.Deferred();
-        _removeIframe();
-        _loadPlayer();
+        removeIframe();
+        loadPlayer();
 
         return observerReady;
     }
