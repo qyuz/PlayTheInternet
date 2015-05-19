@@ -42,9 +42,35 @@ define(["player/pti-abstract", "underscore", "jquery"], function (PTI, b, c) {
         onPauseVideo:function () {
             this.scope.playing(false)
         },
-        onBeforeSeekTo:function (seekTo) {
-            //let playbackController seek to avoid twitch and runLifeCycle to set seekTo
-            return [seekTo > 0 ? seekTo : null]
+        onBeforeSeekTo:function (seekTo) { //let playbackController seek to avoid twitch and runLifeCycle to set seekTo
+            var result, currentTime, duration, skipDirection, skipValue, temp;
+
+            if (_.isString(seekTo) && (seekTo[0] == "+" || seekTo[0] == "-")) {
+                temp = this.scope.get(['currentTime', 'duration']);
+                currentTime = temp[0];
+                duration = temp[1];
+                skipDirection = seekTo[0];
+                skipValue = parseFloat(seekTo.slice(1));
+                if (_.isNumber(currentTime) && _.isNumber(duration) && _.isNumber(skipValue)) {
+                    if (skipDirection == "+") {
+                        result = currentTime + skipValue;
+                        if (result >= duration) {
+                            result = duration - 1;
+                        }
+                    } else if (skipDirection == "-") {
+                        result = currentTime - skipValue;
+                        if (result < 0) {
+                            result = 0.01;
+                        }
+                    }
+                }
+            } else if (_.isNumber(seekTo) || _.isNumber(parseFloat(seekTo))) {
+                result = parseFloat(seekTo);
+            }
+
+            result = result > 0 ? [result] : [null];
+
+            return result;
         },
         onVolume:function (volume) {
             var self = this.scope, player = self.players[self.data.currentPlayer]
