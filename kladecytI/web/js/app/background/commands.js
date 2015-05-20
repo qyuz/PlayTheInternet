@@ -7,12 +7,10 @@ define(["underscore"], function() {
 
     actions = {
         "play": function() {
-            var pti = _.getPti();
-            pti.playVideo()
+            backgroundWindow.ptiManager.pti.playVideo()
         },
         "pause": function() {
-            var pti = _.getPti();
-            pti.pauseVideo()
+            backgroundWindow.ptiManager.pti.pauseVideo()
         },
         "next": function() {
             playlist.playVideo({videoDiv: playlist.lookupNextSong()});
@@ -21,17 +19,23 @@ define(["underscore"], function() {
             playlist.playVideo({videoDiv: playlist.lookupPrevSong()});
         },
         "play/pause": function() {
-            var pti = _.getPti();
-            pti.playing() ? pti.pauseVideo() : pti.playVideo();
+            if (backgroundWindow.ptiManager.pti.playing()) {
+                backgroundWindow.ptiManager.pti.pauseVideo()
+            } else {
+                backgroundWindow.ptiManager.pti.playVideo()
+            }
         },
         "panel": function() {
             _.openPanel();
         },
-        "skipForward": _.partial(_.get(backgroundWindow, 'ptiManager.pti.seekTo'), '+180'),
-        "skipBackward": _.partial(_.get(backgroundWindow, 'ptiManager.pti.seekTo'),'-180')
+        "skipForward": _.partial(skip, '+'),
+        "skipBackward": _.partial(skip, '-')
     };
     chrome.commands.onCommand.addListener(function(command) {
         actions[command]()
     });
 
+    function skip(skipDirection) {
+        backgroundWindow.ptiManager.pti.seekTo(skipDirection + '180')
+    }
 });

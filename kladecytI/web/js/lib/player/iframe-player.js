@@ -50,21 +50,20 @@ define(["player/pti-abstract", "underscore", "jquery"], function (PTI, b, c) {
                 currentTime = temp[0];
                 duration = temp[1];
                 skipDirection = seekTo[0];
-                skipValue = parseFloat(seekTo.slice(1));
-                if (_.isNumber(currentTime) && _.isNumber(duration) && _.isNumber(skipValue)) {
+                skipValue = parseFloat(seekTo);
+                if (_.isNumber(currentTime) && _.isNumber(duration) && !_.isNaN(skipValue)) {
+                    result = currentTime + skipValue;
                     if (skipDirection == "+") {
-                        result = currentTime + skipValue;
                         if (result >= duration) {
                             result = duration - 1;
                         }
                     } else if (skipDirection == "-") {
-                        result = currentTime - skipValue;
                         if (result < 0) {
                             result = 0.01;
                         }
                     }
                 }
-            } else if (_.isNumber(seekTo) || _.isNumber(parseFloat(seekTo))) {
+            } else if (!_.isNaN(parseFloat(seekTo))) {
                 result = parseFloat(seekTo);
             }
 
