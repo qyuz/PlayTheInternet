@@ -80,7 +80,7 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
                     $toRemove.remove()
                     window.playlist._recalculateContentImmediate()
                 } else {
-                    var _pti = _.getPti()
+                    var _pti = self.data.listenObject
                     _pti.data.currentPlayer && _pti.data.videoId && (recycleId = _.typeIdToString({ type: _pti.data.currentPlayer, id: _pti.data.videoId }))
                 }
                 if(selectedIndex != nextIndex) {
@@ -128,7 +128,7 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
         var debounceVolume = _.debounce(function(volume) {
             volume = volume < 0 ? 0 : volume > 100 ? 100 : volume //sanity check, also mousewheel tends to go above 100
             $.jStorage.set('volume', volume)
-            _.getPti().volume(volume)
+            self.data.listenObject.volume(volume)
         }, 200)
 
         var mouseMoveOut = function(evt, ui) {
