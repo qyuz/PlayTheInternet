@@ -36,16 +36,6 @@ define(["underscore-core"], function() {
                 preNow + S4() + S4() + _.uniqueId()
                 );
         },
-        getPti: function() {
-            if(window.chrome && window.chrome.extension) {
-                var backgroundWindow = chrome.extension.getBackgroundPage()
-                var popupWindow = _.reject(_.where(chrome.extension.getViews(), 'pti'), backgroundWindow)
-                var _pti = popupWindow.length ? popupWindow[0].pti : backgroundWindow.pti
-                return _pti
-            } else {
-                return pti
-            }
-        },
         openPanel: function() {
             chrome.windows.create({
                 url: 'panel.html',
