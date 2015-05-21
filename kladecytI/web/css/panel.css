@@ -23,8 +23,9 @@ body {
 .stretch-video-view #playerWidgetContainer { display: none; }
 .stretch-video-view #tabs .nav { display: none; }
 .stretch-video-view #playersContainer { top: 0px; }
+#night #tabs>#stretch-video-control { background-color: inherit; } /* reset common.css background-color */
 .stretch-video-view #stretch-video-control { display: block; }
-.stretch-video-view #stretch-video-control:hover { opacity: 1; }
+.stretch-video-view #stretch-video-control:hover { opacity: 1;}
 
 /* with player widget */
 .stretch-video-view.player-widget #playerWidgetContainer { display: block; top: 0px; }
