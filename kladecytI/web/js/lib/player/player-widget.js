@@ -110,7 +110,7 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
 
         this.jPlayerWidget.on('click', '.progressBarContainer', function (evt) {
             var jElement = $(this)
-            var moveTo = evt.pageX / jElement.width() * 100
+            var moveTo = evt.offsetX / jElement.width() * 100
             self.progressBar(moveTo)
             var seconds = self.trackLength * ( moveTo / 100)
             self.data.listenObject.seekTo(seconds)
@@ -136,10 +136,10 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
         }
 
         var throttleMouseMove = _.throttle(function (jElement, evt) {
-                var progress = evt.pageX / jElement.width() * 100
+                var progress = evt.offsetX / jElement.width() * 100
                 var seconds = self.trackLength * ( progress / 100)
                 self.jProgressBarCursorTime.text(_.formatDuration(seconds))
-                self.jProgressBarCursorTime.css('left', evt.pageX + 15 + 'px')
+                self.jProgressBarCursorTime.css('left', evt.offsetX + 15 + 'px')
             }, 50
         , {trailing: false}
         )
