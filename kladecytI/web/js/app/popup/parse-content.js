@@ -1,6 +1,9 @@
-define(["pti-playlist"], function(Playlist) {
+'use strict';
+
+define(["pti-playlist", "cparse", "parse-the-internet"], function(Playlist, b) {
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
+            var parseText, typeIds;
 //                    console.log(sender.tab ?
 //                        "from a content script:" + sender.tab.url :
 //                        "from the extension");
@@ -10,6 +13,13 @@ define(["pti-playlist"], function(Playlist) {
                 request.data != '' ? parsedPlaylist.addElements(_.stringToArray(request.data)) : $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseNothingFound(request))
             } else if(request.operation == "parsePlayTheInternetParseFunctionMissing") {
                 $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseFunctionMissing(request))
+            }
+            if (request.operation == "parsePage") {
+                parseText = request.href;
+                parseText += request.html;
+//                window.siteParser = SiteParser(/web|extension/)
+                window.siteParser = SiteParser(/web/)
+                window.h = request.html
             }
         }
     );
