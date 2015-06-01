@@ -1,6 +1,7 @@
 'use strict';
 
 define(["pti-playlist", "cparse", "parse-the-internet"], function(Playlist, b) {
+    window.siteParser = SiteParser(/web|extension/);
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
             var parseText, typeIds;
@@ -17,9 +18,7 @@ define(["pti-playlist", "cparse", "parse-the-internet"], function(Playlist, b) {
             if (request.operation == "parsePage") {
                 parseText = request.href;
                 parseText += request.html;
-//                window.siteParser = SiteParser(/web|extension/)
-                window.siteParser = SiteParser(/web/)
-                window.h = request.html
+                window.siteParser.parse(parseText);
             }
         }
     );
