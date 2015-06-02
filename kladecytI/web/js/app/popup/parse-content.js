@@ -1,7 +1,10 @@
 'use strict';
 
-define(["pti-playlist", "cparse", "parse-the-internet"], function(Playlist, b) {
-    window.siteParser = SiteParser(/web|extension/);
+define(["pti-playlist", "cparse"], function(Playlist) {
+    var backgroundWindow;
+
+    backgroundWindow = chrome.extension.getBackgroundPage();
+
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
             var parseText, typeIds;
@@ -18,7 +21,7 @@ define(["pti-playlist", "cparse", "parse-the-internet"], function(Playlist, b) {
             if (request.operation == "parsePage") {
                 parseText = request.href;
                 parseText += request.html;
-                window.siteParser.parse(parseText);
+                backgroundWindow.parseTheInternet.parse(parseText);
             }
         }
     );
@@ -34,7 +37,7 @@ define(["pti-playlist", "cparse", "parse-the-internet"], function(Playlist, b) {
             ]
         }
     );
-    parsedPlaylist._emptyContent();
+    window.parsedPlaylist._emptyContent();
     chrome.tabs.executeScript(null, {file: "/js/app/popup/parsePage.js"}, function (parse) {
         _.isUndefined(parse) && $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseNothingFound({href: window.location.href}))
     });

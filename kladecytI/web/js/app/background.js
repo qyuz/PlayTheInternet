@@ -1,11 +1,13 @@
 'use strict';
 
-define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorage", "underscore"], function(Playlist, observer, c, d, e) {
+define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorage", "underscore", "parse-the-internet"], function(Playlist, observer, c, d, e, f) {
     $.jStorage.get('playingId') || $.jStorage.set('playingId', 'lPlaylist' + _.guid());
+    window.observer = observer;
+    window.pti = observer.pti;
+    window.ptiManager = new PtiManager();
+    window.parseTheInternet = ParseTheInternet(/web|extension/);
 
     $(document).ready(function () {
-        window.observer = observer;
-        window.pti = observer.pti;
         window.playlist = new Playlist("#ulSecond", {
             id:$.jStorage.get('playingId'),
             fillVideoElement:false,
@@ -24,8 +26,6 @@ define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorag
         require(["app/background/synchronization", "app/background/commands", "app/background/contextMenus"], function(synchronization) {
             synchronization.init()
         });
-
-        window.ptiManager = new PtiManager();
     });
 
     function PtiManager() {

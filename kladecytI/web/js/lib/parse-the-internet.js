@@ -1,29 +1,31 @@
 'use strict';
 
-AnilandParser.target = 'extension';
-SoundCloudParser.target = 'web';
-VimeoParser.target = 'web';
-YouTubeParser.target = 'web';
+function ParseTheInternet(targetRegex) {
+    var parseTheInternet, storeTheInternet;
 
-function SiteParser(targetRegex) {
-    var siteParser;
+    AnilandParser.target = 'extension';
+    SoundCloudParser.target = 'web';
+    VimeoParser.target = 'web';
+    YouTubeParser.target = 'web';
 
-    siteParser = {
-        parsers:[AnilandParser, SoundCloudParser, VimeoParser, YouTubeParser]
+    storeTheInternet = StoreTheInternet();
+
+    parseTheInternet = {
+        parsers: [AnilandParser, SoundCloudParser, VimeoParser, YouTubeParser]
             .filter(function (parser) {
                 return targetRegex.test(parser.target);
             })
             .map(function (parser) {
                 return parser()
             }),
-        parse:function (text, unique) {
+        parse: function (text, opts) {
             var links, result, typeIds, parser, matched;
 
             result = [];
-            links = text.match(siteParser.matchAllRegex);
+            links = text.match(parseTheInternet.matchAllRegex);
             typeIds = links.map(function (link) {
-                for (var i = 0; i < siteParser.parsers.length; i++) {
-                    parser = siteParser.parsers[i];
+                for (var i = 0; i < parseTheInternet.parsers.length; i++) {
+                    parser = parseTheInternet.parsers[i];
                     if (matched = parser.matcher(link)) {
                         return matched;
                     }
@@ -33,10 +35,10 @@ function SiteParser(targetRegex) {
             return typeIds;
         }
     };
-    siteParser.matchAllRegex = (function () {
+    parseTheInternet.matchAllRegex = (function () {
         var concatRegex;
 
-        concatRegex = siteParser.parsers.map(function (parser) {
+        concatRegex = parseTheInternet.parsers.map(function (parser) {
             var regex;
 
             regex = parser.regex.toString();
@@ -47,43 +49,86 @@ function SiteParser(targetRegex) {
         return new RegExp(concatRegex, "g");
     })();
 
-    return siteParser;
-}
+    return parseTheInternet;
 
-function AnilandParser() {
-    var anilandParser;
+    function AnilandParser() {
+        var anilandParser;
 
-    anilandParser = {
-        regex:/videoUpdate\((\d+)[^"]+"><span>([^<]+)<\/span>/,
-        matcher:function (aPart) {
-            var id, title, url, matched;
+        anilandParser = {
+            regex: /videoUpdate\((\d+)[^"]+"><span>([^<]+)<\/span>/,
+            matcher: function (aPart) {
+                var id, title, url, matched;
 
-            matched = aPart.match(anilandParser.regex);
-            id = matched[1];
-            title = matched[2];
-            url = "http://mp4.anilang.org/" + id + ".mp4";
+                matched = aPart.match(anilandParser.regex);
+                id = matched[1];
+                title = matched[2];
+                url = "http://mp4.anilang.org/" + id + ".mp4";
 
-            anilandParser.store({
-                _id: url,
-                title: title,
-                origin: window.location.href
-            })
+                storeTheInternet.store({
+                    _id: url,
+                    title: title,
+                    origin: window.location.href
+                });
 
-            return { 
-                type: "mp4",
-                id: url
+                return {
+                    type: "mp4",
+                    id: url
+                }
             }
-        },
-        store:(function() {
-            var docs, timeout;
+        };
 
-            docs = [];
-            return function (doc) {
+        return anilandParser;
+    }
 
-                docs.push(doc);
+    function SoundCloudParser() {
+        var soundCloudParser;
+
+        soundCloudParser = {
+            regex: /((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<>]+)/
+        };
+        soundCloudParser.matcher = matchGroup(soundCloudParser.regex, 5, 's');
+
+        return soundCloudParser;
+    }
+
+    function VimeoParser() {
+        var vimeoParser;
+
+        vimeoParser = {
+            regex: /vimeo.com\\?\/((video\/)|(moogaloop.swf\?.*clip_id=))?(\d+)/
+        };
+        vimeoParser.matcher = matchGroup(vimeoParser.regex, 4, 'v');
+
+        return vimeoParser;
+    }
+
+    function YouTubeParser() {
+        var youTubeParser;
+
+        youTubeParser = {
+            regex: /(youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>\r\n]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11})/
+        };
+        youTubeParser.matcher = matchGroup(youTubeParser.regex, 11, 'y');
+
+        return youTubeParser;
+    }
+
+    function StoreTheInternet() {
+        var storeTheInternet, docs, storeDoc, timeout;
+
+        docs = [];
+
+        storeTheInternet = {
+            store: function(doc) {
+                storeDoc = _.extend({
+//                    _rev: '1-1ed613e7542be61d8de28aa3ae079279',
+                    created: Date.now()
+                }, doc);
+                docs.push(storeDoc);
                 clearTimeout(timeout);
-                timeout = setTimeout(function() {
-                    $.ajax('https://qyuz.cloudant.com/playtheinternet/_bulk_docs', {
+                timeout = setTimeout(function () {
+                    $.ajax(window.PTISTS.STORE_THE_INTERNET + '/_bulk_docs', {
+//                        new_edits: false,
                         data: JSON.stringify({
                             docs: docs
                         }),
@@ -93,54 +138,21 @@ function AnilandParser() {
                     docs = []; //in success handler, retry otherwise
                 }, 1);
             }
-        })()
-    };
+        };
 
-    return anilandParser;
-}
+        return storeTheInternet;
+    }
 
-function SoundCloudParser() {
-    var soundCloudParser;
+    function matchGroup(regex, group, prefix) {
+        return function (link) {
+            var matched, id;
 
-    soundCloudParser = {
-        regex:/((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<>]+)/
-    };
-    soundCloudParser.matcher = matchGroup(soundCloudParser.regex, 5, 's');
-
-    return soundCloudParser;
-}
-
-function VimeoParser() {
-    var vimeoParser;
-
-    vimeoParser = {
-        regex:/vimeo.com\\?\/((video\/)|(moogaloop.swf\?.*clip_id=))?(\d+)/
-    };
-    vimeoParser.matcher = matchGroup(vimeoParser.regex, 4, 'v');
-
-    return vimeoParser;
-}
-
-function YouTubeParser() {
-    var youTubeParser;
-
-    youTubeParser = {
-        regex:/(youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>\r\n]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11})/
-    };
-    youTubeParser.matcher = matchGroup(youTubeParser.regex, 11, 'y');
-
-    return youTubeParser;
-}
-
-function matchGroup(regex, group, prefix) {
-    return function (link) {
-        var matched, id;
-
-        if (matched = link.match(regex)) {
-            if ((id = matched[group]) != undefined) {
-                return {
-                    type: prefix,
-                    id: id
+            if (matched = link.match(regex)) {
+                if ((id = matched[group]) != undefined) {
+                    return {
+                        type: prefix,
+                        id: id
+                    }
                 }
             }
         }
