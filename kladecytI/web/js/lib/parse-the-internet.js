@@ -57,7 +57,7 @@ function ParseTheInternet(targetRegex) {
         anilandParser = {
             regex: /videoUpdate\((\d+)[^"]+"><span>([^<]+)<\/span>/,
             matcher: function (aPart) {
-                var id, title, url, matched;
+                var id, title, url, typeId, matched;
 
                 matched = aPart.match(anilandParser.regex);
                 id = matched[1];
@@ -71,7 +71,7 @@ function ParseTheInternet(targetRegex) {
                 });
 
                 return {
-                    type: "mp4",
+                    type: "w",
                     id: url
                 }
             }
@@ -120,6 +120,12 @@ function ParseTheInternet(targetRegex) {
 
         storeTheInternet = {
             store: function(doc) {
+                var typeId;
+
+                typeId = _.TypeId(doc.type, doc.id);
+                typeId.$set(doc);
+                typeId.save();
+
                 storeDoc = _.extend({
 //                    _rev: '1-1ed613e7542be61d8de28aa3ae079279',
                     created: Date.now()

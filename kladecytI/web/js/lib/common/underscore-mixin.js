@@ -78,6 +78,38 @@ define(["underscore-core"], function() {
                 throw "Couldn't determine typeId, check log"
             }
         },
+        TypeId: function(a, b) {
+            var typeId;
+
+            typeId = {
+                data: _.typeId(a, b),
+                load: function() {
+                    var itemString, item;
+
+                    itemString = localStorage.getItem(typeId.id);
+                    if (itemString) {
+                        try {
+                            item = JSON.parse(itemString);
+                        } catch (e) {
+                            console.log('Unable to load TypeId - Malformed JSON: [' + typeId.data.id + ']');
+                        }
+                        typeId.data = _.extend(item, typeId);
+                    }
+                },
+                save: function() {
+                    try {
+                        localStorage.setItem(typeId.data.id, JSON.stringify(typeId.data));
+                    } catch (e) {
+                        console.log('Unable to save TypeId - Malformed JSON: [' + typeId.data.id + ']');
+                    }
+                },
+                $set: function(properties) {
+                    _.extend(typeId.data, properties);
+                }
+            };
+
+            return typeId;
+        },
         typeIdToString: function(typeIdObj) {
             return typeIdObj.type && typeIdObj.id ? typeIdObj.type + "=" + typeIdObj.id : ""
         }
