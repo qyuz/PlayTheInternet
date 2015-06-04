@@ -17,15 +17,16 @@ function ParseTheInternet(targetRegex) {
                 return parser()
             }),
         parse: function (text, opts) {
-            var links, result, typeIds, parser, matched;
+            var matchedGlobal, typeIds, parser, typeId;
 
-            result = [];
-            links = text.match(parseTheInternet.matchAllRegex);
-            typeIds = links.map(function (link) {
+            opts = opts || {};
+            opts.origin = opts.origin || window.location.href;
+            matchedGlobal = text.match(parseTheInternet.matchAllRegex);
+            typeIds = matchedGlobal.map(function (matchedText) {
                 for (var i = 0; i < parseTheInternet.parsers.length; i++) {
                     parser = parseTheInternet.parsers[i];
-                    if (matched = parser.matcher(link)) {
-                        return matched;
+                    if (typeId = parser.matcher(matchedText, opts)) {
+                        return typeId;
                     }
                 }
             });
@@ -53,20 +54,20 @@ function ParseTheInternet(targetRegex) {
         var anilandParser;
 
         anilandParser = {
-            regex: /videoUpdate\((\d+)[^"]+"><span>([^<]+)<\/span>/,
-            matcher: function (aPart) {
+            regex: /(videoUpdate\((\d+)[^>]+><span>([^<]+)<\/span>)|(mp4\.aniland.org\/(\d+)\.mp4)/,
+            matcher: function (matchedText, opts) {
                 var id, title, url, typeId, matched;
 
-                matched = aPart.match(anilandParser.regex);
-                id = matched[1];
-                title = matched[2];
+                matched = matchedText.match(anilandParser.regex);
+                id = matched[2] || matched[5];
+                title = matched[3];
                 url = "http://mp4.aniland.org/" + id + ".mp4";
                 typeId = _.TypeId("w", url);
 
                 if (title) {
                     typeId.set({
                         title: title,
-                        origin: window.location.href
+                        origin: opts.origin
                     });
                     typeId.localSave();
                     typeId.storeSave();
@@ -113,10 +114,10 @@ function ParseTheInternet(targetRegex) {
     }
 
     function matchGroup(regex, group, prefix) {
-        return function (link) {
+        return function (matchedText) {
             var matched, id;
 
-            if (matched = link.match(regex)) {
+            if (matched = matchedText.match(regex)) {
                 if ((id = matched[group]) != undefined) {
                     return {
                         type: prefix,

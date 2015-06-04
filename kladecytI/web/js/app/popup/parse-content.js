@@ -21,7 +21,9 @@ define(["pti-playlist", "cparse"], function(Playlist) {
             if (request.operation == "parsePage") {
                 parseText = request.href;
                 parseText += request.html;
-                backgroundWindow.parseTheInternet.parse(parseText);
+                backgroundWindow.parseTheInternet.parse(parseText, {
+                    origin: request.href
+                });
             }
         }
     );

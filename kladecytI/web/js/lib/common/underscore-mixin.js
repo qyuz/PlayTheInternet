@@ -85,52 +85,55 @@ define(["underscore-core"], function() {
         typeIdToString: function(typeIdObj) {
             return typeIdObj.type && typeIdObj.id ? typeIdObj.type + "=" + typeIdObj.id : ""
         }
-    }
+    };
 
     storeTheInternet = StoreTheInternet();
-    _.mixin(underscore_mixin)
+    _.mixin(underscore_mixin);
 
     function StoreTheInternet() {
         var storeTheInternet, timeout;
 
         storeTheInternet = {
             _bulk: [],
-            _storeDoc: function(doc) {
-                return {
-                    _id: doc.id,
-//                    _rev: '1-1ed613e7542be61d8de28aa3ae079279',
-                    created: Date.now(),
-                    data: doc
-                }
-            },
-            save: function(doc) {
-                if (arguments.length) {
+            save: function(obj) {
+                var docs;
 
+                if (arguments.length) {
+                    docs = [doc(obj)];
                 } else if (storeTheInternet._bulk.length) {
-                    $.ajax(window.PTISTS.STORE_THE_INTERNET + '/_bulk_docs', {
-//                        new_edits: false,
-                        data: JSON.stringify({
-                            docs: storeTheInternet._bulk
-                        }),
-                        contentType: 'application/json',
-                        type: 'post'
-                    });
-                    storeTheInternet._bulk = []; //in success handler, retry otherwise
+                    docs = storeTheInternet._bulk;
+                    storeTheInternet._bulk = [];
                 }
+
+                $.ajax(window.PTISTS.STORE_THE_INTERNET + '/_bulk_docs', {
+//                        new_edits: false,
+                    data: JSON.stringify({
+                        docs: docs
+                    }),
+                    contentType: 'application/json',
+                    type: 'post'
+                });
             },
-            saveDebounce: function (doc) {
+            saveDebounce: function (obj) {
                 var storeDoc;
 
-                storeDoc = storeTheInternet._storeDoc(doc);
+                storeDoc = doc(obj);
                 storeTheInternet._bulk.push(storeDoc);
                 clearTimeout(timeout);
-                timeout = setTimeout(function () {
-                    storeTheInternet.save();
-                }, 1);
+                timeout = setTimeout(storeTheInternet.save, 1);
             }
         };
 
         return storeTheInternet;
+
+        function doc(obj) {
+            return {
+                _id: obj.id,
+//                    _rev: '1-1ed613e7542be61d8de28aa3ae079279',
+                created: Date.now(),
+                data: obj
+            }
+        }
     }
 
     function TypeId(a, b) {
@@ -145,7 +148,7 @@ define(["underscore-core"], function() {
                 if (itemString) {
                     try {
                         item = JSON.parse(itemString);
-                        typeId._data = _.extend(typeId._data, item);
+                        typeId.set(item);
                     } catch (e) {
                         console.log('Unable to load TypeId - Malformed JSON: [' + typeId._data.id + ']');
                     }
