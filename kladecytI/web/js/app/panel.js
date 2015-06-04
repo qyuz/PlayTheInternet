@@ -65,7 +65,7 @@ define(["player/player-widget", "underscore", "app/common/tabs"], function(Playe
                 $body.toggleClass('playing-on-top', !playingIsOnTop);
             });
         } else {
-            window.resizeTo(410, 136);
+            window.resizeTo(460, 145);
             $('body').on('click', 'a', function() {
                 chrome.windows.create({
                     url: 'chrome://flags/#enable-panels',

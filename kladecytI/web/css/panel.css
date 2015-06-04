@@ -2,6 +2,7 @@ body {
     overflow: hidden;
 }
 
+#parsedError a { pointer-events: all; } /* to enable panel in chrome://flags */
 #playerWidgetContainer { top: 0px; right: 0px; left: 0px; height: 35px; }
 #splitViews { top: 35px; right: 0px; bottom: 0px; left: 0px; }
 #firstView { width: 100%; }
