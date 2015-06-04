@@ -1,14 +1,12 @@
 'use strict';
 
 function ParseTheInternet(targetRegex) {
-    var parseTheInternet, storeTheInternet;
+    var parseTheInternet;
 
     AnilandParser.target = 'extension';
     SoundCloudParser.target = 'web';
     VimeoParser.target = 'web';
     YouTubeParser.target = 'web';
-
-    storeTheInternet = StoreTheInternet();
 
     parseTheInternet = {
         parsers: [AnilandParser, SoundCloudParser, VimeoParser, YouTubeParser]
@@ -62,18 +60,19 @@ function ParseTheInternet(targetRegex) {
                 matched = aPart.match(anilandParser.regex);
                 id = matched[1];
                 title = matched[2];
-                url = "http://mp4.anilang.org/" + id + ".mp4";
+                url = "http://mp4.aniland.org/" + id + ".mp4";
+                typeId = _.TypeId("w", url);
 
-                storeTheInternet.store({
-                    _id: url,
-                    title: title,
-                    origin: window.location.href
-                });
-
-                return {
-                    type: "w",
-                    id: url
+                if (title) {
+                    typeId.set({
+                        title: title,
+                        origin: window.location.href
+                    });
+                    typeId.localSave();
+                    typeId.storeSave();
                 }
+
+                return typeId.raw()
             }
         };
 
@@ -111,42 +110,6 @@ function ParseTheInternet(targetRegex) {
         youTubeParser.matcher = matchGroup(youTubeParser.regex, 11, 'y');
 
         return youTubeParser;
-    }
-
-    function StoreTheInternet() {
-        var storeTheInternet, docs, storeDoc, timeout;
-
-        docs = [];
-
-        storeTheInternet = {
-            store: function(doc) {
-                var typeId;
-
-                typeId = _.TypeId(doc.type, doc.id);
-                typeId.$set(doc);
-                typeId.save();
-
-                storeDoc = _.extend({
-//                    _rev: '1-1ed613e7542be61d8de28aa3ae079279',
-                    created: Date.now()
-                }, doc);
-                docs.push(storeDoc);
-                clearTimeout(timeout);
-                timeout = setTimeout(function () {
-                    $.ajax(window.PTISTS.STORE_THE_INTERNET + '/_bulk_docs', {
-//                        new_edits: false,
-                        data: JSON.stringify({
-                            docs: docs
-                        }),
-                        contentType: 'application/json',
-                        type: 'post'
-                    });
-                    docs = []; //in success handler, retry otherwise
-                }, 1);
-            }
-        };
-
-        return storeTheInternet;
     }
 
     function matchGroup(regex, group, prefix) {

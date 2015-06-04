@@ -1,5 +1,7 @@
 define(["underscore-core"], function() {
-    var underscore_mixin = {
+    var underscore_mixin, storeTheInternet;
+
+    underscore_mixin = {
         arrayToString: function (arr) {
             return arr.map(function (item) {
                 return item.replace(/(,)/g, "\\$1")
@@ -51,6 +53,7 @@ define(["underscore-core"], function() {
                 window.document.title = typeId.id
             }
         },
+        StoreTheInternet: StoreTheInternet,
         stringToArray: function (string) {
             var resultArray = string ? string.replace(/\\,/g, "&thisiscomma;").split(/,/).map(function (item) {
                 return item.replace(/&thisiscomma;/g, ',')
@@ -78,42 +81,99 @@ define(["underscore-core"], function() {
                 throw "Couldn't determine typeId, check log"
             }
         },
-        TypeId: function(a, b) {
-            var typeId;
-
-            typeId = {
-                data: _.typeId(a, b),
-                load: function() {
-                    var itemString, item;
-
-                    itemString = localStorage.getItem(typeId.id);
-                    if (itemString) {
-                        try {
-                            item = JSON.parse(itemString);
-                        } catch (e) {
-                            console.log('Unable to load TypeId - Malformed JSON: [' + typeId.data.id + ']');
-                        }
-                        typeId.data = _.extend(item, typeId);
-                    }
-                },
-                save: function() {
-                    try {
-                        localStorage.setItem(typeId.data.id, JSON.stringify(typeId.data));
-                    } catch (e) {
-                        console.log('Unable to save TypeId - Malformed JSON: [' + typeId.data.id + ']');
-                    }
-                },
-                $set: function(properties) {
-                    _.extend(typeId.data, properties);
-                }
-            };
-
-            return typeId;
-        },
+        TypeId: TypeId,
         typeIdToString: function(typeIdObj) {
             return typeIdObj.type && typeIdObj.id ? typeIdObj.type + "=" + typeIdObj.id : ""
         }
     }
 
+    storeTheInternet = StoreTheInternet();
     _.mixin(underscore_mixin)
-})
+
+    function StoreTheInternet() {
+        var storeTheInternet, timeout;
+
+        storeTheInternet = {
+            _bulk: [],
+            _storeDoc: function(doc) {
+                return {
+                    _id: doc.id,
+//                    _rev: '1-1ed613e7542be61d8de28aa3ae079279',
+                    created: Date.now(),
+                    data: doc
+                }
+            },
+            save: function(doc) {
+                if (arguments.length) {
+
+                } else if (storeTheInternet._bulk.length) {
+                    $.ajax(window.PTISTS.STORE_THE_INTERNET + '/_bulk_docs', {
+//                        new_edits: false,
+                        data: JSON.stringify({
+                            docs: storeTheInternet._bulk
+                        }),
+                        contentType: 'application/json',
+                        type: 'post'
+                    });
+                    storeTheInternet._bulk = []; //in success handler, retry otherwise
+                }
+            },
+            saveDebounce: function (doc) {
+                var storeDoc;
+
+                storeDoc = storeTheInternet._storeDoc(doc);
+                storeTheInternet._bulk.push(storeDoc);
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    storeTheInternet.save();
+                }, 1);
+            }
+        };
+
+        return storeTheInternet;
+    }
+
+    function TypeId(a, b) {
+        var typeId;
+
+        typeId = {
+            _data: _.typeId(a, b),
+            localLoad: function() {
+                var itemString, item;
+
+                itemString = localStorage.getItem(typeId._data.id);
+                if (itemString) {
+                    try {
+                        item = JSON.parse(itemString);
+                        typeId._data = _.extend(typeId._data, item);
+                    } catch (e) {
+                        console.log('Unable to load TypeId - Malformed JSON: [' + typeId._data.id + ']');
+                    }
+                }
+            },
+            localSave: function() {
+                try {
+                    localStorage.setItem(typeId._data.id, JSON.stringify(typeId._data));
+                } catch (e) {
+                    console.log('Unable to save TypeId - Malformed JSON: [' + typeId._data.id + ']');
+                }
+            },
+            raw: function() {
+                return {
+                    type: typeId._data.type,
+                    id: typeId._data.id
+                }
+            },
+            storeLoad: function() {
+            },
+            storeSave: function() {
+                storeTheInternet.saveDebounce(typeId._data);
+            },
+            set: function(properties) {
+                typeId._data = _.extend(typeId._data, properties);
+            }
+        };
+
+        return typeId;
+    }
+});
