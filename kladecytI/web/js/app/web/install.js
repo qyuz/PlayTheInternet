@@ -1,4 +1,4 @@
-define(["parse"], function (a) {
+define(["parse-the-internet"], function (a) {
     function installHint(selector, text) {
         $(document).on({
             mouseenter: function () {
@@ -17,7 +17,11 @@ define(["parse"], function (a) {
     installHint('#installChrome', 'Click to install Chrome extension.')
 
     function parsePage() {
-        openWindow(playTheInternetParse());
+        var parseTheInternet, links;
+
+        parseTheInternet = ParseTheInternet();
+        links = parseTheInternet.parseToString(window.document.documentElement.innerHTML, { origin: window.location.href });
+        openWindow(links);
     }
 
     function openWindow(links) {
@@ -30,7 +34,7 @@ define(["parse"], function (a) {
         }, 300)
     }
 
-    $('#installWeb').attr('href', 'javascript: (function() {' + playTheInternetParse + openWindow + parsePage + ';parsePage()})()')
+    $('#installWeb').attr('href', 'javascript: (function() {' + ParseTheInternet + openWindow + parsePage + ';parsePage();})()')
     $('#installChrome').click(function () {
         $(this).css('opacity', '0.3')
         chrome.webstore.install("https://chrome.google.com/webstore/detail/hnldgcnkcblfbpdjjciadigkjkhkkohk", function () {

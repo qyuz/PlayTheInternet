@@ -1,30 +1,34 @@
 'use strict';
 
-function ParseTheInternet(targetRegex) {
+function ParseTheInternet() {
     var parseTheInternet;
 
-    AnilandParser.target = 'extension';
-    SoundCloudParser.target = 'web';
-    VimeoParser.target = 'web';
-    YouTubeParser.target = 'web';
-
     parseTheInternet = {
-        parsers: [AnilandParser, SoundCloudParser, VimeoParser, YouTubeParser]
-            .filter(function (parser) {
-                return targetRegex.test(parser.target);
-            })
-            .map(function (parser) {
-                return parser()
-            }),
+        _parsers: [],
+        _globalRegex: null,
+        addParser: function (parser) {
+            parseTheInternet.addParsers([parser]);
+        },
+        addParsers: function (parsers) {
+            parseTheInternet._parsers = parseTheInternet._parsers.concat(parsers);
+            parseTheInternet._globalRegex = globalRegex(parseTheInternet._parsers);
+        },
         parse: function (text, opts) {
-            var matchedGlobal, typeIds, parser, typeId;
+            var matchedGlobal, typeIds, parser, typeId, parseText;
 
             opts = opts || {};
-            opts.origin = opts.origin || window.location.href;
-            matchedGlobal = text.match(parseTheInternet.matchAllRegex);
+            if (opts.origin) {
+                parseText = opts.origin;
+                parseText += " ";
+                parseText += text;
+            } else {
+                parseText = text;
+                opts.origin = window.location.href;
+            }
+            matchedGlobal = parseText.match(parseTheInternet._globalRegex);
             typeIds = matchedGlobal.map(function (matchedText) {
-                for (var i = 0; i < parseTheInternet.parsers.length; i++) {
-                    parser = parseTheInternet.parsers[i];
+                for (var i = 0; i < parseTheInternet._parsers.length; i++) {
+                    parser = parseTheInternet._parsers[i];
                     if (typeId = parser.matcher(matchedText, opts)) {
                         return typeId;
                     }
@@ -32,53 +36,22 @@ function ParseTheInternet(targetRegex) {
             });
 
             return typeIds;
+        },
+        parseToString: function(text, opts) {
+            var typeIds, links;
+
+            typeIds = parseTheInternet.parse(text, opts);
+            links = typeIds.map(function(typeId) {
+                return typeId.type + "=" + typeId.id;
+            }).join(",");
+
+            return links
         }
     };
-    parseTheInternet.matchAllRegex = (function () {
-        var concatRegex;
 
-        concatRegex = parseTheInternet.parsers.map(function (parser) {
-            var regex;
-
-            regex = parser.regex.toString();
-            //HINT: remove '/' regex wrappers and wrap in group '()'
-            return "(" + regex.toString().substring(1, regex.length - 1) + ")"
-        }).join("|");
-
-        return new RegExp(concatRegex, "g");
-    })();
+    parseTheInternet.addParsers([YouTubeParser(), SoundCloudParser(), VimeoParser()]);
 
     return parseTheInternet;
-
-    function AnilandParser() {
-        var anilandParser;
-
-        anilandParser = {
-            regex: /(videoUpdate\((\d+)[^>]+><span>([^<]+)<\/span>)|(mp4\.aniland.org\/(\d+)\.mp4)/,
-            matcher: function (matchedText, opts) {
-                var id, title, url, typeId, matched;
-
-                matched = matchedText.match(anilandParser.regex);
-                id = matched[2] || matched[5];
-                title = matched[3];
-                url = "http://mp4.aniland.org/" + id + ".mp4";
-                typeId = _.TypeId("w", url);
-
-                if (title) {
-                    typeId.set({
-                        title: title,
-                        origin: opts.origin
-                    });
-                    typeId.localSave();
-                    typeId.storeSave();
-                }
-
-                return typeId.raw()
-            }
-        };
-
-        return anilandParser;
-    }
 
     function SoundCloudParser() {
         var soundCloudParser;
@@ -111,6 +84,19 @@ function ParseTheInternet(targetRegex) {
         youTubeParser.matcher = matchGroup(youTubeParser.regex, 11, 'y');
 
         return youTubeParser;
+    }
+
+    function globalRegex(parsers) {
+        var concatRegex;
+
+        concatRegex = parsers.map(function (parser) {
+            var regex;
+
+            regex = parser.regex.toString();
+            return "(" + regex.toString().substring(1, regex.length - 1) + ")"
+        }).join("|");
+
+        return new RegExp(concatRegex, "g");
     }
 
     function matchGroup(regex, group, prefix) {

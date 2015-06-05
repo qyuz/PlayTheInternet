@@ -7,7 +7,6 @@ define(["pti-playlist", "cparse"], function(Playlist) {
 
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
-            var parseText, typeIds;
 //                    console.log(sender.tab ?
 //                        "from a content script:" + sender.tab.url :
 //                        "from the extension");
@@ -19,9 +18,7 @@ define(["pti-playlist", "cparse"], function(Playlist) {
                 $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseFunctionMissing(request))
             }
             if (request.operation == "parsePage") {
-                parseText = request.href;
-                parseText += request.html;
-                backgroundWindow.parseTheInternet.parse(parseText, {
+                backgroundWindow.parseTheInternet.parse(request.html, {
                     origin: request.href
                 });
             }

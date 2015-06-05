@@ -1,11 +1,11 @@
 'use strict';
 
-define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorage", "underscore", "parse-the-internet"], function(Playlist, observer, c, d, e, f) {
+define(["pti-playlist", "player/iframe-observer", "app/common/globals", "jstorage", "underscore", "common/parse-the-extension"], function(Playlist, observer, c, d, e, ParseTheExtension) {
     $.jStorage.get('playingId') || $.jStorage.set('playingId', 'lPlaylist' + _.guid());
     window.observer = observer;
     window.pti = observer.pti;
     window.ptiManager = new PtiManager();
-    window.parseTheInternet = ParseTheInternet(/web|extension/);
+    window.parseTheInternet = ParseTheExtension();
 
     $(document).ready(function () {
         window.playlist = new Playlist("#ulSecond", {
