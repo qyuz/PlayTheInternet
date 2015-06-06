@@ -54,12 +54,23 @@ function ParseTheInternet() {
     return parseTheInternet;
 
     function SoundCloudParser() {
-        var soundCloudParser;
+        var soundCloudParser, simpleMatcher;
 
         soundCloudParser = {
             regex: /((soundcloud.com(\\?\/|\u00252F))|(a class="soundTitle__title.*href="))([^.][^\s,?"=&#<>]+)/
         };
-        soundCloudParser.matcher = matchGroup(soundCloudParser.regex, 5, 's');
+        simpleMatcher = matchGroup(soundCloudParser.regex, 5, 's');
+        soundCloudParser.matcher = function (matchedText) {
+            var typeId;
+
+            typeId = simpleMatcher(matchedText);
+            if (typeId) {
+                typeId.id = typeId.id
+                    .replace(/[\\()]/g, '')
+                    .replace(/\u00252F/g, '/')
+                    .replace(/\u00253F((fb_action)|(utm_source)).*/, '');
+            }
+        };
 
         return soundCloudParser;
     }
@@ -79,7 +90,7 @@ function ParseTheInternet() {
         var youTubeParser;
 
         youTubeParser = {
-            regex: /(youtu.be(\\?\/|\u00252F)|watch(([^ \'\'<>\r\n]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\'<>\/\\.,#]{11})/
+            regex: /(youtu.be(\\?\/|\u00252F)|watch(([^ \'\"<>\r\n]+)|(\u0025(25)?3F))v(=|(\u0025(25)?3D))|youtube.com\\?\/embed\\?\/|youtube(\.googleapis)?.com\\?\/v\\?\/|ytimg.com\u00252Fvi\u00252F)([^?\s&\'\"<>\/\\.,#]{11})/
         };
         youTubeParser.matcher = matchGroup(youTubeParser.regex, 11, 'y');
 
@@ -112,5 +123,22 @@ function ParseTheInternet() {
                 }
             }
         }
+    }
+
+    function uniqueTypeIds(typeIds) {
+        var reduced, typeIdString;
+
+        reduced = typeIds.reduce(function (memo, typeId) {
+            typeIdString = typeId.type + "=" + typeId.id;
+            if (!map[typeIdString]) {
+                 memo.uTypeIds.push(typeId);
+            }
+            map[typeIdString] = 1;
+        }, {
+            uTypeIds: [],
+            map: Object.create(null)
+        })
+
+        return reduced.uTypeIds;
     }
 }

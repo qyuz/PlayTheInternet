@@ -1,7 +1,7 @@
 'use strict';
 
 chrome.runtime.sendMessage({
-    operation: "parsePage",
+    operation: "parsedPlaylist",
     href: window.location.href,
     html: document.documentElement.innerHTML
 });
