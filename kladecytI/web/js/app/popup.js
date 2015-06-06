@@ -2,6 +2,7 @@ define(["player/player-widget", "app/common/tabs", "underscore"], function (Play
     var backgroundWindow, destroyedPlayer, STATE;
 
     backgroundWindow = chrome.extension.getBackgroundPage()
+    window.parseTheInternet = backgroundWindow.parseTheInternet;
     window.playerWidget = new PlayerWidget('#playerWidgetContainer', true)
     window.playerWidget.data.listenObject = backgroundWindow.ptiManager.pti
 

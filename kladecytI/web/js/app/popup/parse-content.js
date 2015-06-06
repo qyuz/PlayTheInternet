@@ -1,16 +1,12 @@
 'use strict';
 
 define(["pti-playlist"], function(Playlist) {
-    var backgroundWindow;
-
-    backgroundWindow = chrome.extension.getBackgroundPage();
-
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
             var typeIdsString;
 
             if (request.operation == "parsedPlaylist") {
-                typeIdsString = backgroundWindow.parseTheInternet.parseToString(request.html, {
+                typeIdsString = window.parseTheInternet.parseToString(request.html, {
                     origin: request.href
                 });
                 window.parsedPlaylist._emptyContent();

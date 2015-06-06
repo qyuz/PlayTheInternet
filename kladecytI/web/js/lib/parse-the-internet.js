@@ -14,13 +14,11 @@ function ParseTheInternet() {
             parseTheInternet._globalRegex = globalRegex(parseTheInternet._parsers);
         },
         parse: function (text, opts) {
-            var matchedGlobal, typeIds, parser, typeId, parseText;
+            var matchedGlobal, typeIds, _uniqueTypeIds, parser, typeId, parseText;
 
             opts = opts || {};
             if (opts.origin) {
-                parseText = opts.origin;
-                parseText += " ";
-                parseText += text;
+                parseText = opts.origin + " " + text;
             } else {
                 parseText = text;
                 opts.origin = window.location.href;
@@ -34,8 +32,9 @@ function ParseTheInternet() {
                     }
                 }
             });
+            _uniqueTypeIds = uniqueTypeIds(typeIds);
 
-            return typeIds;
+            return _uniqueTypeIds;
         },
         parseToString: function(text, opts) {
             var typeIds, links;
@@ -130,15 +129,17 @@ function ParseTheInternet() {
 
         reduced = typeIds.reduce(function (memo, typeId) {
             typeIdString = typeId.type + "=" + typeId.id;
-            if (!map[typeIdString]) {
-                 memo.uTypeIds.push(typeId);
+            if (!memo.map[typeIdString]) {
+                 memo.uniqueTypeIds.push(typeId);
             }
-            map[typeIdString] = 1;
+            memo.map[typeIdString] = 1;
+            
+			return memo;
         }, {
-            uTypeIds: [],
+            uniqueTypeIds: [],
             map: Object.create(null)
-        })
+        });
 
-        return reduced.uTypeIds;
+        return reduced.uniqueTypeIds;
     }
 }
