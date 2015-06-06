@@ -68,6 +68,8 @@ function ParseTheInternet() {
                     .replace(/[\\()]/g, '')
                     .replace(/\u00252F/g, '/')
                     .replace(/\u00253F((fb_action)|(utm_source)).*/, '');
+
+                return typeId;
             }
         };
 

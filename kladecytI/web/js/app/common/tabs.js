@@ -121,9 +121,7 @@ define(["jquery-ui", "underscore"], function () {
     $('#tAreaParseButton').click(function () {
         var tAreaText = $('#tArea').val()
         window.tabs.first.textParse._emptyContent();
-        require(["cparse"], function () {
-            window.tabs.first.textParse.addElements(_.stringToArray(playTheInternetParse(tAreaText)), true)
-        })
+        window.tabs.first.textParse.addElements(_.stringToArray(window.parseTheInternet.parseToString(tAreaText)), true);
     })
 //first textParse end
 

@@ -1,5 +1,6 @@
-define(["app/common/tabs", "app/common/globals", "app/web/pti-web"], function (tabs, b, ptiWeb) {
+define(["app/common/tabs", "app/common/globals", "app/web/pti-web", "parse-the-internet"], function (tabs, b, ptiWeb, d) {
     window.pti = ptiWeb.pti
+    window.parseTheInternet = ParseTheInternet();
     ptiWeb.pti.volume($.jStorage.get('volume'))
     $(document).ready(function () {
         require(["player/player-widget"], function (PlayerWidget) {

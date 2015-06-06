@@ -1,15 +1,13 @@
 define(function() {
     function parseText(concat) {
-        require(["cparse"], function () {
-            var ids = playTheInternetParse(concat);
-            console.log(ids)
-            addToPlaylist(ids)
-        })
+        var typeIdsString = window.parseTheInternet.parseToString(concat);
+        console.log(typeIdsString)
+        addToPlaylist(typeIdsString)
     }
 
-    function addToPlaylist(ids) {
+    function addToPlaylist(typeIdsString) {
         var links = []
-        ids.length && (links = _.stringToArray(ids)) | playlist.addElements(links, true)
+        typeIdsString.length && (links = _.stringToArray(typeIdsString)) | playlist.addElements(links, true)
         notify(links)
     }
 
@@ -59,9 +57,14 @@ define(function() {
 
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
+            var typeIdsString;
+
             if (request.operation == "parsePage") {
-                console.log(request.data)
-                addToPlaylist(request.data)
+                typeIdsString = window.parseTheInternet.parseToString(request.html, {
+                    href: request.href
+                });
+                console.log(typeIdsString)
+                addToPlaylist(typeIdsString)
             } else if(request.operation == "parsePageParsePlayTheInternetParseFunctionMissing") {
                 chrome.notifications.create('', {
                     type: "basic",
