@@ -1,4 +1,4 @@
-siteHandlers = [new YoutubeHandler(), new SoundCloudHandler(), new VimeoHandler()]
+siteHandlers = [new YoutubeHandler(), new SoundCloudHandler(), new VimeoHandler(), new WatchHandler()]
 
 siteHandlerManager = new SiteHandlerManager();
 
@@ -246,4 +246,13 @@ function VimeoHandler() {
             timeout:10000
         })
     }
+}
+
+function WatchHandler() {
+    WatchHandler.prototype.prefix = "w";
+    WatchHandler.prototype.fullURL = _.property('id');
+    WatchHandler.prototype.defaultThumbnail = "/css/resources/vimeo.jpg"
+    WatchHandler.prototype.loadVideoData = function (typeId, $ptiElement) {}
+    WatchHandler.prototype.rawTemplate = PTITemplates.prototype.SoundCloudRawTemplate
+    WatchHandler.prototype.completeTemplate = PTITemplates.prototype.SoundCloudRawTemplate
 }
