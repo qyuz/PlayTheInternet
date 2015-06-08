@@ -250,9 +250,25 @@ function VimeoHandler() {
 
 function WatchHandler() {
     WatchHandler.prototype.prefix = "w";
-    WatchHandler.prototype.fullURL = _.property('id');
-    WatchHandler.prototype.defaultThumbnail = "/css/resources/vimeo.jpg"
-    WatchHandler.prototype.loadVideoData = function (typeId, $ptiElement) {}
-    WatchHandler.prototype.rawTemplate = PTITemplates.prototype.SoundCloudRawTemplate
-    WatchHandler.prototype.completeTemplate = PTITemplates.prototype.SoundCloudRawTemplate
+    WatchHandler.prototype.fullURL = _.identity;
+    WatchHandler.prototype.defaultThumbnail = "/css/resources/aniland.jpg";
+    WatchHandler.prototype.loadVideoData = function (typeId, $ptiElement) {
+        $.ajax(window.PTINTS.STORE_THE_INTERNET + "/_all_docs?include_docs=true",
+            {
+                data: JSON.stringify({ keys: [typeId.id] }),
+                contentType: 'application/json',
+                type: 'post',
+                dataType: 'json'
+            }
+        ).success(function(response) {
+            var videoData;
+
+            if (response.rows.length) {
+                videoData = response.rows[0].doc.data;
+                SiteHandlerManager.prototype.updatePtiElement(videoData, $ptiElement, "completeTemplate");
+            }
+        });
+    };
+    WatchHandler.prototype.rawTemplate = PTITemplates.prototype.WatchRawTemplate;
+    WatchHandler.prototype.completeTemplate = PTITemplates.prototype.WatchCompleteTemplate;
 }

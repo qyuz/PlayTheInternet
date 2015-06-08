@@ -105,7 +105,7 @@ define(["underscore-core"], function() {
                     storeTheInternet._bulk = [];
                 }
 
-                $.ajax(window.PTISTS.STORE_THE_INTERNET + '/_bulk_docs', {
+                $.ajax(window.PTINTS.STORE_THE_INTERNET + '/_bulk_docs', {
 //                        new_edits: false,
                     data: JSON.stringify({
                         docs: docs

@@ -13,6 +13,9 @@ PTITemplates.prototype.VimeoRawTemplate = _.template('<div><div class="image-div
 PTITemplates.prototype.VimeoCompleteTemplate = _.template('<div><div class="image-div pti-sortable-handler"><img src="<%= thumbnail %>"><div class="duration-caption"><%= durationCaption %></div><div class="pti-action"><%=PTITemplates.prototype.AddAction()%><%=PTITemplates.prototype.PlayAction()%></div></div><span class="videoText"><b><%= title %></b><br>by <%= uploader %></span></div>')
 PTITemplates.prototype.VimeoPlayerTemplate = _.template('<iframe id="vimeo" src="https://player.vimeo.com/video/<%= id %>?api=1&player_id=vimeo" width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>')
 
+PTITemplates.prototype.WatchRawTemplate = _.template('<div><div class="image-div pti-sortable-handler"><img src="/css/resources/aniland.jpg"><div class="pti-action"><%=PTITemplates.prototype.AddAction()%><%=PTITemplates.prototype.PlayAction()%></div></div><span class="videoText"><b><%= id %></b></span></div>')
+PTITemplates.prototype.WatchCompleteTemplate = _.template('<div><div class="image-div pti-sortable-handler"><img src="/css/resources/aniland.jpg"><div class="pti-action"><%=PTITemplates.prototype.AddAction()%><%=PTITemplates.prototype.PlayAction()%></div></div><span class="videoText"><b><%= title %></b></span></div>')
+
 PTITemplates.prototype.PlaylistGroupHeaderTemplate = _.template('<label class="pti-droppable-target"><%=name%></label>')
 
 PTITemplates.prototype.ParsePlayTheInternetParseFunctionMissing = _.template('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-danger"><b>Please refresh(F5) currently open tab</b><br>(<%=href%>)</div> </div> </div> </div>')

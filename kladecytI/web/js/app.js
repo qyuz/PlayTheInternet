@@ -34,6 +34,10 @@ requirejs.config({
     }
 });
 
+window.PTINTS = {
+    STORE_THE_INTERNET: 'https://qyuz.cloudant.com/playtheinternet'
+};
+
 function upgradeRun(module) {
     require(["jstorage"], function() {
         var currVersion = parseFloat($.jStorage.get('manifest_version') || 0)

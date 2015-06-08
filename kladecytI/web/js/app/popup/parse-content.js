@@ -10,6 +10,7 @@ define(["pti-playlist"], function(Playlist) {
                     origin: request.href
                 });
                 window.parsedPlaylist._emptyContent();
+                $('#parsedDiv>#parsedError').remove();
                 if (typeIdsString.length) {
                     parsedPlaylist.addElements(_.stringToArray(typeIdsString));
                 } else {

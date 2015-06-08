@@ -14,8 +14,9 @@ function ParseTheInternet() {
             parseTheInternet._globalRegex = globalRegex(parseTheInternet._parsers);
         },
         parse: function (text, opts) {
-            var matchedGlobal, typeIds, _uniqueTypeIds, parser, typeId, parseText;
+            var matchedGlobal, typeIds, result, parser, typeId, parseText;
 
+            result = [];
             opts = opts || {};
             if (opts.origin) {
                 parseText = opts.origin + " " + text;
@@ -24,17 +25,19 @@ function ParseTheInternet() {
                 opts.origin = window.location.href;
             }
             matchedGlobal = parseText.match(parseTheInternet._globalRegex);
-            typeIds = matchedGlobal.map(function (matchedText) {
-                for (var i = 0; i < parseTheInternet._parsers.length; i++) {
-                    parser = parseTheInternet._parsers[i];
-                    if (typeId = parser.matcher(matchedText, opts)) {
-                        return typeId;
+            if (matchedGlobal != null) {
+                typeIds = matchedGlobal.map(function (matchedText) {
+                    for (var i = 0; i < parseTheInternet._parsers.length; i++) {
+                        parser = parseTheInternet._parsers[i];
+                        if (typeId = parser.matcher(matchedText, opts)) {
+                            return typeId;
+                        }
                     }
-                }
-            });
-            _uniqueTypeIds = uniqueTypeIds(typeIds);
+                });
+                result = uniqueTypeIds(typeIds);
+            }
 
-            return _uniqueTypeIds;
+            return result;
         },
         parseToString: function(text, opts) {
             var typeIds, links;
