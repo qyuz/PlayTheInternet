@@ -16,9 +16,6 @@ define(["pti-playlist"], function(Playlist) {
                 } else {
                     $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseNothingFound(request));
                 }
-            } else if (request.operation == "parsePlayTheInternetParseFunctionMissing") {
-                window.parsedPlaylist._emptyContent();
-                $('#parsedDiv').append(PTITemplates.prototype.ParsePlayTheInternetParseFunctionMissing(request));
             }
         }
     );

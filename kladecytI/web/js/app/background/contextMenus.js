@@ -65,15 +65,6 @@ define(function() {
                 });
                 console.log(typeIdsString)
                 addToPlaylist(typeIdsString)
-            } else if(request.operation == "parsePageParsePlayTheInternetParseFunctionMissing") {
-                chrome.notifications.create('', {
-                    type: "basic",
-                    title: "Refresh this tab!",
-                    message: "Please refresh(F5) current tab:\r\n" + request.href,
-                    iconUrl: "/css/resources/nothing.png"
-                }, function () {
-                    console.log()
-                })
             }
         }
     );

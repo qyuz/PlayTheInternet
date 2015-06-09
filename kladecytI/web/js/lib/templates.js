@@ -18,7 +18,6 @@ PTITemplates.prototype.WatchCompleteTemplate = _.template('<div><div class="imag
 
 PTITemplates.prototype.PlaylistGroupHeaderTemplate = _.template('<label class="pti-droppable-target"><%=name%></label>')
 
-PTITemplates.prototype.ParsePlayTheInternetParseFunctionMissing = _.template('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-danger"><b>Please refresh(F5) currently open tab</b><br>(<%=href%>)</div> </div> </div> </div>')
 PTITemplates.prototype.ParsePlayTheInternetParseNothingFound = _.template('<div id="parsedError" class="temp-parsed-error"> <div> <div> <div class="alert alert-warning"><b>Nothing found on</b><br><%=href%></div> </div> </div> </div>')
 
 PTITemplates.prototype.PtilistElement = _.template('<div id="<%= id %>" class="<%= elementClass %>"></div>')

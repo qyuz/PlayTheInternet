@@ -53,6 +53,12 @@ define(["underscore-core"], function() {
                 window.document.title = typeId.id
             }
         },
+        sprintf: function (s,d){
+            for(var p in d) {
+                s = s.replace(new RegExp('{' + p + '}', 'g'), d[p]);
+            }
+            return s;
+        },
         StoreTheInternet: StoreTheInternet,
         stringToArray: function (string) {
             var resultArray = string ? string.replace(/\\,/g, "&thisiscomma;").split(/,/).map(function (item) {

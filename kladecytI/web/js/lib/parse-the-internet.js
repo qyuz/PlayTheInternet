@@ -14,30 +14,39 @@ function ParseTheInternet() {
             parseTheInternet._globalRegex = globalRegex(parseTheInternet._parsers);
         },
         parse: function (text, opts) {
-            var matchedGlobal, typeIds, result, parser, typeId, parseText;
+            var hrefTypeIds, contentTypeIds, mergedTypeIds, result;
 
-            result = [];
             opts = opts || {};
             if (opts.origin) {
-                parseText = opts.origin + " " + text;
+                hrefTypeIds = matchTypeIds(opts.origin);
             } else {
-                parseText = text;
                 opts.origin = window.location.href;
             }
-            matchedGlobal = parseText.match(parseTheInternet._globalRegex);
-            if (matchedGlobal != null) {
-                typeIds = matchedGlobal.map(function (matchedText) {
-                    for (var i = 0; i < parseTheInternet._parsers.length; i++) {
-                        parser = parseTheInternet._parsers[i];
-                        if (typeId = parser.matcher(matchedText, opts)) {
-                            return typeId;
-                        }
-                    }
-                });
-                result = uniqueTypeIds(typeIds);
-            }
+            contentTypeIds = matchTypeIds(text);
+            mergedTypeIds = (hrefTypeIds || []).concat(contentTypeIds);
+            result = uniqueTypeIds(mergedTypeIds);
 
             return result;
+
+            function matchTypeIds(text) {
+                var matchedGlobal, typeIds, parser, typeId;
+
+                typeIds = [];
+                matchedGlobal = text.match(parseTheInternet._globalRegex);
+
+                if (matchedGlobal != null) {
+                    typeIds = matchedGlobal.map(function (matchedText) {
+                        for (var i = 0; i < parseTheInternet._parsers.length; i++) {
+                            parser = parseTheInternet._parsers[i];
+                            if (typeId = parser.matcher(matchedText, opts)) {
+                                return typeId;
+                            }
+                        }
+                    });
+                }
+
+                return typeIds;
+            }
         },
         parseToString: function(text, opts) {
             var typeIds, links;

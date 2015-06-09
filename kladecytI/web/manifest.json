@@ -9,17 +9,11 @@
     "background":{
         "page":"background.html"
     },
-    "content_scripts":[
-        {
-            "matches":["http://*/*", "https://*/*"],
-            "js":["js/lib/cparse.js"]
-        }
-    ],
     "permissions":[
         "storage",
-        "http://*/*", "https://*/*",
         "contextMenus",
-        "notifications"
+        "notifications",
+        "activeTab"
     ],
     "browser_action":{
         "default_title":"",
