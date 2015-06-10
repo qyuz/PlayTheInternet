@@ -159,21 +159,26 @@
                 <div id="recyclePlaylist"></div>
             </div>
             <div id="playersContainer" class="temp-absolute-off-screen temp-popup-nav-content loading">
-                <div id="spinner-container">
-                    <section class="spinner-3">
-                        <div class="spinner"/>
-                    </section>
-                </div>
-                <div id="players">
-                    <!--<iframe class="leftFull temp-border-none temp-width-hundred-percent" src="http://localhost:8888/iframe-player.html"></iframe>-->
-                    <!--<iframe class="leftFull temp-border-none temp-width-hundred-percent" src="http://playtheinternet.appspot.com/iframe-player.html"></iframe>-->
-                </div>
-                <div id="parsedError" class="temp-parsed-error">
-                    <div>
+                <div id="iframe-players">
+                    <div id="spinner-container">
+                        <section class="spinner-3">
+                            <div class="spinner"/>
+                        </section>
+                    </div>
+                    <div id="players">
+                        <!--<iframe class="leftFull temp-border-none temp-width-hundred-percent" src="http://localhost:8888/iframe-player.html"></iframe>-->
+                        <!--<iframe class="leftFull temp-border-none temp-width-hundred-percent" src="http://playtheinternet.appspot.com/iframe-player.html"></iframe>-->
+                    </div>
+                    <div id="parsedError" class="temp-parsed-error">
                         <div>
-                            <div class="alert alert-warning">Players are not here!<br><a>Click to open player.</a></div>
+                            <div>
+                                <div class="alert alert-warning">Players are not here!<br><a>Click to open player.</a></div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div id="extension-players">
+
                 </div>
             </div>
         </div>

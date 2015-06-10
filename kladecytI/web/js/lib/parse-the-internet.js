@@ -27,26 +27,6 @@ function ParseTheInternet() {
             result = uniqueTypeIds(mergedTypeIds);
 
             return result;
-
-            function matchTypeIds(text) {
-                var matchedGlobal, typeIds, parser, typeId;
-
-                typeIds = [];
-                matchedGlobal = text.match(parseTheInternet._globalRegex);
-
-                if (matchedGlobal != null) {
-                    typeIds = matchedGlobal.map(function (matchedText) {
-                        for (var i = 0; i < parseTheInternet._parsers.length; i++) {
-                            parser = parseTheInternet._parsers[i];
-                            if (typeId = parser.matcher(matchedText, opts)) {
-                                return typeId;
-                            }
-                        }
-                    });
-                }
-
-                return typeIds;
-            }
         },
         parseToString: function(text, opts) {
             var typeIds, links;
@@ -111,11 +91,9 @@ function ParseTheInternet() {
     }
 
     function globalRegex(parsers) {
-        var concatRegex;
+        var concatRegex, regex;
 
         concatRegex = parsers.map(function (parser) {
-            var regex;
-
             regex = parser.regex.toString();
             return "(" + regex.toString().substring(1, regex.length - 1) + ")"
         }).join("|");
@@ -136,6 +114,26 @@ function ParseTheInternet() {
                 }
             }
         }
+    }
+
+    function matchTypeIds(text) {
+        var matchedGlobal, typeIds, parser, typeId;
+
+        typeIds = [];
+        matchedGlobal = text.match(parseTheInternet._globalRegex);
+
+        if (matchedGlobal != null) {
+            typeIds = matchedGlobal.map(function (matchedText) {
+                for (var i = 0; i < parseTheInternet._parsers.length; i++) {
+                    parser = parseTheInternet._parsers[i];
+                    if (typeId = parser.matcher(matchedText, opts)) {
+                        return typeId;
+                    }
+                }
+            });
+        }
+
+        return typeIds;
     }
 
     function uniqueTypeIds(typeIds) {

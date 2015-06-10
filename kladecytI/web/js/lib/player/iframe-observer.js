@@ -184,7 +184,7 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     }
 
     function events() {
-        $('#playersContainer').on('click', '#parsedError a', reload);
+        $('#iframe-players').on('click', '#parsedError a', reload);
     }
 
     function init(options) {
@@ -233,9 +233,9 @@ define(["player/pti-abstract", "player/iframe-wrapper", "jquery", "underscore", 
     function state(state) {
         if(arguments.length) {
             _state = state;
-            $('#playersContainer').toggleClass('destroyed', state == STATE.DESTROY);
-            $('#playersContainer').toggleClass('playing', state == STATE.PLAY);
-            $('#playersContainer').toggleClass('loading', state == STATE.LOAD);
+            $('#iframe-players').toggleClass('destroyed', state == STATE.DESTROY);
+            $('#iframe-players').toggleClass('playing', state == STATE.PLAY);
+            $('#iframe-players').toggleClass('loading', state == STATE.LOAD);
             callbacks.fire(state);
         }
 
