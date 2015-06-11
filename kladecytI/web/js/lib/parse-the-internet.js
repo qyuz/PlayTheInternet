@@ -18,11 +18,11 @@ function ParseTheInternet() {
 
             opts = opts || {};
             if (opts.origin) {
-                hrefTypeIds = matchTypeIds(opts.origin);
+                hrefTypeIds = matchTypeIds(opts.origin, opts);
             } else {
                 opts.origin = window.location.href;
             }
-            contentTypeIds = matchTypeIds(text);
+            contentTypeIds = matchTypeIds(text, opts);
             mergedTypeIds = (hrefTypeIds || []).concat(contentTypeIds);
             result = uniqueTypeIds(mergedTypeIds);
 
@@ -116,7 +116,7 @@ function ParseTheInternet() {
         }
     }
 
-    function matchTypeIds(text) {
+    function matchTypeIds(text, opts) {
         var matchedGlobal, typeIds, parser, typeId;
 
         typeIds = [];
