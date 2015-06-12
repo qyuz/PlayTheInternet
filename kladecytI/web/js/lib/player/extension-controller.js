@@ -24,21 +24,32 @@ define(["player/pti-abstract", "player/iframe-observer", "player/html5-player"],
 
         extensionController = new PTI({
             onLoadVideo: function (type, videoId, playerState) {
-                $('#iframe-players').toggleClass('temp-absolute-off-screen', type == "w");
-                $('#extension-players').toggleClass('temp-absolute-off-screen', type != "w");
-                if (type == "w") {
-                    extensionPti.loadVideo.apply(extensionController, arguments);
-                } else {
-                    iframePti.loadVideo.apply(extensionController, arguments);
+                if (arguments.length) {
+                    $('#iframe-players').toggleClass('temp-absolute-off-screen', type == "w");
+                    $('#extension-players').toggleClass('temp-absolute-off-screen', type != "w");
+                    if (type == "w") {
+                        extensionController.pti = extensionPti;
+                    } else {
+                        extensionController.pti = iframePti;
+                    }
+                    extensionController.pti.loadVideo.apply(extensionController, arguments);
                 }
             },
             onPlayVideo: function () {
+                extensionController.pti.playVideo.apply(extensionController, arguments);
             },
             onPauseVideo: function () {
+                extensionController.pti.pauseVideo.apply(extensionController, arguments);
             },
             onSeekTo: function (seekTo) {
+                if (arguments.length) {
+                    extensionController.pti.seekTo.apply(extensionController, arguments);
+                }
             },
             onVolume: function (volume) {
+                if (arguments.length) {
+                    extensionController.pti.volume.apply(extensionController, arguments);
+                }
             }
         });
 

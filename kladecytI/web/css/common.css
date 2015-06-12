@@ -30,23 +30,7 @@ body { height: 100%; }
 /* Players Container */
 /*#playersContainer { height: 100%;}*/
 .tabs-player-container { position: absolute; width: 100%; top: 41px; bottom: 0px; }
-#iframe-players,
-#extension-players { height: 100%; }
-#spinner-container { position: relative; z-index: 999; height: 100%; }
 #players { position: absolute; top: 0px; width: 100%; bottom: 0px; }
-#iframe-players>#parsedError,
-#iframe-players.playing>#players  { display: none; }
-#iframe-players>#spinner-container { pointer-events: none; }
-#iframe-players>#parsedError { pointer-events: all; }
-#iframe-players>#parsedError a:hover { cursor: pointer; }
-#iframe-players.destroyed>#parsedError { display: block; }
-#iframe-players.destroyed>#spinner-container { display: none; }
-#iframe-players.playing>#players { display: block; }
-#iframe-players.playing>#spinner-container { transition: opacity 1s ease-in-out; opacity: 0; }
-/*day*/
-#spinner-container { background-color: gainsboro; }
-/*night*/
-#night #spinner-container { background-color: #474747; }
 
 /* COLORS */
 /*RESET*/

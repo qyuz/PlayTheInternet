@@ -15,7 +15,7 @@ PTITemplates.prototype.VimeoPlayerTemplate = _.template('<iframe id="vimeo" src=
 
 PTITemplates.prototype.WatchRawTemplate = _.template('<div><div class="image-div pti-sortable-handler"><img src="/css/resources/aniland.jpg"><div class="pti-action"><%=PTITemplates.prototype.AddAction()%><%=PTITemplates.prototype.PlayAction()%></div></div><span class="videoText"><b><%= id %></b></span></div>')
 PTITemplates.prototype.WatchCompleteTemplate = _.template('<div><div class="image-div pti-sortable-handler"><img src="/css/resources/aniland.jpg"><div class="pti-action"><%=PTITemplates.prototype.AddAction()%><%=PTITemplates.prototype.PlayAction()%></div></div><span class="videoText"><b><%= title %></b></span></div>')
-PTITemplates.prototype.WatchPlayerTemplate = _.template('<video controls="" autoplay="" name="media"><source src="<%= href %>" type="video/mp4"></video>');
+PTITemplates.prototype.WatchPlayerTemplate = _.template('<video controls="" autoplay="" name="media"><source type="video/mp4"></video>');
 
 PTITemplates.prototype.PlaylistGroupHeaderTemplate = _.template('<label class="pti-droppable-target"><%=name%></label>')
 
