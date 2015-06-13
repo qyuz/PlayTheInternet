@@ -66,9 +66,8 @@ define(["underscore", "jquery"], function (a, b) {
         }.bind(this)
         this.Player = function (name, options, playerContainer) {
             if (name) {
-                name == "y" && self && (self.yt = this) && (self.y = this) && (self.players['y'] = this)
-                name == "v" && self && (self.vm = this) && (self.v = this) && (self.players['v'] = this)
-                name == "s" && self && (self.sc = this) && (self.s = this) && (self.players['s'] = this)
+                self[name] = this;
+                self.players[name] = this;
                 this.options = _.extend({}, options)
                 this.name = name
                 this.playerContainer = playerContainer

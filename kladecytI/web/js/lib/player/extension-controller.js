@@ -1,13 +1,13 @@
 'use strict';
 
-define(["player/pti-abstract", "player/iframe-observer", "player/html5-player"], function(PTI, observer, html5Player) {
+define(["player/pti-abstract", "player/iframe-observer", "player/play-the-extension"], function(PTI, observer, playTheExtension) {
     var backgroundWindow, iframePti, extensionPti, destroyedPlayer, STATE;
 
     backgroundWindow = chrome.extension.getBackgroundPage();
 
     STATE = observer.STATE;
     iframePti = observer.pti;
-    extensionPti = html5Player;
+    extensionPti = playTheExtension.pti;
     window.observer = observer;
     window.pti = ExtensionController();
     backgroundWindow.ptiManager.playingWindow(window);
