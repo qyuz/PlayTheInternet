@@ -52,6 +52,9 @@ define(["player/pti-abstract", "player/iframe-observer", "player/play-the-extens
                 }
             }
         });
+//       extensionController.get = function() {
+//           return extensionController.pti.get.apply(extensionController.pti, arguments);
+//       };
 
         return extensionController;
     }

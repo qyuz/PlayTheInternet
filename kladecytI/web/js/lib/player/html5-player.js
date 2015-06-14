@@ -4,26 +4,8 @@ define(["player/iframe-player", "underscore", "jquery"], function (pti, b, c) {
     var $html5Player, html5Player;
 
     new pti.Player("w", {
-        onPlayerReady: function () {
-            var self = this.scope
-            self.playProgressCallbacks = $.Callbacks()
-            self.temp.playProgress = function () {
-//                var pausedDef = new $.Deferred(), timeDef = new $.Deferred(), durationDef = new $.Deferred(), soundIndexDef = new $.Deferred()
-//                scWidget.isPaused(function (isPaused) {
-//                    pausedDef.resolve(isPaused ? 2 : 1)
-//                })
-//                scWidget.getPosition(function (position) {
-//                    timeDef.resolve(position / 1000)
-//                })
-//                scWidget.getDuration(function (duration) {
-//                    durationDef.resolve(duration / 1000)
-//                })
-//                scWidget.getCurrentSoundIndex(function (index) {
-//                    soundIndexDef.resolve(index)
-//                })
-//                $.when(pausedDef, timeDef, durationDef, soundIndexDef).then(self.playProgressCallbacks.fire)
-            }
-        },
+//        onPlayerReady: function () {
+//        },
 //            onPlayerState:function (state) {
 //            },
 //            onError:function (error) {
@@ -36,45 +18,33 @@ define(["player/iframe-player", "underscore", "jquery"], function (pti, b, c) {
         onLoadVideo: function (videoId) {
             var self = this.scope;
             self.temp.blockPlayback = false;
-            $html5Player.attr('src', videoId);
+            html5Player.src = videoId;
             html5Player.load();
-//            scWidget.load(url, { callback: function () {
-//                scWidget.skip(0) //because sometimes sc won't start playing
-//                self.temp.playProgressInterval = setInterval(self.temp.playProgress, 200)
-//            }})
+            self.temp.playProgressInterval = setInterval(self.temp.playProgress, 200);
         },
 //            onCurrentTime:function (time) {
 //            },
         onInitializePlayer: function () {
-            var self = this.scope
             $html5Player = $(PTITemplates.prototype.WatchPlayerTemplate());
             $html5Player.appendTo($('#extension-players'));
             html5Player = $html5Player.get(0);
+
+            var self = this.scope;
             self.player = html5Player;
-//            scWidget.bind(SC.Widget.Events.READY, function () {
-//                self.playerReady(1)
-//                console.log('playFirstLoaded sc')
-//                scWidget.bind(SC.Widget.Events.FINISH, function () {
-//                    scWidget.getCurrentSoundIndex(function (data) {
-//                        scWidget.getSounds(function (sounds) {
-//                            console.log('finished sounds count: ' + sounds.length + ' and current index: ' + data)
-//                            if (data == null || data == sounds.length - 1) {
-//                                console.log("SC NEXT")
-//                                self.playerState(0)
-//                            }
-//                        })
-//                    })
-//                });
-//            })
-//            scWidget.bind(SC.Widget.Events.PLAY_PROGRESS, function () {
-//                self.temp.blockPlayback && scWidget.pause()
-//            })
-//            scWidget.bind(SC.Widget.Events.PLAY, function () {
-//                pti.nativeRequestPlaying = true
-//            })
-//            scWidget.bind(SC.Widget.Events.PAUSE, function () {
-//                pti.nativeRequestStop = true
-//            })
+            self.playProgressCallbacks = $.Callbacks();
+            self.temp.playProgress = function() {
+                var state, currentTime, duration;
+
+                state = html5Player.paused ? 2 : 1;
+                currentTime = html5Player.currentTime;
+                duration = html5Player.duration;
+
+                self.playProgressCallbacks.fire(state, currentTime, duration)
+            };
+            html5Player.addEventListener("ended", function(evt) {
+                console.log(evt);
+                self.playerState(0);
+            });
         },
         onClearTimeout: function () {
             var self = this.scope;
@@ -90,7 +60,9 @@ define(["player/iframe-player", "underscore", "jquery"], function (pti, b, c) {
             html5Player.currentTime = seekTo;
         },
         onVolume: function (volume) {
-            html5Player.volume = volume;
+            try {
+                html5Player.volume = volume;
+            } catch(e) {}
         }
     }, 'extension-players')
     pti.w.initializePlayer();
