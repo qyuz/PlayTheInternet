@@ -151,20 +151,22 @@ define(["jquery", "underscore", "jstorage"], function (a, b, c) {
 //        self.jProgressBarContainer.tooltip({track:true})
 
         this.listenInterval = setInterval(function () {
-            var props = self.data.listenObject.get(['currentTime', 'duration']);
-            var currentTime = props[0];
-            var duration = props[1]
-            var playing = self.data.listenObject.playing()
-//        console.log(currentTime)
-            self.trackLength != duration && self.jBackgroundTrackLength.text(_.formatDuration(duration)) | self.jTrackLength.text(_.formatDuration(duration))
-            self.trackLength = duration
-            self.progressBar(currentTime, self.trackLength)
-            if (playing) {
-                self.jPlay.removeClass('play')
-                self.jPlay.addClass('pause')
-            } else {
-                self.jPlay.removeClass('pause')
-                self.jPlay.addClass('play')
+            if (self.data.listenObject) {
+                var props = self.data.listenObject.get(['currentTime', 'duration']);
+                var currentTime = props[0];
+                var duration = props[1]
+                var playing = self.data.listenObject.playing()
+    //        console.log(currentTime)
+                self.trackLength != duration && self.jBackgroundTrackLength.text(_.formatDuration(duration)) | self.jTrackLength.text(_.formatDuration(duration))
+                self.trackLength = duration
+                self.progressBar(currentTime, self.trackLength)
+                if (playing) {
+                    self.jPlay.removeClass('play')
+                    self.jPlay.addClass('pause')
+                } else {
+                    self.jPlay.removeClass('pause')
+                    self.jPlay.addClass('play')
+                }
             }
         }.bind(this), 100)
     }

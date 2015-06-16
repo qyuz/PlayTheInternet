@@ -67,4 +67,3 @@ define(["player/iframe-player", "underscore", "jquery"], function (pti, b, c) {
     }, 'extension-players')
     pti.w.initializePlayer();
 });
-

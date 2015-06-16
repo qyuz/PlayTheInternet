@@ -1,6 +1,6 @@
 'use strict';
 
-define(["player/pti-abstract", "player/iframe-observer", "player/play-the-extension"], function(PTI, observer, playTheExtension) {
+define(["player/pti-abstract", "player/iframe-observer", "player/play-the-extension"], function (PTI, observer, playTheExtension) {
     var backgroundWindow, iframePti, extensionPti, destroyedPlayer, STATE;
 
     backgroundWindow = chrome.extension.getBackgroundPage();
@@ -11,7 +11,7 @@ define(["player/pti-abstract", "player/iframe-observer", "player/play-the-extens
     window.observer = observer;
     window.pti = ExtensionController();
     backgroundWindow.ptiManager.playingWindow(window);
-    observer.listen(function(action) {
+    observer.listen(function (action) {
         if (action == STATE.DESTROY) {
             destroyedPlayer = true;
         } else if (action == STATE.PLAY && destroyedPlayer) {
@@ -25,10 +25,12 @@ define(["player/pti-abstract", "player/iframe-observer", "player/play-the-extens
         extensionController = new PTI({
             onLoadVideo: function (type, videoId, playerState) {
                 if (arguments.length) {
+                    _.result(extensionController.pti, "pauseVideo");
                     $('#iframe-players').toggleClass('temp-absolute-off-screen', type == "w");
                     $('#extension-players').toggleClass('temp-absolute-off-screen', type != "w");
                     if (type == "w") {
                         extensionController.pti = extensionPti;
+                        extensionController.pti.playing(true);
                     } else {
                         extensionController.pti = iframePti;
                     }
@@ -52,9 +54,10 @@ define(["player/pti-abstract", "player/iframe-observer", "player/play-the-extens
                 }
             }
         });
-//       extensionController.get = function() {
-//           return extensionController.pti.get.apply(extensionController.pti, arguments);
-//       };
+        extensionController.pti = null;
+        extensionController.get = function () {
+            return extensionController.pti.get.apply(extensionController.pti, arguments);
+        };
 
         return extensionController;
     }
