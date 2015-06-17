@@ -20,6 +20,7 @@ define(["player/iframe-player", "underscore", "jquery"], function (pti, b, c) {
             self.temp.blockPlayback = false;
             html5Player.src = videoId;
             html5Player.load();
+            self.temp.started = false;
             self.temp.playProgressInterval = setInterval(self.temp.playProgress, 200);
         },
 //            onCurrentTime:function (time) {
@@ -35,14 +36,18 @@ define(["player/iframe-player", "underscore", "jquery"], function (pti, b, c) {
             self.temp.playProgress = function() {
                 var state, currentTime, duration;
 
-                state = html5Player.paused ? 2 : 1;
+                state = (self.temp.started && !html5Player.paused) ? 1 : 2;
                 currentTime = html5Player.currentTime;
                 duration = html5Player.duration;
 
                 self.playProgressCallbacks.fire(state, currentTime, duration)
             };
+            html5Player.addEventListener("canplaythrough", function() {
+                console.log("html5 video started");
+                self.temp.started = true;
+            });
             html5Player.addEventListener("ended", function(evt) {
-                console.log(evt);
+                console.log("html5 video ended");
                 self.playerState(0);
             });
         },
