@@ -30,10 +30,10 @@ define(["player/pti-abstract", "player/iframe-observer", "player/play-the-extens
                     $('#extension-players').toggleClass('temp-absolute-off-screen', type != "w");
                     if (type == "w") {
                         extensionController.pti = extensionPti;
-                        extensionController.pti.playing(true);
                     } else {
                         extensionController.pti = iframePti;
                     }
+                    extensionController.pti.playing(true);
                     extensionController.pti.loadVideo.apply(extensionController, arguments);
                 }
             },
@@ -57,6 +57,11 @@ define(["player/pti-abstract", "player/iframe-observer", "player/play-the-extens
         extensionController.pti = null;
         extensionController.get = function () {
             return extensionController.pti.get.apply(extensionController.pti, arguments);
+        };
+        extensionController.playing = function(bool) {
+            if (arguments.length && extensionController.pti) {
+                extensionController.pti.playing(bool);
+            }
         };
 
         return extensionController;
