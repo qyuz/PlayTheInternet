@@ -57,6 +57,7 @@ function ParseTheInternet() {
             typeId = simpleMatcher(matchedText);
             if (typeId) {
                 typeId.id = typeId.id
+                    .replace(/\\n.*/g, '')
                     .replace(/[\\()]/g, '')
                     .replace(/\u00252F/g, '/')
                     .replace(/\u00253F((fb_action)|(utm_source)).*/, '');
