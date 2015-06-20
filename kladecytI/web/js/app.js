@@ -29,7 +29,6 @@ requirejs.config({
         "pti-playlist":["sitehandlers", "ctemplates"],
         "slimscroll":["jquery-ui"],
         "qrcode":["jquery", "qrcode-core"],
-        "youtube-api":["player/iframe-youtube"],
         "parse":["sitehandlers"]
     }
 });

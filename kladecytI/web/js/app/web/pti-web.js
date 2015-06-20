@@ -1,4 +1,4 @@
-define(["player/iframe-player", "youtube-api", "player/iframe-soundcloud", "player/iframe-vimeo", "jquery", "underscore"], function (pti) {
+define(["player/iframe-player", "player/iframe-soundcloud", "player/iframe-vimeo", "jquery", "underscore"], function (pti) {
     var youtubeDeferred = $.Deferred(), soundcloudDeferred = $.Deferred()
 
     pti.y.options.onAfterPlayerReady = function () {
