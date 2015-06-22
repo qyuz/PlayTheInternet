@@ -3,26 +3,35 @@ define(["jquery", "underscore"], function (a, b) {
 
     playerTheYoutube = {
         _player: null,
-        _ready: $.Deferred(),
+        _ready: null,
         type: "y",
-        init: function(id) {
-            youTubeIframeAPIReady.then(function() {
-                playerTheYoutube._player = new YT.Player(id, {
-                    height: '100%',
-                    width: '100%',
-                    videoId: '9owLp1gqJd0',
-                    events: {
-                        onReady: playerTheYoutube._ready.resolve,
-                        onStateChange: playerTheYoutube.stateChange
-                        //                'onError':pti.yt.error
-                    }
-                });
-            })
+        init: function(id, opts) {
+            var options;
+
+            options = opts || {};
+            if (playerTheYoutube._ready == null) {
+                playerTheYoutube._ready = $.Deferred();
+                youTubeIframeAPIReady.then(function() {
+                    playerTheYoutube._player = new YT.Player(id, {
+                        height: options.height || '100%',
+                        width: options.width || '100%',
+                        videoId: options.videoId || '9owLp1gqJd0',
+                        events: {
+                            onReady: playerTheYoutube._ready.resolve,
+                            onStateChange: playerTheYoutube.stateChange
+                            //                'onError':pti.yt.error
+                        }
+                    });
+                })
+            }
 
             return playerTheYoutube._ready;
         },
         load: function(id, state) {
             debugger;
+        },
+        ready: function() {
+            return playerTheYoutube._ready;
         },
         stateChange: function() {
             debugger;

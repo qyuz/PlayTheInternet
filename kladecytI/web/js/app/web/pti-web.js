@@ -1,36 +1,40 @@
-define(["player/iframe-player", "player/iframe-soundcloud", "player/iframe-vimeo", "jquery", "underscore"], function (pti) {
+define(["player/play-the-internet", "player/iframe-soundcloud", "player/iframe-vimeo", "jquery", "underscore"], function (playTheInternet) {
     var youtubeDeferred = $.Deferred(), soundcloudDeferred = $.Deferred()
 
-    pti.y.options.onAfterPlayerReady = function () {
-        console.log('youtube ready')
-        youtubeDeferred.resolve()
-    }
-    pti.y.options.onAfterPlayerState = function (state) {
-        if (state == 0) {
-            SiteHandlerManager.prototype.stateChange('NEXT')
-        }
-    }
+    playTheInternet.init().then(function() {
+        debugger;
+    });
 
-    pti.options.onAfterError = function (error) {
-        SiteHandlerManager.prototype.stateChange('ERROR')
-    }
+//     pti.y.options.onAfterPlayerReady = function () {
+//         console.log('youtube ready')
+//         youtubeDeferred.resolve()
+//     }
+//     pti.y.options.onAfterPlayerState = function (state) {
+//         if (state == 0) {
+//             SiteHandlerManager.prototype.stateChange('NEXT')
+//         }
+//     }
 
-    pti.s.options.onAfterPlayerReady = function () {
-        console.log('soundcloud ready')
-        soundcloudDeferred.resolve()
-    }
+//     pti.options.onAfterError = function (error) {
+//         SiteHandlerManager.prototype.stateChange('ERROR')
+//     }
 
-    pti.s.options.onAfterPlayerState = function (state) {
-        if (state == 0) {
-            SiteHandlerManager.prototype.stateChange('NEXT')
-        }
-    }
+//     pti.s.options.onAfterPlayerReady = function () {
+//         console.log('soundcloud ready')
+//         soundcloudDeferred.resolve()
+//     }
 
-    pti.v.options.onAfterPlayerState = function (state) {
-        if (state == 0) {
-            SiteHandlerManager.prototype.stateChange('NEXT')
-        }
-    }
+//     pti.s.options.onAfterPlayerState = function (state) {
+//         if (state == 0) {
+//             SiteHandlerManager.prototype.stateChange('NEXT')
+//         }
+//     }
 
-    return { pti: pti, youtubeReady: youtubeDeferred, soundcloudReady: soundcloudDeferred }
+//     pti.v.options.onAfterPlayerState = function (state) {
+//         if (state == 0) {
+//             SiteHandlerManager.prototype.stateChange('NEXT')
+//         }
+//     }
+
+    return { playTheInternet: playTheInternet }
 })

@@ -1,4 +1,4 @@
-define([], function() {
+define(["player/player-the-youtube"], function(playerTheYoutube) {
     var playTheInternet;
 
     playTheInternet = {
@@ -6,10 +6,12 @@ define([], function() {
             currentTime: null,
             duration: null,
             index: null,
-            playing: null
+            playing: null,
+            started: null
         },
         _player: null,
-        _players: null,
+        _players: [],
+        _ready: null,
         addPlayer: function(player) {
             playTheInternet.addPlayers([player]);
         },
@@ -24,6 +26,17 @@ define([], function() {
             });
 
             return result;
+        },
+        init: function() {
+            var playersReady;
+
+            if (playTheInternet._ready == null) {
+                playTheInternet._ready = $.Deferred();
+                playersReady = _.map(playTheInternet._players, _.method('init'));
+                $.when.apply($, playersReady).then(playTheInternet._ready.resolve);
+            }
+
+            return playTheInternet._ready;
         },
         load: function(type, id, state) {
             var player;
@@ -47,6 +60,9 @@ define([], function() {
         pause: function() {
             playTheInternet.playing(false);
         },
+        ready: function() {
+            return playTheInternet._ready;
+        },
         volume: function(vol) {
             if (arguments.length) {
                 playTheInternet._data.volume = vol;
@@ -54,6 +70,10 @@ define([], function() {
             return playTheInternet._data.volume;
         }
     };
+
+    playTheInternet.addPlayers([
+        playerTheYoutube
+    ]);
 
     return playTheInternet;
 });

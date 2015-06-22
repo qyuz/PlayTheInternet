@@ -55,10 +55,10 @@ define(["underscore"], function (a) {
     function redrawHashAndQRCode() {
         if (window.playlist && window.playerWidget) {
             window.location.hash = window.playlist.getIds()
-            var _pti = window.playerWidget.data.listenObject;
-            _pti.data.currentPlayer && _pti.data.videoId && setFullURL( _pti.data.currentPlayer, _pti.data.videoId )
-            $('#buildHashInput').val('http://playtheinter.net/play.html' + window.playlist.buildHash())
-            $('#longLinkA').attr('href', 'http://playtheinter.net/play.html' + window.playlist.buildHash())
+//             var _pti = window.playerWidget.data.listenObject;
+//             _pti.data.currentPlayer && _pti.data.videoId && setFullURL( _pti.data.currentPlayer, _pti.data.videoId )
+//             $('#buildHashInput').val('http://playtheinter.net/play.html' + window.playlist.buildHash())
+//             $('#longLinkA').attr('href', 'http://playtheinter.net/play.html' + window.playlist.buildHash())
         }
         if ($('#tabs').find('.ui-state-active').text().trim() == "Share") {
             require(["qrcode"], function () {
