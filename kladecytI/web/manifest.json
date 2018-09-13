@@ -1,6 +1,6 @@
 {
     "name":"PlayTheInternet",
-    "version":"0.730.852",
+    "version":"0.730.853",
     "description":"Add YouTube, SoundCloud, Vimeo music from any web page to playlist. Listen, aggregate, synchronize between PCs and share.",
     "icons":{
         "128":"favicon.ico"
